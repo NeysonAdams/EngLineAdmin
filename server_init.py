@@ -7,12 +7,13 @@ from flask_jwt_extended import JWTManager
 
 from database.models import Role, User, db, Question, Dictionary, Englishword, Russianword, Inputquestion
 
-from authorization import auth as auth_blueprint
+from mobile_api.authorization import auth as auth_blueprint
 from admin.administration import admin_blueprint, Administration
-from cources import cources_bluepprint
+from mobile_api.cources import cources_bluepprint
 from others import others_blue_print
-from fileloader import file_loader_bluerpint
-from exesize import exesize_blueprint
+from mobile_api.fileloader import file_loader_bluerpint
+from mobile_api.exesize import exesize_blueprint
+from mobile_api.statistics import statistic_blueprint
 
 import json
 
@@ -33,6 +34,7 @@ app.register_blueprint(cources_bluepprint)
 app.register_blueprint(others_blue_print)
 app.register_blueprint(file_loader_bluerpint)
 app.register_blueprint(exesize_blueprint)
+app.register_blueprint(statistic_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -46,7 +48,8 @@ levels = {
     "Elementary":2,
     "Pre-Intermediate":3,
     "Intermediate":4,
-    "Advanced":5
+    "Pre-Advanced":5,
+    "Advanced":6
 }
 
 @security.context_processor
@@ -125,6 +128,9 @@ def test_build():
                 db.session.add(iquestion)
             db.session.commit()
 
+def creat_db():
+    with app.app_context():
+        db.create_all()
 def build_sample_db():
     with app.app_context():
         db.drop_all()

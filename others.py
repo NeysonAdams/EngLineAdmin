@@ -10,10 +10,9 @@ def test():
 
     questions = []
 
-    for i in range(1, 6):
-        query_quest = Question.query.filter_by(var_dif=i).limit(10).all()
-        for question in query_quest:
-            questions.append(question.serialize)
+    query_quest = Question.query.filter(Question.id.between(0, 50)).all()
+    for question in query_quest:
+        questions.append(question.serialize)
 
     return jsonify(questions=questions), 200
 

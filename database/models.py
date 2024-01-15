@@ -6,6 +6,7 @@ from flask_security import Security, SQLAlchemyUserDatastore, \
 from datetime import datetime, date
 import random
 import string
+from sqlalchemy.dialects.postgresql import ARRAY
 
 db = SQLAlchemy()
 
@@ -39,6 +40,13 @@ user_dictionary = db.Table(
     db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
     db.Column('word_id', db.Integer(), db.ForeignKey('englishword.id'))
 )
+
+users_exec_stat = db.Table(
+    'users_exec_stat',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('exesizes', db.Integer(), db.ForeignKey('exesize.id'))
+)
+
 
 class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -105,6 +113,28 @@ class User(db.Model, UserMixin):
             "refresh_token": refresh_token
         }
 
+class UserStatistic(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    days = db.Column(db.Integer)
+    hours = db.Column(db.Integer)
+    words = db.Column(db.String)
+    exesizes = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    @property
+    def serialize(self):
+        words = str(self.words)
+        words = words.split(',')
+        ex = str(self.exesizes)
+        ex = ex.split(',')
+        return {
+            "days":self.days,
+            "hours":self.hours,
+            "words":len(words),
+            "exesizes":len(ex)
+        }
+
 class Cource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
@@ -113,6 +143,7 @@ class Cource(db.Model):
     price = db.Column(db.String(255))
     img_url = db.Column(db.String(255))
     is_buy = db.Column(db.Boolean())
+    reiting = db.Column(db.Float, nullable=False)
 
     lessons = db.relationship('Lesson', backref='author', lazy=True)
 
@@ -128,8 +159,45 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": self.price,
             "img_url": self.img_url,
+            "is_buy":self.is_buy,
+            "reiting":self.reiting,
             "lessons": [i.serialize for i in self.lessons]
         }
+
+    @property
+    def data(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "level": self.level,
+            "discription": self.discription,
+            "price": self.price,
+            "img_url": self.img_url,
+            "is_buy":self.is_buy,
+            "reiting":self.reiting
+        }
+
+    @property
+    def serialize_lesons(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "level": self.level,
+            "discription": self.discription,
+            "price": self.price,
+            "img_url": self.img_url,
+            "is_buy":self.is_buy,
+            "reiting":self.reiting,
+            "lessons": [i.serialize_title for i in self.lessons]
+        }
+
+
+class Cstat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mark = db.Column(db.Integer, nullable=False)
+
+    cource_id = db.Column(db.Integer, db.ForeignKey('cource.id'), nullable=False)
+    user_id =  db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 class Lesson(db.Model):
@@ -159,6 +227,13 @@ class Lesson(db.Model):
             "presentation_link": self.presentation_link,
             "slides_link": self.slides_link,
             "exesizes" : [i.serialize for i in self.exesizes]
+        }
+
+    @property
+    def serialize_title(self):
+        return {
+            "id": self.id,
+            "lesson_name": self.lesson_name
         }
 
 words_in_exes = db.Table(
@@ -194,17 +269,41 @@ class Exesize(db.Model):
 
     @property
     def serialize(self):
-        return {
+        if self.type =="test_question":
+            return {
             "id": self.id,
             "lesson_name": self.lesson_name,
             "type": self.type,
-            "video_url": self.video_url,
-            "question": self.question.serialize_lesson,
-            "inputquestion":self.input.serialize,
-            "audio": self.audio.serialize,
-            "video": self.video.serialize,
-            "words": [w.serialize for w in self.words]
-        }
+            "question": self.question.serialize_lesson
+            }
+        if self.type == "input_question":
+            return {
+                "id": self.id,
+                "lesson_name": self.lesson_name,
+                "type": self.type,
+                "inputquestion":self.input.serialize
+            }
+        if self.type == "audio_question":
+            return {
+                "id": self.id,
+                "lesson_name": self.lesson_name,
+                "type": self.type,
+                "audio": self.audio.serialize
+            }
+        if self.type == "video_question":
+            return {
+                "id": self.id,
+                "lesson_name": self.lesson_name,
+                "type": self.type,
+                "video": self.video.serialize
+            }
+        if self.type == "words_question":
+            return {
+                "id": self.id,
+                "lesson_name": self.lesson_name,
+                "type": self.type,
+                "words": [w.serialize for w in self.words]
+            }
 
 class Videoquestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
