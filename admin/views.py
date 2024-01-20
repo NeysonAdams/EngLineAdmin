@@ -1,25 +1,13 @@
 import datetime
 import os
-from flask import Flask, url_for, redirect, render_template, request, abort
-from flask_admin.form import rules
-from flask_admin.form import Select2Widget
-from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required, current_user
-import flask_admin
-import imghdr
+from flask import url_for, redirect,  request, abort
+from flask_security import current_user
 from flask_admin.contrib import sqla
-from flask_admin.form.upload import FileUploadField, ImageUploadField
-from flask_admin import helpers as admin_helpers
-from flask_admin import BaseView, expose, Admin
+from flask_admin.form.upload import FileUploadField
 from wtforms import PasswordField, ValidationError, SelectField
 import io
 from PIL import Image
 from markupsafe import Markup
-from flask_admin.contrib.sqla.filters import FilterEqual
-from flask_admin.model.form import InlineFormAdmin
-from wtforms.validators import InputRequired
-from database.models import Exesize
 
 levels = {
             "Beginner": 1,
@@ -123,7 +111,7 @@ class LessonView(TableView):
         if field.data:
             try:
                 filename = field.data.filename
-                allowed_extensions = {'.mp4', '.avi'}
+                allowed_extensions = {'.mp4', '.avi', '.mov'}
                 if not any(filename.endswith(ext) for ext in allowed_extensions):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
@@ -167,7 +155,7 @@ class VideoQuestionView (TableView):
         if field.data:
             try:
                 filename = field.data.filename
-                allowed_extensions = {'.mp4', '.avi'}
+                allowed_extensions = {'.mp4', '.avi', '.mov'}
                 if not any(filename.endswith(ext) for ext in allowed_extensions):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()

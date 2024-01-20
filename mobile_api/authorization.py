@@ -63,10 +63,6 @@ def set_name():
     name = request.form.get('name')
     login = request.form.get('login')
 
-    user = User.query.filter_by(login=login).first()
-    if user and user.id != user_id:
-        return jsonify(message="Usser with this login already exist"), 400
-
     user = User.query.filter_by(id=user_id).first()
 
     user.name = name
