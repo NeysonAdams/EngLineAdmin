@@ -132,8 +132,15 @@ class LessonView(TableView):
 
     def video_formatter(view, context, model, name):
         if model.video_link:
+            allowed_extensions = {'mp4', 'avi', 'mov'}
+            type = 'mp4'
+            for ext in allowed_extensions:
+                if any(model.video_link.endswith(ext)):
+                    type = ext
+                    break
+
             return Markup(
-                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/mp4"></video>'
+                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/{type}"></video>'
             )
         return ""
 
@@ -174,9 +181,17 @@ class VideoQuestionView (TableView):
         setattr(model, 'level', levels[context.level.data])
 
     def video_formatter(view, context, model, name):
-        if model.video_url:
+        if model.video_link:
+            allowed_extensions = {'mp4', 'avi', 'mov'}
+            type = 'mp4'
+            for ext in allowed_extensions:
+                if any(model.video_link.endswith(ext)):
+                    type = ext
+                    break
+
             return Markup(
-                f'<video width="320" height="240" controls><source src="{model.video_url}" type="video/mp4"></video>')
+                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/{type}"></video>'
+            )
         return ""
 
     form_columns = ['question', 'video_url', 'answer', 'level']
