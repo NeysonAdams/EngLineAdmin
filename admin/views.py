@@ -114,18 +114,18 @@ class LessonView(TableView):
             try:
                 filename = field.data.filename
                 allowed_extensions = {'.mp4', '.avi', '.mov'}
-                if not any(filename.lower().endswith(ext) for ext in allowed_extensions):
-                    raise ValidationError('File must be .mp4, .avi, or .mov')
+                if not any(filename.endswith(ext) for ext in allowed_extensions):
+                    raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
-                f_name = f"video_l_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
                 video_path = os.path.join("static/video/", f_name)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
                 return url_for('static', filename=f"video/{f_name}")
-            except Exception as e:
-                raise ValidationError(str(e))
+            except:
+                pass
 
     def on_model_change(view, context, model, name):
         setattr(model, 'video_link', context.video_link.data)
