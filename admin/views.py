@@ -118,7 +118,7 @@ class LessonView(TableView):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
-                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp4"
                 video_path = os.path.join("static/video/", f_name)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
@@ -132,15 +132,9 @@ class LessonView(TableView):
 
     def video_formatter(view, context, model, name):
         if model.video_link:
-            allowed_extensions = {'mp4', 'avi', 'mov'}
-            type = 'mp4'
-            for ext in allowed_extensions:
-                if any(model.video_link.endswith(ext)):
-                    type = ext
-                    break
 
             return Markup(
-                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/{type}"></video>'
+                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/mp4"></video>'
             )
         return ""
 
@@ -167,7 +161,7 @@ class VideoQuestionView (TableView):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
-                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp4"
                 video_path = os.path.join("static/video/", f_name)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
@@ -181,17 +175,9 @@ class VideoQuestionView (TableView):
         setattr(model, 'level', levels[context.level.data])
 
     def video_formatter(view, context, model, name):
-        if model.video_link:
-            allowed_extensions = {'mp4', 'avi', 'mov'}
-            type = 'mp4'
-            for ext in allowed_extensions:
-                if any(model.video_link.endswith(ext)):
-                    type = ext
-                    break
-
+        if model.video_url:
             return Markup(
-                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/{type}"></video>'
-            )
+                f'<video width="320" height="240" controls><source src="{model.video_url}" type="video/mp4"></video>')
         return ""
 
     form_columns = ['question', 'video_url', 'answer', 'level']
