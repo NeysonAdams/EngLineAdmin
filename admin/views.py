@@ -119,11 +119,13 @@ class LessonView(TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_path = os.path.join("static/video/", f_name)
+                video_folder = os.path.join("video", f_name)
+                video_path = os.path.join("static", video_folder)
+                print(video_path)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
-                    field.data = url_for('static', filename=f"video/{f_name}")
-                    return url_for('static', filename=f"video/{f_name}")
+                field.data = url_for('static', filename=f"video/{f_name}")
+                return field.data
             except:
                 pass
 
@@ -144,7 +146,7 @@ class LessonView(TableView):
 
     column_formatters = dict(video_link=video_formatter)
     form_overrides = dict(video_link=FileUploadField)
-    form_args = dict(video_link=dict(validators=[video_validation], base_path='static/video/'))
+    form_args = dict(video_link=dict(validators=[video_validation], base_path=os.path.join("static", "video")))
 
 
     column_editable_list = ['lesson_name']
@@ -160,12 +162,13 @@ class VideoQuestionView (TableView):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
-                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp4"
-                video_path = os.path.join("static/video/", f_name)
+                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
+                video_folder = os.path.join("video", f_name)
+                video_path= os.path.join("static", video_folder)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
-                return url_for('static', filename=f"video/{f_name}")
+                return field.data
             except:
                 pass
 
@@ -184,7 +187,7 @@ class VideoQuestionView (TableView):
                          level='Level')
     column_formatters = dict(video_url=video_formatter)
     form_overrides = dict(video_url=FileUploadField)
-    form_args = dict(video_url=dict(validators=[video_validation], base_path='static/video/'))
+    form_args = dict(video_url=dict(validators=[video_validation], base_path=os.path.join("static", "video")))
 
     form_extra_fields = {
         'level': SelectField('Level',
@@ -203,10 +206,10 @@ class AudioQuestionView(TableView):
                 raise ValidationError('Audio file must be .mp3 or .wav')
             f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
             field.data = field.data.stream.read()
-            audio_path = os.path.join("static/audio/", f_name)
+            audio_path = os.path.join("static", "audio", f_name)
             with open(audio_path, 'wb') as f:
                 f.write(field.data)
-            field.data = url_for('static', filename=f"/audio/{f_name}")
+            field.data = url_for('static', filename=f"audio/{f_name}")
             return url_for('static', filename=f"audio/{f_name}")
 
     def on_model_change(view, context, model, name):
@@ -224,7 +227,7 @@ class AudioQuestionView(TableView):
     column_formatters = dict(audio_url=audio_formatter)
     form_overrides = dict(audio_url=FileUploadField)
 
-    form_args = dict(audio_url=dict(validators=[audio_validation], base_path='static/audio/'))
+    form_args = dict(audio_url=dict(validators=[audio_validation], base_path=os.path.join("static","audio")))
 
     column_editable_list = ['question', 'level']
     column_searchable_list = column_editable_list
