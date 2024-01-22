@@ -119,8 +119,7 @@ class LessonView(TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_folder = os.path.join("video", f_name)
-                video_path = os.path.join("static", video_folder)
+                video_path = os.path.join("static", "video", f_name)
                 print(video_path)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
