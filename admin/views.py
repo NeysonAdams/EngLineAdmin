@@ -118,12 +118,12 @@ class LessonView(TableView):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
-                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp4"
+                f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
                 video_path = os.path.join("static/video/", f_name)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
-                field.data = url_for('static', filename=f"video/{f_name}")
-                return url_for('static', filename=f"video/{f_name}")
+                    field.data = url_for('static', filename=f"video/{f_name}")
+                    return url_for('static', filename=f"video/{f_name}")
             except:
                 pass
 
@@ -132,7 +132,7 @@ class LessonView(TableView):
 
     def video_formatter(view, context, model, name):
         if model.video_link:
-
+            print(model.video_link[3:])
             return Markup(
                 f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/mp4"></video>'
             )
