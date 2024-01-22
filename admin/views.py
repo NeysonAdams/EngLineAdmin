@@ -119,8 +119,8 @@ class LessonView(TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_path = os.path.join("~/static", "video", f_name)
-                video_path = os.path.expanduser(video_path)
+                #video_path = os.path.join("static", "video", f_name)
+                video_path = f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
@@ -162,8 +162,7 @@ class VideoQuestionView (TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_folder = os.path.join("video", f_name)
-                video_path= os.path.join("static", video_folder)
+                video_path= f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
@@ -205,7 +204,7 @@ class AudioQuestionView(TableView):
                 raise ValidationError('Audio file must be .mp3 or .wav')
             f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
             field.data = field.data.stream.read()
-            audio_path = os.path.join("static", "audio", f_name)
+            audio_path = f"/home/khamraeva/mysite/EngLineAdmin/static/audio/{f_name}"
             with open(audio_path, 'wb') as f:
                 f.write(field.data)
             field.data = url_for('static', filename=f"audio/{f_name}")
