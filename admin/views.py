@@ -113,14 +113,14 @@ class LessonView(TableView):
         if field.data:
             try:
                 filename = field.data.filename
-                allowed_extensions = {'.mp4', '.avi', '.mov'}
+                allowed_extensions = {'.mp4', '.avi', '.mov', '.MOV'}
                 if not any(filename.endswith(ext) for ext in allowed_extensions):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                #video_path = os.path.join("static", "video", f_name)
-                video_path = f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
+                video_path = os.path.join("static", "video", f_name)
+                #video_path = f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
@@ -156,7 +156,7 @@ class VideoQuestionView (TableView):
         if field.data:
             try:
                 filename = field.data.filename
-                allowed_extensions = {'.mp4', '.avi', '.mov'}
+                allowed_extensions = {'.mp4', '.avi', '.mov', '.MOV'}
                 if not any(filename.endswith(ext) for ext in allowed_extensions):
                     raise ValidationError('File must be .mp4 or .avi')
                 field.data = field.data.stream.read()
