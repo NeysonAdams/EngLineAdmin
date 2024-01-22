@@ -120,11 +120,11 @@ class LessonView(TableView):
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
                 video_path = os.path.join("static", "video", f_name)
-                print(video_path)
+                print(f" sawe to limk : {video_path}")
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
-                return field.data
+                return url_for('static', filename=f"video/{f_name}")
             except:
                 pass
 
