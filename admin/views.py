@@ -4,6 +4,8 @@ from flask import url_for, redirect,  request, abort
 from flask_security import current_user
 from flask_admin.contrib import sqla
 from flask_admin.form.upload import FileUploadField
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileRequired
 from wtforms import PasswordField, ValidationError, SelectField
 import io
 from PIL import Image
@@ -112,8 +114,8 @@ class LessonView(TableView):
             try:
                 filename = field.data.filename
                 allowed_extensions = {'.mp4', '.avi', '.mov'}
-                if not any(filename.endswith(ext) for ext in allowed_extensions):
-                    raise ValidationError('File must be .mp4 or .avi')
+                if not any(filename.lower().endswith(ext) for ext in allowed_extensions):
+                    raise ValidationError('File must be .mp4, .avi, or .mov')
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"video_l_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
@@ -122,10 +124,8 @@ class LessonView(TableView):
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
                 return url_for('static', filename=f"video/{f_name}")
-            except:
-                f_name = field.data
-
-
+            except Exception as e:
+                raise ValidationError(str(e))
 
     def on_model_change(view, context, model, name):
         setattr(model, 'video_link', context.video_link.data)
@@ -133,19 +133,19 @@ class LessonView(TableView):
     def video_formatter(view, context, model, name):
         if model.video_link:
             return Markup(
-                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/mp4"></video>')
+                f'<video width="160" height="120" controls><source src="{model.video_link}" type="video/mp4"></video>'
+            )
         return ""
 
-    form_columns = ['lesson_name', 'video_link', 'lesson_description','presentation_link', 'slides_link', "cource", "exesizes"]
+    form_columns = ['lesson_name', 'video_link', 'lesson_description', 'presentation_link', 'slides_link', "cource", "exesizes"]
 
-    column_labels = dict(id="ID", lesson_name='Title', lesson_description="Discription", video_link='Video URL',
+    column_labels = dict(id="ID", lesson_name='Title', lesson_description="Description", video_link='Video URL',
                          presentation_link='Presentation', slides_link='Slides', cource="Course")
-
-
 
     column_formatters = dict(video_link=video_formatter)
     form_overrides = dict(video_link=FileUploadField)
-    form_args = dict(video_link=dict(validators=[video_validation]))
+    form_args = dict(video_link=dict(validators=[video_validation], base_path='static/video/'))
+
 
     column_editable_list = ['lesson_name']
     column_searchable_list = column_editable_list
@@ -184,7 +184,7 @@ class VideoQuestionView (TableView):
                          level='Level')
     column_formatters = dict(video_url=video_formatter)
     form_overrides = dict(video_url=FileUploadField)
-    form_args = dict(video_url=dict(validators=[video_validation]))
+    form_args = dict(video_url=dict(validators=[video_validation], base_path='static/video/'))
 
     form_extra_fields = {
         'level': SelectField('Level',
@@ -224,7 +224,7 @@ class AudioQuestionView(TableView):
     column_formatters = dict(audio_url=audio_formatter)
     form_overrides = dict(audio_url=FileUploadField)
 
-    form_args = dict(audio_url=dict(validators=[audio_validation]))
+    form_args = dict(audio_url=dict(validators=[audio_validation], base_path='static/audio/'))
 
     column_editable_list = ['question', 'level']
     column_searchable_list = column_editable_list
