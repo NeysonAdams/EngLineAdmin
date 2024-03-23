@@ -18,7 +18,8 @@ levels = {
             "Intermediate": 4,
             "Advanced": 5
         }
-
+images_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'images'))
+video_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'video'))
 # Create customized model view class
 class TableView(sqla.ModelView):
 
@@ -74,7 +75,7 @@ class CourceView(TableView):
 
                 f_name = f"img_c_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
 
-                img_path = os.path.join("static/images/", f_name )
+                img_path = os.path.join(images_folder, f_name )
                 field.data = field.data.stream.read()
                 image = Image.open(io.BytesIO(field.data))
                 image.save(img_path)
@@ -119,7 +120,7 @@ class LessonView(TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"v{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_path = os.path.join("static", "video", f_name)
+                video_path = os.path.join(video_folder, f_name)
                 #video_path = f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
@@ -162,7 +163,7 @@ class VideoQuestionView (TableView):
                 field.data = field.data.stream.read()
                 # Save the video file
                 f_name = f"video_e_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[4:]}"
-                video_path= f"/home/khamraeva/mysite/EngLineAdmin/static/video/{f_name}"
+                video_path= os.path.join(video_folder, f_name)
                 with open(video_path, 'wb') as f:
                     f.write(field.data)
                 field.data = url_for('static', filename=f"video/{f_name}")
@@ -276,7 +277,7 @@ class ExesizesView (TableView):
 
                 f_name = f"img_e_l_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
 
-                img_path = os.path.join("static/images/", f_name)
+                img_path = os.path.join(images_folder, f_name)
                 field.data = field.data.stream.read()
                 image = Image.open(io.BytesIO(field.data))
                 image.save(img_path)
@@ -336,7 +337,7 @@ class SubscriptionView(TableView):
 
             f_name = f"img_s_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
 
-            img_path = os.path.join("static/images/", f_name)
+            img_path = os.path.join(images_folder, f_name)
             field.data = field.data.stream.read()
             image = Image.open(io.BytesIO(field.data))
             image.save(img_path)
