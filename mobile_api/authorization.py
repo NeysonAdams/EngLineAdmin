@@ -125,18 +125,28 @@ def google_auth():
     email = request.form.get('email')
     img_url = request.form.get('img_url')
 
-    user = User.query.filter_by(google_id=google_id).first()
+    user = User.query.filter_by(email=email).first()
 
-    if not user:
-        new_user = User()
-        new_user.google_id = google_id
-        new_user.login = ""
-        new_user.name = name
-        new_user.email = email
-        new_user.img_url = img_url
-        db.session.add(new_user)
+    if user:
+        user.google_id = google_id
+        user.login = ""
+        user.name = name
+        user.email = email
+        user.img_url = img_url
         db.session.commit()
-        user = new_user
+    else:
+        user = User.query.filter_by(google_id=google_id).first()
+
+        if not user:
+            new_user = User()
+            new_user.google_id = google_id
+            new_user.login = ""
+            new_user.name = name
+            new_user.email = email
+            new_user.img_url = img_url
+            db.session.add(new_user)
+            db.session.commit()
+            user = new_user
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
@@ -149,17 +159,27 @@ def facebook_auth():
     email = request.form.get('email')
     img_url = request.form.get('img_url')
 
-    user = User.query.filter_by(facebook_id=facebook_id).first()
+    user = User.query.filter_by(email=email).first()
 
-    if not user:
-        new_user = User()
-        new_user.facebook_id = facebook_id
-        new_user.name = name
-        new_user.email = email
-        new_user.img_url = img_url
-        db.session.add(new_user)
+    if user:
+        user.facebook_id = facebook_id
+        user.login = ""
+        user.name = name
+        user.email = email
+        user.img_url = img_url
         db.session.commit()
-        user = new_user
+    else:
+        user = User.query.filter_by(facebook_id=facebook_id).first()
+
+        if not user:
+            new_user = User()
+            new_user.facebook_id = facebook_id
+            new_user.name = name
+            new_user.email = email
+            new_user.img_url = img_url
+            db.session.add(new_user)
+            db.session.commit()
+            user = new_user
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
