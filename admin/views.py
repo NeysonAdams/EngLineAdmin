@@ -291,7 +291,9 @@ class ExesizesView (TableView):
     def pic_formatter(self, context, model, name):
         return Markup('<img src="%s" width="100" height="50">' % model.img_url)
 
-    form_columns = ['id', 'img_url', 'name', 'type', 'exesize']
+    column_labels = dict(id="ID", name='Title', type='Type',  img_url='Title Image')
+
+    form_columns = [ 'name', 'type','img_url', 'exesize']
 
     form_extra_fields = {
         'type': SelectField('Type',
@@ -303,7 +305,7 @@ class ExesizesView (TableView):
     form_args = dict(img_url=dict(validators=[picture_validation]))
 
     column_labels = dict(name='Name', type="Type", exesize="List")
-    column_editable_list = [ 'name', 'type']
+    column_editable_list = ['name', 'type']
     column_searchable_list = column_editable_list
 
 
