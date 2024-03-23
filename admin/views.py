@@ -274,7 +274,7 @@ class ExesizesView (TableView):
                 if filename[-4:] != '.jpg' and filename[-4:] != '.png' and filename[-4:] != '.gif':
                     raise ValidationError('file must be .jpg or .png or gif')
 
-                f_name = f"img_c_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+                f_name = f"img_e_l_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
 
                 img_path = os.path.join("static/images/", f_name)
                 field.data = field.data.stream.read()
