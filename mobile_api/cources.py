@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion
+from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes
 from server_init import db
 
 cources_bluepprint = Blueprint('cources_bluepprint', __name__)
@@ -162,5 +162,42 @@ def lessons():
 
     return jsonify(lessons=[i.serialize for i in lessons]), 200
 
+@cources_bluepprint.route('/cource/get_home_page', methods=['GET'])
+@jwt_required()
+def get_home_page():
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+
+    if not user:
+        return jsonify(msg="User is not exist"), 401
+
+    cources = Cource.query.all()
+    exesizes = Exesesizes.query.all()
+
+    return jsonify(cources=[i.serialize for i in cources],
+                   exesizes=[i.serialize for i in exesizes],
+                   user=user.serialize), 200
 
 
+@cources_bluepprint.route('/cource/search', methods=['POST'])
+@jwt_required()
+def search():
+    query = request.form.get('query')
+    config = str(request.form.get('config'))
+
+    cources = []
+    exesizes = []
+
+    if config == "all" or config == "c":
+        cources = Cource.query.filter(Cource.name.contains(query)).all()
+
+    if config == "all" or config == "e":
+        exesizes = Exesesizes.query.filter(Exesesizes.name.contains(query)).all()
+
+    if config == "c":
+        return jsonify(cources=[i.serialize for i in cources]), 200
+    if config == "e":
+        return  jsonify(exesizes=[i.serialize for i in exesizes]),200
+
+    return jsonify(cources=[i.serialize for i in cources],
+                   exesizes=[i.serialize for i in exesizes]), 200

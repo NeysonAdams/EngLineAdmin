@@ -199,7 +199,6 @@ class Cstat(db.Model):
     cource_id = db.Column(db.Integer, db.ForeignKey('cource.id'), nullable=False)
     user_id =  db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-
 class Lesson(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -241,6 +240,30 @@ words_in_exes = db.Table(
     db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id')),
     db.Column('englishword_id', db.Integer(), db.ForeignKey('englishword.id'))
 )
+
+exesizes_table = db.Table(
+    'exesizes_table',
+    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
+    db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id'), primary_key=True)
+)
+
+class Exesesizes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    img_url = db.Column(db.String(255))
+    type = db.Column(db.String(255))
+    exesize =db.relationship('Exesize', secondary=exesizes_table,
+                               backref=db.backref('exesize_list', lazy='dynamic'))
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            'img_link': self.img_url,
+            'type':self.type,
+            "exesize": [i.serialize for i in self.exesize]
+        }
 
 class Exesize(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -494,6 +517,8 @@ class Dictionary(db.Model):
             "is_last_page": is_last_page
         }
 
+class Payments(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
 
 

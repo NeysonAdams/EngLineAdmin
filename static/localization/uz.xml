@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<main>
+    <task>Topshiriq</task>
+
+    <question_type_1>Tushirib qoldirilgan so'zlarni to'ldiring</question_type_1>
+    <question_type_2>Tushirib qoldirilgan so'zni to'ldiring</question_type_2>
+    <question_type_3>Eshiting va so'zni qo'ying</question_type_3>
+    <question_type_4>Savolga og'zaki javob bering</question_type_4>
+    <question_type_5>Savol: O'zingiz haqingizda gapirib bering (3 daqiqa)</question_type_5>
+    <question_type_6>mavzusida 5-6 ta gap yozing </question_type_6>
+
+    <next_button>Davom ettirish</next_button>
+    <teacher_lesson_button>O'qituvchi bilan ingliz tilida suhbatlashish darsi</teacher_lesson_button>
+    <button_continue>Davom ettirish</button_continue>
+    <button_create_account>Akkaunt yaratish</button_create_account>
+    <button_enter>Kirish</button_enter>
+    <button_has_account>Akkauntingiz bormi?</button_has_account>
+    <button_go_to_cource>Kurslarga o'tish</button_go_to_cource>
+    <button_listen>Eshitish</button_listen>
+    <button_rerecord>Javobni qayta yozish</button_rerecord>
+    <button_showall>Hammasini ko'rsatish</button_showall>
+    <button_click>Bosing!</button_click>
+    <button_add>Qo'shish</button_add>
+    <button_confirm>Tasdiqlash</button_confirm>
+    <button_start_now>Hozir boshlash</button_start_now>
+    <button_buy>Sotib olish</button_buy>
+    <button_ready>Tayyor</button_ready>
+    <button_exit>Chiqish</button_exit>
+    <button_change_pass>Parolni o'zgartirish</button_change_pass>
+
+    <label_text>Matn</label_text>
+    <label_text_name>Matn nomi</label_text_name>
+    <label_exec>Mashq</label_exec>
+    <label_pass>Parol</label_pass>
+    <label_repeat_password>Parolni tasdiqlang</label_repeat_password>
+    <label_phone_number>Telefon raqami</label_phone_number>
+    <label_code_info>Tasdiqlash kodi quyidagi raqamga yuborildi:</label_code_info>
+    <label_code>Tasdiqlash kodi</label_code>
+    <label_lessons>ta dars</label_lessons>
+    <label_som>so'm</label_som>
+    <label_time>Vaqt</label_time>
+    <label_date>Sana</label_date>
+    <label_search>Nimani qidirmoqdamiz?</label_search>
+    <label_current_pass>Hozirgi parol</label_current_pass>
+    <label_new_pass>Yangi parol</label_new_pass>
+    <label_new_pass_2>Yangi parolingizni yana bir marta kiriting</label_new_pass_2>
+    <label_forget_pass>Parolni unutdingizmi?</label_forget_pass>
+    <label_pass_changed>Parolingiz muvaffaqiyatli o'zgartirildi</label_pass_changed>
+
+    <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
+    <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
+
+    <pass_recovery_conform>Akkauntingizni tasdiqlang</pass_recovery_conform>
+    <pass_recovery_send_code_label>Kodni elektron pochtangizga yubordik</pass_recovery_send_code_label>
+    <pass_recovery_code_label>Tasdiqlash kodi</pass_recovery_code_label>
+    <pass_recovery_new_pass_creation_label>Yangi parol yarating</pass_recovery_new_pass_creation_label>
+    <pass_recovery_new_pass_label>Kamida 6 ta belgidan iborat parol yarating</pass_recovery_new_pass_label>
+    <pass_recovery_new_pass_label_2>Yangi parol</pass_recovery_new_pass_label_2>
+
+    <first_test_lael>Ingliz tili darajangizni bilish uchun bepul test topshirmoqchimisiz? (10-15 daqiqa)</first_test_lael>
+    <first_test_free_test_label>Bepul test</first_test_free_test_label>
+    <first_test_cource_label>Kurslarga o'tish</first_test_cource_label>
+    <first_text_cource_button>Kurslar</first_text_cource_button>
+    <first_test_info>Test ... talab qilishi mumkin</first_test_info>
+    <first_test_level_info>Sizning darajangiz</first_test_level_info>
+    <first_test_recomendation_info>kursni tanlashingizni tavsiya qilamiz</first_test_recomendation_info>
+
+    <exec_rec_label>Javobingiz yozib olindi</exec_rec_label>
+    <exec_no_cource_info>Topshiriqlar kursni sotib olgandan keyin mavjud bo'ladi</exec_no_cource_info>
+    <exec_audio>Tinglash</exec_audio>
+    <exec_reading>O'qish</exec_reading>
+    <exec_speaking>Nutqiy amaliyot</exec_speaking>
+    <exec_writting>Yozma topshiriqlar</exec_writting>
+
+    <cource_no_cource_info>Siz hali kursingizni boshlamadingiz</cource_no_cource_info>
+    <cource_cource_name>Mavzu nomi</cource_cource_name>
+    <cource_lesson_stat>O'tildi</cource_lesson_stat>
+    <cource_lesson_stat_2>O'tilmadi</cource_lesson_stat_2>
+    <cource_disr_level>Daraja</cource_disr_level>
+    <cource_disr_lesson_count>Darslar soni</cource_disr_lesson_count>
+    <cource_disr_price>Narxi</cource_disr_price>
+    <cource_disr>Kursga nima kiradi</cource_disr>
+
+    <lesson_toppic>Dars mavzusi</lesson_toppic>
+    <lesson_slides>Slaydlarni yuklab olish</lesson_slides>
+    <lesson_question>Dars bo'yicha savollar</lesson_question>
+    <lesson_reiting>Video darsga baho bering</lesson_reiting>
+    <lesson_reiting_info>Sizning baholashingiz bizga o'sish va rivojlanishimizga yordam beradi</lesson_reiting_info>
+    <lesson_comment>Dars haqida fikringizni qoldiring</lesson_comment>
+    <lesson_go_to_exec>Topshiriqlarga o'tish</lesson_go_to_exec>
+
+    <down_menu_home>Asosiy</down_menu_home>
+    <down_menu_exec>Topshiriqlar</down_menu_exec>
+    <down_menu_cource>Mening kursim</down_menu_cource>
+    <dwon_menu_profile>Profil</dwon_menu_profile>
+
+    <application_chouse>Dars davomiyligini tanlang</application_chouse>
+    <application_date>Istalgan sana</application_date>
+    <application_time>Istalgan vaqt</application_time>
+    <application_self_level_mark>Ingliz tilini bilish darajangizni qanday baholaysiz?</application_self_level_mark>
+    <application_toppic>Nima haqida gaplashmoqchisiz?</application_toppic>
+    <application_number>Telegramdagi aloqa raqamingiz</application_number>
+    <application_send>Ariza qoldirish</application_send>
+    <application_tahnkyou>Arizangiz uchun rahmat!</application_tahnkyou>
+    <application_info>Bir soat ichida sizga arizangizni tasdiqlovchi SMS-xabar keladi</application_info>
+
+    <payment_success>Toʻlov muvaffaqiyatli amalga oshirildi!</payment_success>
+    <payment_cource_avtivate>Kursga kirish faollashtirildi</payment_cource_avtivate>
+
+    <homepage_hello>Salom</homepage_hello>
+    <homepage_popular_cources>Mashhur kurslar</homepage_popular_cources>
+    <homepage_more>Ko'proq mavzularni ko'rishni xohlaysizmi?</homepage_more>
+    <homepage_situation>Vaziyatlar</homepage_situation>
+    <homepage_speaking>Ishga suhbat</homepage_speaking>
+
+    <profile_info>Личная информация</profile_info>
+    <profile_fio>F.I.Sh.</profile_fio>
+    <profile_cards>Mening kartalarim</profile_cards>
+    <profile_card_number>Karta raqami</profile_card_number>
+    <profile_exp_date>Tugash muddati</profile_exp_date>
+    <profile_my_prof>Mening profilim</profile_my_prof>
+    <profile_change_pass>Parolni o'zgartirish</profile_change_pass>
+    <profile_pass_info>Bundan tashqari barcha seanslar tugatiladi. Bu sizning akkauntingizga ruxsatsiz kirishning oldini oladi.</profile_pass_info>
+    <profile_pass_info_2>Parolda katta harflar va raqamlar bo'lishi kerak.</profile_pass_info_2>
+
+    <search_all>Hammasi</search_all>
+    <search_cource>Kurslar</search_cource>
+    <search_exec>Mashqlar</search_exec>
+</main>

@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView
-from .views import VideoQuestionView, AudioQuestionView, InputQuestionView
-from database.models import Role, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion
+from .views import VideoQuestionView, AudioQuestionView, InputQuestionView, ExesizesView
+from database.models import Role, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -23,6 +23,10 @@ class Administration:
                                 name="Courses"))
         self.admin.add_view(
             LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Lessons"))
+
+        self.admin.add_view(
+            ExesizesView(Exesesizes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
+                        name="Execizes List"))
 
         self.admin.add_view(
             ExesizeView(Exesize, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Exesizes"))

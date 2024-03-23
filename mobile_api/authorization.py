@@ -61,12 +61,12 @@ def create_user():
 def set_name():
     user_id = get_jwt_identity()
     name = request.form.get('name')
-    login = request.form.get('login')
+    #login = request.form.get('login')
 
     user = User.query.filter_by(id=user_id).first()
 
     user.name = name
-    user.login = login
+    #user.login = login
 
     db.session.commit()
 
@@ -164,6 +164,8 @@ def facebook_auth():
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+
+
 
 
 

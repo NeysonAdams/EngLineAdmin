@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<main>
+    <task>Задания</task>
+
+    <question_type_1>Вставьте пропущенные слова</question_type_1>
+    <question_type_2>Вставьте пропущенное словo</question_type_2>
+    <question_type_3>Прослушайте и вставьте слово</question_type_3>
+    <question_type_4>Устно ответьте на вопрос</question_type_4>
+    <question_type_5>Вопрос: Расскажите о  себе (3 минуты)</question_type_5>
+    <question_type_6>Напишите 5-6 предложений на тему </question_type_6>
+
+    <next_button>Дальше</next_button>
+    <teacher_lesson_button>Урок разгоровного английского с учителем</teacher_lesson_button>
+    <button_continue>Продолжить</button_continue>
+    <button_create_account>Создать аккаунт</button_create_account>
+    <button_enter>Войти</button_enter>
+    <button_has_account>У вас уже есть аккаунт?</button_has_account>
+    <button_go_to_cource>Перейти к курсам</button_go_to_cource>
+    <button_listen>Прослушать</button_listen>
+    <button_rerecord>Перезаписать ответ</button_rerecord>
+    <button_showall>Показать все</button_showall>
+    <button_click>Нажимай!</button_click>
+    <button_add>Добавить</button_add>
+    <button_confirm>Подтвердить</button_confirm>
+    <button_start_now>Начать сейчас</button_start_now>
+    <button_buy>Купить</button_buy>
+    <button_ready>Готово</button_ready>
+    <button_exit>Выйти</button_exit>
+    <button_change_pass>Сменить пароль</button_change_pass>
+
+    <label_text>Текст</label_text>
+    <label_text_name>Название текста</label_text_name>
+    <label_exec>Упражнения</label_exec>
+    <label_pass>Пароль</label_pass>
+    <label_repeat_password>Подтвердите пароль</label_repeat_password>
+    <label_phone_number>Номер телефона</label_phone_number>
+    <label_code_info>Код подтверждения выслан на номер:</label_code_info>
+    <label_code>Код подтверждения</label_code>
+    <label_lessons>уроков</label_lessons>
+    <label_som>сум</label_som>
+    <label_time>Время</label_time>
+    <label_date>Дата</label_date>
+    <label_search>Что ищем?</label_search>
+    <label_current_pass>Текущий пароль</label_current_pass>
+    <label_new_pass>Новый пароль</label_new_pass>
+    <label_new_pass_2>Введите новый пароль еще раз</label_new_pass_2>
+    <label_forget_pass>Забыли пароль?</label_forget_pass>
+    <label_pass_changed>Ваш пароль успешно изменен</label_pass_changed>
+
+    <login_account_enter_label>Войти в аккаунт</login_account_enter_label>
+    <login_forget_pass>Забыли пароль?</login_forget_pass>
+
+    <pass_recovery_conform>Подтвердите ваш аккаунт</pass_recovery_conform>
+    <pass_recovery_send_code_label>Мы отправили код на вашу почту</pass_recovery_send_code_label>
+    <pass_recovery_code_label>Код подтверждения</pass_recovery_code_label>
+    <pass_recovery_new_pass_creation_label>Создайте новый пароль</pass_recovery_new_pass_creation_label>
+    <pass_recovery_new_pass_label>Создайте пароль из минимум 6 символов</pass_recovery_new_pass_label>
+    <pass_recovery_new_pass_label_2>Новый пароль</pass_recovery_new_pass_label_2>
+
+    <first_test_lael>Хотите пройти бесплатный тест на уровень английского? (10-15 минут)</first_test_lael>
+    <first_test_free_test_label>Бесплатный тест</first_test_free_test_label>
+    <first_test_cource_label>Перейти к курсам</first_test_cource_label>
+    <first_text_cource_button>Курсы</first_text_cource_button>
+    <first_test_info>Тестирование может занять</first_test_info>
+    <first_test_level_info>Ваш уровень</first_test_level_info>
+    <first_test_recomendation_info>Рекомедуем вам выбрать курс</first_test_recomendation_info>
+
+    <exec_rec_label>Ваш ответ записан</exec_rec_label>
+    <exec_no_cource_info>Задания будут доступны после преобретения курса</exec_no_cource_info>
+    <exec_audio>Аудирование</exec_audio>
+    <exec_reading>Чтение</exec_reading>
+    <exec_speaking>Разговорная практика</exec_speaking>
+    <exec_writting>Письменные задания</exec_writting>
+
+    <cource_no_cource_info>Вы ещё не начали ваш курс</cource_no_cource_info>
+    <cource_cource_name>Название темы</cource_cource_name>
+    <cource_lesson_stat>Пройдено</cource_lesson_stat>
+    <cource_lesson_stat_2>Не пройдено</cource_lesson_stat_2>
+    <cource_disr_level>Уровень</cource_disr_level>
+    <cource_disr_lesson_count>Количество занятий</cource_disr_lesson_count>
+    <cource_disr_price>Стоимость</cource_disr_price>
+    <cource_disr>Что входит в курс</cource_disr>
+
+    <lesson_toppic>Тема урока</lesson_toppic>
+    <lesson_slides>Скачать слайды</lesson_slides>
+    <lesson_question>Вопросы по уроку</lesson_question>
+    <lesson_reiting>Оцените видео урок</lesson_reiting>
+    <lesson_reiting_info>Ваша оценка поможет нам расти и развиваться</lesson_reiting_info>
+    <lesson_comment>Оставьте комментарий о занятии</lesson_comment>
+    <lesson_go_to_exec>Перейти к заданиям</lesson_go_to_exec>
+
+    <down_menu_home>Главная</down_menu_home>
+    <down_menu_exec>Задания</down_menu_exec>
+    <down_menu_cource>Мой курс</down_menu_cource>
+    <dwon_menu_profile>Профиль</dwon_menu_profile>
+
+    <application_chouse>Выберете продолжительность урока</application_chouse>
+    <application_date>Желаемая дата</application_date>
+    <application_time>Желаемое время</application_time>
+    <application_self_level_mark>Как вы оцениваете свой уровень английского?</application_self_level_mark>
+    <application_toppic>О чём вы бы хотели поговорить?</application_toppic>
+    <application_number>Ваш контактный номер в телеграм</application_number>
+    <application_send>Оставить заявку</application_send>
+    <application_tahnkyou>Спасибо за вашу заявку!</application_tahnkyou>
+    <application_info>В течении часа вам придет СМС информирование о подтверждении вашей заявке</application_info>
+
+    <payment_success>Оплата прошла успешно!</payment_success>
+    <payment_cource_avtivate>Доступ к курсу активирован</payment_cource_avtivate>
+
+    <homepage_hello>Привет</homepage_hello>
+    <homepage_popular_cources>Популярные курсы</homepage_popular_cources>
+    <homepage_more>Хочешь увидеть больше тем?</homepage_more>
+    <homepage_situation>Ситуации</homepage_situation>
+    <homepage_speaking>Разговорная практика</homepage_speaking>
+
+    <profile_info>Личная информация</profile_info>
+    <profile_fio>ИФО</profile_fio>
+    <profile_cards>Мои карты</profile_cards>
+    <profile_card_number>Номер карты</profile_card_number>
+    <profile_exp_date>Срок истечения</profile_exp_date>
+    <profile_my_prof>Мой профиль</profile_my_prof>
+    <profile_change_pass>Изменение пароля</profile_change_pass>
+    <profile_pass_info>Все сеансы кроме этого будут завершены. Это позволит предотвратить несанкционный доступ к вашему аккаунту.</profile_pass_info>
+    <profile_pass_info_2>Пароль должен содержать заглавные буквы и цифры.</profile_pass_info_2>
+
+    <search_all>Все</search_all>
+    <search_cource>Курсы</search_cource>
+    <search_exec>Упражнения</search_exec>
+</main>

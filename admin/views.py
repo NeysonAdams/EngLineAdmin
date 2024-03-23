@@ -266,6 +266,46 @@ class ExesizeView (TableView):
     column_editable_list = ['lesson_name','type']
     column_searchable_list = column_editable_list
 
+class ExesizesView (TableView):
+    def picture_validation(form, field):
+        if field.data:
+            try:
+                filename = field.data.filename
+                if filename[-4:] != '.jpg' and filename[-4:] != '.png' and filename[-4:] != '.gif':
+                    raise ValidationError('file must be .jpg or .png or gif')
+
+                f_name = f"img_c_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+
+                img_path = os.path.join("static/images/", f_name)
+                field.data = field.data.stream.read()
+                image = Image.open(io.BytesIO(field.data))
+                image.save(img_path)
+                field.data = url_for('static', filename=f"/images/{f_name}")
+                # setattr(form._obj, 'img_url', url_for('static', filename=f"/images/{f_name}"))
+            except:
+                f_name = field.data
+
+    def on_model_change(view, context, model, name):
+        setattr(model, 'img_url', context.img_url.data)
+
+    def pic_formatter(self, context, model, name):
+        return Markup('<img src="%s" width="100" height="50">' % model.img_url)
+
+    form_columns = ['id', 'img_url', 'name', 'type', 'exesize']
+
+    form_extra_fields = {
+        'type': SelectField('Type',
+                            choices=['situation', 'speach']),
+    }
+
+    column_formatters = dict(img_url=pic_formatter)
+    form_overrides = dict(img_url=FileUploadField)
+    form_args = dict(img_url=dict(validators=[picture_validation]))
+
+    column_labels = dict(name='Name', type="Type", exesize="List")
+    column_editable_list = [ 'name', 'type']
+    column_searchable_list = column_editable_list
+
 
 
 class QuestionView(TableView):
