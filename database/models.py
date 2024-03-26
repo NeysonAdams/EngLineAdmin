@@ -83,6 +83,8 @@ class User(db.Model, UserMixin):
     dictionary = db.relationship('Englishword', secondary=user_dictionary,
                                     backref=db.backref('user_dictionary', lazy='dynamic'))
 
+    payment = db.relationship('Payments', backref='payment_user', lazy=True)
+
     def __str__(self):
         return self.email
 
@@ -140,24 +142,29 @@ class Cource(db.Model):
     title = db.Column(db.String(255))
     level = db.Column(db.String(255))
     discription = db.Column(db.String(255))
-    price = db.Column(db.String(255))
     img_url = db.Column(db.String(255))
     is_buy = db.Column(db.Boolean())
     reiting = db.Column(db.Float, nullable=False)
+    lenguage = db.Column(db.String(255))
 
     lessons = db.relationship('Lesson', backref='author', lazy=True)
 
+    price = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+
     def __repr__(self):
-        return self.title
+        return self.title + " :: " + self.lenguage
 
     @property
     def serialize(self):
+
+        billing = Billing.query.filter(Billing.id==self.price).first()
+
         return {
             "id": self.id,
             "title": self.title,
             "level": self.level,
             "discription": self.discription,
-            "price": self.price,
+            "price": billing.serialize,
             "img_url": self.img_url,
             "is_buy":self.is_buy,
             "reiting":self.reiting,
@@ -166,12 +173,14 @@ class Cource(db.Model):
 
     @property
     def data(self):
+
+        billing = Billing.query.filter(Billing.id==self.price).first()
         return {
             "id": self.id,
             "title": self.title,
             "level": self.level,
             "discription": self.discription,
-            "price": self.price,
+            "price": billing.serialize,
             "img_url": self.img_url,
             "is_buy":self.is_buy,
             "reiting":self.reiting
@@ -179,12 +188,13 @@ class Cource(db.Model):
 
     @property
     def serialize_lesons(self):
+        billing = Billing.query.filter(Billing.id==self.price).first()
         return {
             "id": self.id,
             "title": self.title,
             "level": self.level,
             "discription": self.discription,
-            "price": self.price,
+            "price": billing.serialize,
             "img_url": self.img_url,
             "is_buy":self.is_buy,
             "reiting":self.reiting,
@@ -252,6 +262,7 @@ class Exesesizes(db.Model):
     name = db.Column(db.String(255))
     img_url = db.Column(db.String(255))
     type = db.Column(db.String(255))
+    lenguage = db.Column(db.String(255))
     exesize =db.relationship('Exesize', secondary=exesizes_table,
                                backref=db.backref('exesize_list', lazy='dynamic'))
 
@@ -517,8 +528,31 @@ class Dictionary(db.Model):
             "is_last_page": is_last_page
         }
 
-class Payments(db.Model):
+class Billing (db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255))
+    type = db.Column(db.String(255))
+    amount = db.Column(db.Integer)
+
+    payment = db.relationship('Payments', backref='payment_billing', lazy=True)
+
+    cource = db.relationship('Cource', backref='billing', lazy=True)
+
+    def __repr__(self):
+        return f"{self.id} : {self.type} : {self.amount}"
+
+    @property
+    def serialize(self):
+        return {
+           "id": self.id,
+            "name": self.name,
+            "type": self.type,
+            "amount": self.amount
+        }
+
+class Payments (db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-
+    billing = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)

@@ -106,6 +106,7 @@
 
     <payment_success>Оплата прошла успешно!</payment_success>
     <payment_cource_avtivate>Доступ к курсу активирован</payment_cource_avtivate>
+    <payment_screen_label>Оплата</payment_screen_label>
 
     <homepage_hello>Привет</homepage_hello>
     <homepage_popular_cources>Популярные курсы</homepage_popular_cources>

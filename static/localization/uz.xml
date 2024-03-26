@@ -106,6 +106,7 @@
 
     <payment_success>Toʻlov muvaffaqiyatli amalga oshirildi!</payment_success>
     <payment_cource_avtivate>Kursga kirish faollashtirildi</payment_cource_avtivate>
+    <payment_screen_label>Toʻlov</payment_screen_label>
 
     <homepage_hello>Salom</homepage_hello>
     <homepage_popular_cources>Mashhur kurslar</homepage_popular_cources>
@@ -113,7 +114,7 @@
     <homepage_situation>Vaziyatlar</homepage_situation>
     <homepage_speaking>Ishga suhbat</homepage_speaking>
 
-    <profile_info>Личная информация</profile_info>
+    <profile_info>Shaxsiy ma'lumot</profile_info>
     <profile_fio>F.I.Sh.</profile_fio>
     <profile_cards>Mening kartalarim</profile_cards>
     <profile_card_number>Karta raqami</profile_card_number>

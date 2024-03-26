@@ -14,6 +14,7 @@ from others import others_blue_print
 from mobile_api.fileloader import file_loader_bluerpint
 from mobile_api.exesize import exesize_blueprint
 from mobile_api.statistics import statistic_blueprint
+from mobile_api.payment import payment_blueprint
 
 import json
 
@@ -35,12 +36,13 @@ app.register_blueprint(others_blue_print)
 app.register_blueprint(file_loader_bluerpint)
 app.register_blueprint(exesize_blueprint)
 app.register_blueprint(statistic_blueprint)
+app.register_blueprint(payment_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
 
-admin_panel = Administration(admin, db)
+admin_panel = Administration(admin, db, app)
 admin_panel.initialize()
 
 levels = {

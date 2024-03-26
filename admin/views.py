@@ -1,15 +1,18 @@
 import datetime
 import os
 from flask import url_for, redirect,  request, abort
+from flask_admin.contrib.sqla.fields import QuerySelectField
 from flask_security import current_user
 from flask_admin.contrib import sqla
 from flask_admin.form.upload import FileUploadField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired
 from wtforms import PasswordField, ValidationError, SelectField
+from flask_admin.form import Select2Field
 import io
 from PIL import Image
 from markupsafe import Markup
+from database.models import Billing
 
 levels = {
             "Beginner": 1,
@@ -22,7 +25,6 @@ images_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 's
 video_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'video'))
 # Create customized model view class
 class TableView(sqla.ModelView):
-
     def is_accessible(self):
         if not current_user.is_active or not current_user.is_authenticated:
             return False
@@ -88,18 +90,24 @@ class CourceView(TableView):
     def on_model_change(view, context, model, name):
         setattr(model, 'img_url', context.img_url.data)
         setattr(model, 'level', levels[context.level.data])
+        if context.price.data:
+            model.price = context.price.data.id
+        model.reiting = 0
 
     def pic_formatter(self, context, model, name):
        return Markup('<img src="%s" width="100" height="50">' % model.img_url)
 
-    form_columns = ['title', 'level', 'discription', 'price', 'img_url', 'is_buy']
+    form_columns = ['title', 'level', 'discription', 'price', 'img_url', 'is_buy', 'lenguage']
 
     column_labels = dict(id="ID", title='Title', discription="Discription", level='Level', price='Price',
-                         img_url='Title Image')
+                         img_url='Title Image', lenguage='Lenguage')
 
     form_extra_fields = {
         'level': SelectField('Level',
-                            choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
+                            choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']),
+        'lenguage': SelectField('Lenguage',
+                             choices=['ru', 'uz']),
+        'price': QuerySelectField('Price', query_factory=lambda: Billing.query.all(), allow_blank=True)
     }
 
     column_formatters = dict(img_url=pic_formatter)
@@ -363,6 +371,16 @@ class SubscriptionView(TableView):
     column_editable_list = ['name']
     column_searchable_list = column_editable_list
 
+class BillingView(TableView):
+    form_columns = ['name', 'type', 'amount']
+    column_labels = dict(name='Title', type='Type', amount="Amount")
+
+    form_extra_fields = {
+        'type': SelectField('Type',
+                            choices=['free', 'course', 'speaking_lesson', 'exercises']),
+    }
+    column_editable_list = ['name', 'type', 'amount']
+    column_searchable_list = column_editable_list
 
 # class WordView(TableView):
 #     def audio_validation(form, field):

@@ -162,17 +162,19 @@ def lessons():
 
     return jsonify(lessons=[i.serialize for i in lessons]), 200
 
-@cources_bluepprint.route('/cource/get_home_page', methods=['GET'])
+@cources_bluepprint.route('/cource/get_home_page', methods=['POST'])
 @jwt_required()
 def get_home_page():
     uid = get_jwt_identity()
     user = User.query.filter_by(id=uid).first()
 
+    lang  = request.form.get('Lang')
+
     if not user:
         return jsonify(msg="User is not exist"), 401
 
-    cources = Cource.query.all()
-    exesizes = Exesesizes.query.all()
+    cources = Cource.query.filter(Cource.lenguage==lang).all()
+    exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang).all()
 
     return jsonify(cources=[i.serialize for i in cources],
                    exesizes=[i.serialize for i in exesizes],
