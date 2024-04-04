@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Cstat, UserStatistic, Englishword, Exesize
+from database.models import Cource, User, Cstat, UserStatistic, Reiting
 from server_init import db
 
 statistic_blueprint = Blueprint('statistic_blueprint', __name__)
@@ -139,3 +139,23 @@ def course_rating():
     db.session.commit()
 
     return jsonify(id=course_id, raiting=raiting/count), 200
+
+@statistic_blueprint.route('/statistic/set_reiting', methods=['POST'])
+@jwt_required()
+def set_reiting():
+    user_id = get_jwt_identity()
+    score = request.form.get('score')
+    lesson_id = request.form.get('lesson_id')
+
+    reiting = Reiting.query.filter_by(user_id=user_id, lesson_id=lesson_id).first()
+    if not reiting:
+        reiting = Reiting()
+        reiting.user_id = user_id
+        reiting.lesson_id = lesson_id
+        reiting.score = score
+        db.session.add(reiting)
+    else:
+        reiting.score = score
+
+    db.session.commit()
+    return jsonify(msg="Success"), 200

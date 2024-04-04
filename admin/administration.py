@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView
-from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView
-from database.models import Role, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes
+from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller
+from database.models import Role, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -17,38 +17,41 @@ class Administration:
         self.app = app
 
     def initialize(self):
-        self.admin.add_view(TableView(Role, self.db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Roles"))
-        self.admin.add_view(UserView(User, self.db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Users"))
+        self.admin.add_view(TableView(Role, self.db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Роли"))
+        self.admin.add_view(UserView(User, self.db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Пользователи"))
 
         self.admin.add_view(CourceView(Cource, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
-                                name="Courses"))
+                                name="Курсы"))
 
         self.admin.add_view(
-            LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Lessons"))
+            LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
 
         self.admin.add_view(
             ExesizesView(Exesesizes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
-                        name="Execizes List"))
+                        name="Список Заданий"))
 
         self.admin.add_view(
-            ExesizeView(Exesize, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Exesizes"))
+            ExesizeView(Exesize, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Задания"))
 
         self.admin.add_view(
-            QuestionView(Question, self.db.session, menu_icon_type='fa', menu_icon_value='fa-envelope-open-o', name="Questions"))
+            QuestionView(Question, self.db.session, menu_icon_type='fa', menu_icon_value='fa-envelope-open-o', name="Вопросы"))
 
         self.admin.add_view(
             VideoQuestionView(Videoquestion, self.db.session, menu_icon_type='fa', menu_icon_value='fa-envelope-open-o',
-                         name="Video Questions"))
+                         name="Видео Вопрос"))
         self.admin.add_view(
             AudioQuestionView(Audioquestion, self.db.session, menu_icon_type='fa', menu_icon_value='fa-envelope-open-o',
-                         name="Audio Questions"))
+                         name="Аудио Вопросс"))
         self.admin.add_view(
             InputQuestionView(Inputquestion, self.db.session, menu_icon_type='fa', menu_icon_value='fa-envelope-open-o',
-                         name="Input Questions"))
+                         name="Письменный Вопрос"))
 
         self.admin.add_view(
             BillingView(Billing, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
-                             name="Billing"))
+                             name="Биллинг"))
+        self.admin.add_view(
+            SpeackingLessonScheduller(LessonSchedler, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
+                             name="Разговорный урок"))
 
         self.admin.add_view(
             SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Subscriptions"))

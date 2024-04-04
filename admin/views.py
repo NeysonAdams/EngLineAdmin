@@ -382,6 +382,23 @@ class BillingView(TableView):
     column_editable_list = ['name', 'type', 'amount']
     column_searchable_list = column_editable_list
 
+
+class SpeackingLessonScheduller(TableView):
+    form_columns = ["duration", "date", "telegram_contact_phone", "topic", "level"]
+    column_labels = dict(duration='Duration', date='Date', telegram_contact_phon="Phone", topic="Topic", level="Level")
+
+    form_extra_fields = {
+        'duration': SelectField('Duration',
+                             choices=[15, 30, 60]),
+        'level': SelectField('Level',
+                             choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
+    }
+
+    column_editable_list = ['topic', 'level', 'date']
+    column_searchable_list = column_editable_list
+
+
+
 # class WordView(TableView):
 #     def audio_validation(form, field):
 #         if field.data:

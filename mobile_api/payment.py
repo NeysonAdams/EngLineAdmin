@@ -193,3 +193,12 @@ def confirm_payment():
         return response.text, 200
     else:
         return jsonify(msg=response.text), response.status_code
+
+
+@payment_blueprint.route('/payment/get_exesize_billing', methods=['GET'])
+@jwt_required()
+def get_exesize_billing():
+
+    billings = Billing.query.filter_by(type='speaking_lesson').all()
+
+    return jsonify(billings=[i.serialize for i in billings]), 200

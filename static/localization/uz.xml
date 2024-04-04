@@ -46,6 +46,7 @@
     <label_new_pass_2>Yangi parolingizni yana bir marta kiriting</label_new_pass_2>
     <label_forget_pass>Parolni unutdingizmi?</label_forget_pass>
     <label_pass_changed>Parolingiz muvaffaqiyatli o'zgartirildi</label_pass_changed>
+    <label_minuts> daqiqa</label_minuts>
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
@@ -88,6 +89,7 @@
     <lesson_reiting_info>Sizning baholashingiz bizga o'sish va rivojlanishimizga yordam beradi</lesson_reiting_info>
     <lesson_comment>Dars haqida fikringizni qoldiring</lesson_comment>
     <lesson_go_to_exec>Topshiriqlarga o'tish</lesson_go_to_exec>
+    <label_minuts> минут</label_minuts>
 
     <down_menu_home>Asosiy</down_menu_home>
     <down_menu_exec>Topshiriqlar</down_menu_exec>

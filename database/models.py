@@ -85,6 +85,8 @@ class User(db.Model, UserMixin):
 
     payment = db.relationship('Payments', backref='payment_user', lazy=True)
 
+    speach_lesson = db.relationship('LessonSchedler', backref='schedler_user', lazy=True)
+
     def __str__(self):
         return self.email
 
@@ -556,3 +558,21 @@ class Payments (db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     billing = db.Column(db.Integer, db.ForeignKey('billing.id'), nullable=False)
+
+
+class LessonSchedler(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    duration = db.Column(db.Integer)
+    date = db.Column(db.DateTime())
+    telegram_contact_phone = db.Column(db.String(255))
+    topic = db.Column(db.String(255))
+    level = db.Column(db.String(255))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+
+class Reiting(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    score = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
+    lesson_id = db.Column(db.Integer)

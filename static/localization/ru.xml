@@ -46,6 +46,7 @@
     <label_new_pass_2>Введите новый пароль еще раз</label_new_pass_2>
     <label_forget_pass>Забыли пароль?</label_forget_pass>
     <label_pass_changed>Ваш пароль успешно изменен</label_pass_changed>
+    <label_minuts> минут</label_minuts>
 
     <login_account_enter_label>Войти в аккаунт</login_account_enter_label>
     <login_forget_pass>Забыли пароль?</login_forget_pass>

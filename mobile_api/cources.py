@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes
+from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler
 from server_init import db
 
 cources_bluepprint = Blueprint('cources_bluepprint', __name__)
@@ -179,6 +179,31 @@ def get_home_page():
     return jsonify(cources=[i.serialize for i in cources],
                    exesizes=[i.serialize for i in exesizes],
                    user=user.serialize), 200
+
+
+@cources_bluepprint.route('/cource/set_search_lesson', methods=['POST'])
+@jwt_required()
+def set_search_lesson():
+
+    uid = get_jwt_identity()
+    duration = request.form.get('duration')
+    date = str(request.form.get('date'))
+    telegram_contact_phone = request.form.get('telegram_contact_phone')
+    topic = str(request.form.get('topic'))
+    level = str(request.form.get('level'))
+
+    lesson = LessonSchedler()
+    lesson.duration = int(duration)
+    lesson.user_id = int(uid)
+    lesson.date = date
+    lesson.telegram_contact_phone = telegram_contact_phone
+    lesson.topic = topic
+    lesson.level = level
+
+    db.session.add(lesson)
+    db.session.commit()
+
+    return jsonify(msg="Success"), 200
 
 
 @cources_bluepprint.route('/cource/search', methods=['POST'])
