@@ -28,6 +28,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 ENG_LEVELS = ['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']
 INPUTS_TYPES = ['add_missing', 'check_grammar', 'check_answer']
 
-TWILlIO_SID="AC5bff8bc22a46f90839da21091f6a263c"
-TWILLIO_KEY="e53347056fb3218d73d2738788cce60b"
-TWILLIO_SMS='VAa315c20274179a49fcaff0d7c42eab5b'
+TWILlIO_SID=""
+TWILLIO_KEY=""
+TWILLIO_SMS=''

@@ -2,7 +2,7 @@ import os.path
 
 from openai import OpenAI
 
-api_key = "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"
+api_key = ""
 
 client = OpenAI(
     # This is the default and can be omitted
