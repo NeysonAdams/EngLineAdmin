@@ -8,6 +8,8 @@
     <question_type_4>Savolga og'zaki javob bering</question_type_4>
     <question_type_5>Savol: O'zingiz haqingizda gapirib bering (3 daqiqa)</question_type_5>
     <question_type_6>mavzusida 5-6 ta gap yozing </question_type_6>
+    <question_type_7>Eshiting va savolga javob bering</question_type_7>
+    <question_type_8>Savolga javob bering</question_type_8>
 
     <next_button>Davom ettirish</next_button>
     <teacher_lesson_button>O'qituvchi bilan ingliz tilida suhbatlashish darsi</teacher_lesson_button>
@@ -27,6 +29,9 @@
     <button_ready>Tayyor</button_ready>
     <button_exit>Chiqish</button_exit>
     <button_change_pass>Parolni o'zgartirish</button_change_pass>
+    <button_yes>Ha</button_yes>
+    <button_no>Yo'q</button_no>
+    <button_check>Tekshirish</button_check>
 
     <label_text>Matn</label_text>
     <label_text_name>Matn nomi</label_text_name>
@@ -47,6 +52,29 @@
     <label_forget_pass>Parolni unutdingizmi?</label_forget_pass>
     <label_pass_changed>Parolingiz muvaffaqiyatli o'zgartirildi</label_pass_changed>
     <label_minuts> daqiqa</label_minuts>
+    <warrning_popup_error_label>Kirish yo'q! Javobingizni qayta yozishga harakat qiling</warrning_popup_error_label>
+    <warrning_popup_warrning_label>Yozuv aniq emas! Bu natijani baholashda muammolarga olib kelishi mumkin. \n Davom etishni xohlaysizmi?</warrning_popup_warrning_label>
+    <label_translation_compleate>Tarjima tugallandi</label_translation_compleate>
+    <label_correct>To'g'ri</label_correct>
+    <label_wrong>Noto'g'ri</label_wrong>
+    <label_popup_error_empty_field>Tarjima maydoni boʻsh boʻlishi mumkin emas</label_popup_error_empty_field>
+    <label_popup_warning_not_full_translation>Tarjima tugallanmagan! Davom etishni xohlaysizmi?</label_popup_warning_not_full_translation>
+    <label_popup_warrning_no_exesize>Sizning darajangiz uchun bu topshiriqlar hali mavjud emas. Keyinroq urinib ko'ring</label_popup_warrning_no_exesize>
+    <labal_error_wrong_format>Yaroqsiz format (Email/telefon raqami)</labal_error_wrong_format>
+    <labal_error_user_not_exist>Yaroqsiz Email/telefon raqami</labal_error_user_not_exist>
+    <labal_error_password>Noto'g'ri parol</labal_error_password>
+    <labal_error_password_not_match>Parollar mos kelmayapti</labal_error_password_not_match>
+    <label_error_user_already_exist>Ushbu elektron pochtaga ega foydalanuvchi allaqachon mavjud</label_error_user_already_exist>
+    <label_error_user_phone_already_exist>Xuddi shu raqamga ega foydalanuvchi allaqachon mavjud</label_error_user_phone_already_exist>
+    <label_error_field_cant_be_empty>Bo'sh bo'lishi mumkin emas</label_error_field_cant_be_empty>
+    <label_password_recovery_title>Parolni qayta tiklash</label_password_recovery_title>
+    <label_password_recovery_email_phone>Elektron pochta yoki telefon raqamingizni kiriting</label_password_recovery_email_phone>
+    <label_password_recovery_code_title>Akkauntingizni tasdiqlang</label_password_recovery_code_title>
+    <label_password_recovery_code_email_label>Kodni elektron pochtangizga yoki telefon raqamingizni yubordik</label_password_recovery_code_email_label>
+    <label_password_recovery_code_placeholder>Tasdiqlash kodi</label_password_recovery_code_placeholder>
+    <label_password_recovery_create_title>Yangi parol yarating</label_password_recovery_create_title>
+    <label_password_recovery_create_label>Kamida 6 ta belgidan iborat parol yarating</label_password_recovery_create_label>
+    <label_password_recovery_create_placeholder>Yangi parol</label_password_recovery_create_placeholder>
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>

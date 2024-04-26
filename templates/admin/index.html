@@ -511,8 +511,10 @@
 </section>
 <!-- /.content -->
 {% else %}
-
-<center>
+    <script type="text/javascript">
+        window.location.href = "{{ url_for('security.login') }}";
+    </script>
+<!--<center>
   <section class="content" style="color: white">
     <div class="col-sm-12">
       <h1>Eng-Line Admin</h1>
@@ -522,7 +524,8 @@
       {% if not current_user.is_authenticated %}
       <p>You can register as a regular user, or log in as a superuser with the following credentials: <br><br>
       <p>
-        <a class="btn btn-primary" href="{{ url_for('security.login') }}">Login</a> <a class="btn btn-default" href="{{ url_for('security.register') }}">Register</a>
+        <a class="btn btn-primary" href="{{ url_for('security.login') }}">Login</a>
+        <a class="btn btn-default" href="{{ url_for('security.register') }}">Register</a>
       </p>
       {% endif %}
       <br>
@@ -532,7 +535,7 @@
     </div>
   </section>
 </center>
-
+-->
 {% endif %}
 
 {% endblock body %}

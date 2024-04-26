@@ -3,9 +3,14 @@
 {% include "security/_messages.html" %}
 {% block body %}
 {{ super() }}
-<br><br><br><br><br>
-<section class="content">
-    <div class="col-sm-8 col-sm-offset-2">
+<section class="content" style="height: 100vh; background-color: #00f; padding: 100px;">
+    <div class="col-sm-12" style="margin-bottom: 25px; display: flex; justify-content: center; align-items: center;">
+        <img src="{{ url_for('static', filename='img/Vector.png') }}" width="100px" height="100px" style="">
+    </div>
+    <div style="margin-bottom: 25px;">
+        <h1 style="color:white; text-align: center;">Eng-Line Admin</h1>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
         <div class="well">
                 <h1>Login</h1>
             <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
@@ -16,10 +21,7 @@
                 {{ render_field(login_user_form.next) }}
                 {{ render_field(login_user_form.submit, class="btn btn-primary") }}
             </form>
-            <p>Not yet signed up? Please <a href="{{ url_for('security.register') }}">register for an account</a>.</p>
         </div>
     </div>
 </section>
-<br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
 {% endblock body %}

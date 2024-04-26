@@ -1,4 +1,5 @@
 import datetime
+import json
 import os
 from flask import url_for, redirect,  request, abort
 from flask_admin.contrib.sqla.fields import QuerySelectField
@@ -12,7 +13,10 @@ from flask_admin.form import Select2Field
 import io
 from PIL import Image
 from markupsafe import Markup
+
+from config import INPUTS_TYPES
 from database.models import Billing
+from mobile_api.aicomponent import text_to_speach, speach_to_text, generate_text
 
 levels = {
             "Beginner": 1,
@@ -23,6 +27,7 @@ levels = {
         }
 images_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'images'))
 video_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'video'))
+audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'audio'))
 # Create customized model view class
 class TableView(sqla.ModelView):
     def is_accessible(self):
@@ -207,30 +212,55 @@ class VideoQuestionView (TableView):
 class AudioQuestionView(TableView):
     def audio_validation(form, field):
         if field.data:
-            filename = field.data.filename
-            allowed_extensions = {'.mp3', '.wav'}
-            if not any(filename.endswith(ext) for ext in allowed_extensions):
-                raise ValidationError('Audio file must be .mp3 or .wav')
-            f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
-            field.data = field.data.stream.read()
-            audio_path = f"/home/khamraeva/mysite/EngLineAdmin/static/audio/{f_name}"
-            with open(audio_path, 'wb') as f:
-                f.write(field.data)
-            field.data = url_for('static', filename=f"audio/{f_name}")
-            return url_for('static', filename=f"audio/{f_name}")
+            try:
+                filename = field.data.filename
+                allowed_extensions = {'.mp3', '.wav'}
+                if not any(filename.endswith(ext) for ext in allowed_extensions):
+                    raise ValidationError('Audio file must be .mp3 or .wav')
+                f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+                field.data = field.data.stream.read()
+                audio_path = os.path.join(audio_folder, f_name)
+                with open(audio_path, 'wb') as f:
+                    f.write(field.data)
+                field.data = url_for('static', filename=f"audio/{f_name}")
+                return url_for('static', filename=f"audio/{f_name}")
+            except:
+                pass
 
     def on_model_change(view, context, model, name):
-        setattr(model, 'audio_url', context.audio_url.data)
+        if context.audio_url.data:
+            if not context.audio_query.data:
+                filename=context.audio_url.data.split("/")[-1]
+                audio_path = os.path.join(audio_folder, filename)
+                with open(audio_path, 'rb') as f:
+                    ai_response = speach_to_text(f)
+                    setattr(model, 'audio_query', ai_response)
+
+            setattr(model, 'audio_url', context.audio_url.data)
+
+        if context.audio_query.data and not context.audio_url.data:
+            f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp3"
+            audio_path = os.path.join(audio_folder, f_name)
+            audio = text_to_speach(context.audio_query.data)
+            if context.audio_url.data:
+                filename = context.data.filename
+                if os.path.exists(os.path.join(audio_folder, filename)):
+                    os.remove(os.path.join(audio_folder, filename))
+            audio.stream_to_file(audio_path)
+            setattr(model, 'audio_url', url_for('static', filename=f"audio/{f_name}"))
+
+
         setattr(model, 'level', levels[context.level.data])
 
     def audio_formatter(view, context, model, name):
         if model.audio_url:
             return Markup(f'<audio controls><source src="{model.audio_url}" type="audio/mpeg"></audio>')
+
         return ""
 
-    form_columns = ['question', 'audio_url', 'answer', 'level']
-    column_labels = dict(question='Question', answer="Answer", audio_url='Audio URL',
-                         level='Level')
+    form_columns = ['question', 'audio_query', 'audio_url', 'answer', 'level', 'isrecord']
+    column_labels = dict(question='Question', audio_query='Query', answer="Answer", audio_url='Audio URL',
+                         level='Level', isrecord='Recorded')
     column_formatters = dict(audio_url=audio_formatter)
     form_overrides = dict(audio_url=FileUploadField)
 
@@ -245,8 +275,8 @@ class AudioQuestionView(TableView):
     }
 
 class InputQuestionView(TableView):
-    form_columns = ['question', 'answer', 'level']
-    column_labels = dict(question='Question', answer="Answer", level='Level')
+    form_columns = ['question', 'answer', 'level', 'type', 'isrecord']
+    column_labels = dict(question='Question', answer="Answer", level='Level', type="Type", isrecord='Recorded')
     column_editable_list = ['question', 'level']
     column_searchable_list = column_editable_list
 
@@ -255,8 +285,33 @@ class InputQuestionView(TableView):
 
     form_extra_fields = {
         'level': SelectField('Level',
+                             choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']),
+
+        'type': SelectField('Type',
+                             choices=INPUTS_TYPES)
+    }
+
+class TextTranslateView(TableView):
+    form_columns = ['original_text', 'level', 'topic']
+    column_labels = dict(original_text='original_text', level='Level', topic="Topic")
+
+    def on_model_change(view, context, model, name):
+        if not context.original_text.data:
+            topic = context.topic.data
+            if not topic:
+                topic = "any"
+                setattr(model, 'topic', topic)
+            ai_response = generate_text(context.level.data, 120, topic)
+            print(ai_response.choices[0].message.content)
+            jobj = json.loads(ai_response.choices[0].message.content)
+            setattr(model, 'original_text', jobj['original_text'])
+        setattr(model, 'level', levels[context.level.data])
+
+    form_extra_fields = {
+        'level': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
+
 
 class ExesizeView (TableView):
 
@@ -267,7 +322,7 @@ class ExesizeView (TableView):
 
     form_extra_fields = {
         'type': SelectField('Type',
-                            choices=['test_question', 'input_question', 'audio_question', 'video_question', 'words_question', 'record_question']),
+                            choices=['test_question', 'input_question', 'audio_question', 'video_question', 'words_question', 'record_question', 'translate_exesize']),
         'level': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
@@ -296,17 +351,20 @@ class ExesizesView (TableView):
 
     def on_model_change(view, context, model, name):
         setattr(model, 'img_url', context.img_url.data)
+        setattr(model, 'level', levels[context.level.data])
 
     def pic_formatter(self, context, model, name):
         return Markup('<img src="%s" width="100" height="50">' % model.img_url)
 
-    column_labels = dict(id="ID", name='Title', type='Type',  img_url='Title Image')
+    column_labels = dict(id="ID", name='Title', type='Type',  img_url='Title Image', level="Level")
 
-    form_columns = [ 'name', 'type','img_url', 'exesize']
+    form_columns = [ 'name', 'type','img_url', "level", 'exesize']
 
     form_extra_fields = {
         'type': SelectField('Type',
-                            choices=['situation', 'speach']),
+                            choices=['situation', 'speach', 'audio', 'reading', 'writing']),
+        'level': SelectField('Level',
+                             choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
 
     column_formatters = dict(img_url=pic_formatter)

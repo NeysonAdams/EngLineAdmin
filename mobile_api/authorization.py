@@ -2,6 +2,12 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from database.models import User
 from server_init import db
+from flask_security.utils import hash_password
+from twilio.rest import Client
+
+from config import TWILLIO_KEY, TWILlIO_SID, TWILLIO_SMS
+
+client = Client(TWILlIO_SID, TWILLIO_KEY)
 
 auth = Blueprint('auth', __name__)
 
@@ -185,8 +191,123 @@ def facebook_auth():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_setialization(access_token, refresh_token)), 200
 
+@auth.route('/users/authintification', methods=["POST"])
+def authintification():
+
+    login = request.form.get('login')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(email=login).first()
+
+    if not user:
+        user = User.query.filter_by(phone_number=login).first()
+
+    if not user:
+        return jsonify(msg="User is not exist"), 404
+
+    if hash_password(password) != user.password:
+        return jsonify(msg="Wrong password"), 404
+
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(user.auth_setialization(access_token, refresh_token)), 200
 
 
+@auth.route('/users/registrate', methods=["POST"])
+def registrate():
+    email = request.form.get('email')
+    phone_number=request.form.get('phone_number')
+    name=request.form.get('user_name')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        return jsonify(msg="User email already exist"), 404
+
+    user = User.query.filter_by(phone_number=phone_number).first()
+
+    if user:
+        return jsonify(msg="User phone already exist"), 404
+
+    new_user = User()
+    new_user.email = email
+    new_user.name = name
+    new_user.phone_number = phone_number
+    new_user.password=hash_password(password)
+    new_user.level = 0
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    access_token = create_access_token(identity=new_user.id)
+    refresh_token = create_refresh_token(identity=new_user.id)
+    return jsonify(new_user.auth_setialization(access_token, refresh_token)), 200
 
 
+@auth.route('/users/verify_number', methods=["POST"])
+def verify_number():
+    phone_number=request.form.get('phone_number')
+    code=request.form.get('code')
+
+    verify_status = client.verify.v2.services(TWILLIO_SMS).verification_checks.create(to=phone_number, code=code)
+
+    return jsonify(verif=verify_status.valid), 200
+
+@auth.route('/users/start_change_password', methods=["POST"])
+def start_change_password():
+    if 'email' in request.form:
+        to = request.form.get('email')
+
+        user = User.query.filter_by(email=to).first()
+        if not user:
+            return jsonify(msg="User not exist"), 404
+        chanel="email"
+    else:
+        to = request.form.get('phone_number')
+        user = User.query.filter_by(phone_number=to).first()
+        if not user:
+            return jsonify(msg="User not exist"), 404
+        chanel="sms"
+
+    client.verify.v2.services(TWILLIO_SMS).verifications.create(to=to, channel=chanel)
+
+    return jsonify(msg="succes"), 200
+
+
+@auth.route('/users/change_password_verify', methods=["POST"])
+def change_password_verify():
+    if 'email' in request.form:
+        to = request.form.get('email')
+        user = User.query.filter_by(email=to).first()
+    else:
+        to = request.form.get('phone_number')
+        user = User.query.filter_by(phone_number=to).first()
+
+    code = request.form.get('phone_number')
+
+    verify_status = client.verify.v2.services(TWILLIO_SMS).verification_checks.create(to=to, code=code)
+
+    if verify_status.valid:
+        return jsonify(msg="succes"), 200
+    else:
+        return jsonify(msg="Verification Failed"), 404
+
+@auth.route('/users/change_password', methods=["POST"])
+def change_password():
+    if 'email' in request.form:
+        to = request.form.get('email')
+        user = User.query.filter_by(email=to).first()
+    else:
+        to = request.form.get('phone_number')
+        user = User.query.filter_by(phone_number=to).first()
+    new_password = request.form.get('new_password')
+
+    if not user:
+        return jsonify(msg="User not exist"),404
+
+    user.password = hash_password(new_password)
+    db.session.commit()
+
+    return jsonify(msg="succes"), 200
 

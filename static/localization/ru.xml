@@ -8,6 +8,8 @@
     <question_type_4>Устно ответьте на вопрос</question_type_4>
     <question_type_5>Вопрос: Расскажите о  себе (3 минуты)</question_type_5>
     <question_type_6>Напишите 5-6 предложений на тему </question_type_6>
+    <question_type_7>Прослушайте и ответьте на вопрос</question_type_7>
+    <question_type_8>Ответьте на вопрос</question_type_8>
 
     <next_button>Дальше</next_button>
     <teacher_lesson_button>Урок разгоровного английского с учителем</teacher_lesson_button>
@@ -27,6 +29,9 @@
     <button_ready>Готово</button_ready>
     <button_exit>Выйти</button_exit>
     <button_change_pass>Сменить пароль</button_change_pass>
+    <button_yes>Да</button_yes>
+    <button_no>Нет</button_no>
+    <button_check>Проверить</button_check>
 
     <label_text>Текст</label_text>
     <label_text_name>Название текста</label_text_name>
@@ -47,6 +52,30 @@
     <label_forget_pass>Забыли пароль?</label_forget_pass>
     <label_pass_changed>Ваш пароль успешно изменен</label_pass_changed>
     <label_minuts> минут</label_minuts>
+    <warrning_popup_error_label>Запись отсутствует! Попробуйте перезаписать ваш ответ</warrning_popup_error_label>
+    <warrning_popup_warrning_label>Запись нечёткая! Это может вызвать проблемы с оценкой результата. \n Желаете продолжить?</warrning_popup_warrning_label>
+    <label_translation_compleate>Перевод завершен</label_translation_compleate>
+    <label_correct>Правильно</label_correct>
+    <label_wrong>Не правильно</label_wrong>
+    <label_popup_error_empty_field>Поле для перевода не может быть пустым</label_popup_error_empty_field>
+    <label_popup_warning_not_full_translation>Перевод не полный! Уверены что хотите продолжить?</label_popup_warning_not_full_translation>
+    <label_popup_warrning_no_exesize>Данных Заданий пока не существует для вашего уровня. Попробуйте позже</label_popup_warrning_no_exesize>
+    <labal_error_wrong_format>Неверный формат (Email/Номер телефона)</labal_error_wrong_format>
+    <labal_error_user_not_exist>Неверный Email/Номер телефона</labal_error_user_not_exist>
+    <labal_error_password>Неверный пароль</labal_error_password>
+    <labal_error_password_not_match>Пароли не совпадают</labal_error_password_not_match>
+    <label_error_user_already_exist>Пользователь с таким Email уже существует</label_error_user_already_exist>
+    <label_error_user_phone_already_exist>Пользователь с таким номером уже существует</label_error_user_phone_already_exist>
+    <label_error_field_cant_be_empty>Поле не может быть пустым</label_error_field_cant_be_empty>
+    <label_password_recovery_title>Восстановление пароля</label_password_recovery_title>
+    <label_password_recovery_email_phone>Введите ваш email или номер телефона</label_password_recovery_email_phone>
+    <label_password_recovery_code_title>Подтвердите ваш аккаунт</label_password_recovery_code_title>
+    <label_password_recovery_code_email_label>Мы отправили код на email или номер телефона</label_password_recovery_code_email_label>
+    <label_password_recovery_code_placeholder>Код подтверждения</label_password_recovery_code_placeholder>
+    <label_password_recovery_create_title>Создайте новый пароль</label_password_recovery_create_title>
+    <label_password_recovery_create_label>Создайте пароль из минимум 6 символов</label_password_recovery_create_label>
+    <label_password_recovery_create_placeholder>Новый пароль</label_password_recovery_create_placeholder>
+    <label_wrong_code>Неверный код</label_wrong_code>
 
     <login_account_enter_label>Войти в аккаунт</login_account_enter_label>
     <login_forget_pass>Забыли пароль?</login_forget_pass>

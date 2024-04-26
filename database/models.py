@@ -8,6 +8,10 @@ import random
 import string
 from sqlalchemy.dialects.postgresql import ARRAY
 
+from config import ENG_LEVELS
+from mobile_api.aicomponent import generate_text
+import json
+
 db = SQLAlchemy()
 
 # Define models
@@ -265,6 +269,7 @@ class Exesesizes(db.Model):
     img_url = db.Column(db.String(255))
     type = db.Column(db.String(255))
     lenguage = db.Column(db.String(255))
+    level = db.Column(db.Integer)
     exesize =db.relationship('Exesize', secondary=exesizes_table,
                                backref=db.backref('exesize_list', lazy='dynamic'))
 
@@ -275,6 +280,7 @@ class Exesesizes(db.Model):
             "name": self.name,
             'img_link': self.img_url,
             'type':self.type,
+            'level':self.level,
             "exesize": [i.serialize for i in self.exesize]
         }
 
@@ -296,6 +302,7 @@ class Exesize(db.Model):
     input = db.relationship('Inputquestion', backref=db.backref('ei', lazy='dynamic'))
     audio = db.relationship('Audioquestion', backref=db.backref('ea', lazy='dynamic'))
     video = db.relationship('Videoquestion', backref=db.backref('ev', lazy='dynamic'))
+    translation = db.Column(db.Integer, nullable=True)
 
     words = db.relationship('Englishword', secondary=words_in_exes,
                                backref=db.backref('exec', lazy='dynamic'))
@@ -340,6 +347,29 @@ class Exesize(db.Model):
                 "type": self.type,
                 "words": [w.serialize for w in self.words]
             }
+        if self.type == "translate_exesize":
+            if not self.translation:
+                translate_exec = TranslationQuestion()
+
+                ai_responce = generate_text(120, ENG_LEVELS[self.level])
+                json_object = json.load(ai_responce.choices[0].message.content)
+                translate_exec.level = self.level;
+                translate_exec.topic = "any"
+                translate_exec.original_text = json_object["original_text"]
+
+                db.session.add(translate_exec)
+
+                self.translation = translate_exec.id
+                db.session.commit()
+            else:
+                translate_exec = TranslationQuestion().query.filter_by(id=self.translation).first()
+
+            return {
+                "id": self.id,
+                "lesson_name": self.lesson_name,
+                "type": self.type,
+                "translation": translate_exec.serialize
+            }
 
 class Videoquestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -365,9 +395,11 @@ class Videoquestion(db.Model):
 class Audioquestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(255))
+    audio_query=db.Column(db.String(1000))
     audio_url=db.Column(db.String(255))
     answer = db.Column(db.String(255))
     level = db.Column(db.Integer)
+    isrecord = db.Column(db.Boolean)
 
     exesize = db.relationship('Exesize', backref='aexesize', lazy=True)
 
@@ -380,7 +412,23 @@ class Audioquestion(db.Model):
             "id": self.id,
             "question": self.question,
             "audio_url": self.audio_url,
-            "level": self.level
+            "level": self.level,
+            "isrecord": self.isrecord
+
+        }
+
+class TranslationQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    original_text = db.Column(db.String(50000))
+    level = db.Column(db.Integer)
+    topic=db.Column(db.String(255))
+
+    @property
+    def serialize(self):
+        return {
+            "original_text":self.original_text,
+            "level":self.level,
+            "topic":self.topic
         }
 
 class Inputquestion(db.Model):
@@ -388,6 +436,8 @@ class Inputquestion(db.Model):
     question = db.Column(db.String(255))
     answer = db.Column(db.String(255))
     level = db.Column(db.Integer)
+    type = db.Column(db.String(255))
+    isrecord = db.Column(db.Boolean)
 
     exesize = db.relationship('Exesize', backref='iexesize', lazy=True)
 
@@ -399,7 +449,10 @@ class Inputquestion(db.Model):
         return {
             "id": self.id,
             "question": self.question,
-            "level": self.level
+            "level": self.level,
+            "answer":self.answer,
+            "type": self.type,
+            "isrecord":self.isrecord
         }
 
 
