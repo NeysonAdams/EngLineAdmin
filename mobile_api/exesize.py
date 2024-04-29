@@ -148,6 +148,15 @@ def registr_speach_lesson():
 
     return jsonify(message="Success"), 200
 
+@exesize_blueprint.route('/exesize/get_situations', methods=['POST'])
+@jwt_required()
+def get_situations():
+
+    lang = request.form.get('language')
+    exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang and Exesesizes.type=="situation").all()
+
+    return jsonify(exesizes=[i.serialize for i in exesizes]), 200
+
 @exesize_blueprint.route('/exesize/check_recorded', methods=['POST'])
 @jwt_required()
 def check_recorded():
