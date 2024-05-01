@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from database.models import Exesize, Lesson, User, Inputquestion, Audioquestion, Videoquestion, LessonSchedler, TranslationQuestion, Exesesizes
@@ -167,10 +169,20 @@ def check_recorded():
     file = request.files['file']
     quesition_type = request.form.get("quesition_type")
 
-    answer = speach_to_text(file)
+    if file.content_type not in ['audio/flac', 'audio/m4a', 'audio/mp3', 'audio/mp4', 'audio/mpeg',
+                                         'audio/mpga', 'audio/oga', 'audio/ogg', 'audio/wav', 'audio/webm']:
+        return jsonify(message="Unsupported file format"), 400
+
+    #try:
+    with open("temp_file.mp3", "wb") as audio:
+        audio.write(file.read())
+    with open("temp_file.mp3", "rb") as audio:
+        answer = speach_to_text(audio)
+
+    if os.path.exists("temp_file.mp3"):
+        os.remove("temp_file.mp3")
 
     if quesition_type == "input":
-
         question = Inputquestion.query.filter_by(id=id).first()
 
         if not question:
@@ -196,4 +208,10 @@ def check_recorded():
         ai_response = check_text_question(text=question.audio_query, questoion=question.question, answer=answer,
                                           language=language)
         j_obj = json.loads(ai_response.choices[0].message.content)
+
         return jsonify(check_audio=j_obj, check_answer={}, check_grammar={}), 200
+    ###except Exception as e:
+    #    if os.path.exists("temp_file.mp3"):
+    #        os.remove("temp_file.mp3")
+    #    print(str(e))
+    #    return jsonify(message=str(e)), 500

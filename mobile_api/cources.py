@@ -216,7 +216,7 @@ def search():
     exesizes = []
 
     if config == "all" or config == "c":
-        cources = Cource.query.filter(Cource.name.contains(query)).all()
+        cources = Cource.query.filter(Cource.title.contains(query)).all()
 
     if config == "all" or config == "e":
         exesizes = Exesesizes.query.filter(Exesesizes.name.contains(query)).all()
