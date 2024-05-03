@@ -15,6 +15,7 @@ from mobile_api.fileloader import file_loader_bluerpint
 from mobile_api.exesize import exesize_blueprint
 from mobile_api.statistics import statistic_blueprint
 from mobile_api.payment import payment_blueprint
+from mobile_api.video_streamimg import video_stram_blueprint
 
 import json
 
