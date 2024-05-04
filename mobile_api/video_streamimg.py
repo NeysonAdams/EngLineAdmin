@@ -7,6 +7,7 @@ from flask_cors import cross_origin
 
 video_stram_blueprint = Blueprint('video_steam_blueprint', __name__)
 
+video_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'video'))
 
 @video_stram_blueprint.after_request
 def after_request(response):
@@ -39,7 +40,7 @@ def video():
     file_path = args.get('file_path')
     ch_ar = file_path.split("/")
     file_path = ch_ar[3]
-    full_path = os.path.join('static', 'video', file_path)
+    full_path = os.path.join(video_folder, file_path)
     range_header = request.headers.get('Range', None)
     byte1, byte2 = 0, None
     if range_header:
