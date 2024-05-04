@@ -16,4 +16,5 @@ if __name__ == '__main__':
     #add_words()
 
     # Start app
-    app.run( host = '0.0.0.0', port = 4444, debug=True)
+    #, ssl_context=('cert.pem', 'key.pem')
+    app.run(host='0.0.0.0', port=4444, debug=True)

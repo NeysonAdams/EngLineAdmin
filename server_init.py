@@ -5,6 +5,8 @@ import flask_admin
 from flask_admin import helpers as admin_helpers
 from flask_jwt_extended import JWTManager
 
+from flask_cors import CORS
+
 from database.models import Role, User, db, Question, Dictionary, Englishword, Russianword, Inputquestion
 
 from mobile_api.authorization import auth as auth_blueprint
@@ -23,6 +25,7 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 db.init_app(app)
 jwt = JWTManager(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 admin = flask_admin.Admin(
     app,
     'AdministrationPanel',
@@ -38,6 +41,7 @@ app.register_blueprint(file_loader_bluerpint)
 app.register_blueprint(exesize_blueprint)
 app.register_blueprint(statistic_blueprint)
 app.register_blueprint(payment_blueprint)
+app.register_blueprint(video_stram_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
