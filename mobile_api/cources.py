@@ -160,6 +160,16 @@ def lessons():
     cource_id = request.form.get('cource_id')
     lessons = Lesson.query.filter_by(cource_id=cource_id).all()
 
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+
+    if user:
+        cource  = Cource.query.filter_by(id=cource_id).first()
+        if cource not in user.cources_in_progress:
+            user.cources_in_progress.append(cource)
+            db.session.commit()
+
+
     return jsonify(lessons=[i.serialize for i in lessons]), 200
 
 @cources_bluepprint.route('/cource/get_home_page', methods=['POST'])
@@ -176,8 +186,10 @@ def get_home_page():
     cources = Cource.query.filter(Cource.lenguage==lang).all()
     exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang).all()
 
+
     return jsonify(cources=[i.serialize for i in cources],
                    exesizes=[i.serialize for i in exesizes],
+                   my_cources=[i.serialize for i in user.cources_in_progress],
                    user=user.serialize), 200
 
 
@@ -225,6 +237,7 @@ def search():
         return jsonify(cources=[i.serialize for i in cources]), 200
     if config == "e":
         return  jsonify(exesizes=[i.serialize for i in exesizes]),200
+
 
     return jsonify(cources=[i.serialize for i in cources],
                    exesizes=[i.serialize for i in exesizes]), 200

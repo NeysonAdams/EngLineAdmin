@@ -18,6 +18,7 @@ from mobile_api.exesize import exesize_blueprint
 from mobile_api.statistics import statistic_blueprint
 from mobile_api.payment import payment_blueprint
 from mobile_api.video_streamimg import video_stram_blueprint
+from mobile_api.profile import profile
 
 import json
 
@@ -42,6 +43,7 @@ app.register_blueprint(exesize_blueprint)
 app.register_blueprint(statistic_blueprint)
 app.register_blueprint(payment_blueprint)
 app.register_blueprint(video_stram_blueprint)
+app.register_blueprint(profile)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)

@@ -40,7 +40,7 @@ def change_avatar():
     if not user:
         return jsonify(msg="No user"), 404
 
-    f_name = f"img_c_t_{str(datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.png"
+    f_name = f"avatar_{user_id}.png"
     img_path = os.path.join(images_folder, f_name)
     file.save(img_path)
 
