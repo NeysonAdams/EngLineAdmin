@@ -362,7 +362,7 @@ class ExesizesView (TableView):
 
     form_extra_fields = {
         'type': SelectField('Type',
-                            choices=['situation', 'speach', 'audio', 'reading', 'writing']),
+                            choices=['situation', 'speach', 'audio', 'reading', 'writing', 'qualification']),
         'level': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }

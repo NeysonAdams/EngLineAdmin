@@ -28,7 +28,7 @@ class Administration:
 
         self.admin.add_view(
             ExesizesView(Exesesizes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
-                        name="Список Заданий"))
+                        name="Пакеты Заданий"))
 
         self.admin.add_view(
             ExesizeView(Exesize, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Задания"))

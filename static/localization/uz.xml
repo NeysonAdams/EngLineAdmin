@@ -75,6 +75,10 @@
     <label_password_recovery_create_title>Yangi parol yarating</label_password_recovery_create_title>
     <label_password_recovery_create_label>Kamida 6 ta belgidan iborat parol yarating</label_password_recovery_create_label>
     <label_password_recovery_create_placeholder>Yangi parol</label_password_recovery_create_placeholder>
+    <label_wrong_code>Noto'g'ri kod</label_wrong_code>
+    <label_start_test_popup>Haqiqatan ham daraja oshirish testini boshlamoqchimisiz?</label_start_test_popup>
+    <label_qualificationTest_failed>Afsuski, siz malaka imtihonidan o'ta olmadingiz. Keyinroq qayta urining!</label_qualificationTest_failed>
+    <label_qualificationTest_failed_warning>Sinov muvaffaqiyatsiz bo'ladi. Ishonchingiz komilmi?</label_qualificationTest_failed_warning>
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
