@@ -46,4 +46,4 @@ def change_avatar():
 
     user.img_url = url_for('static', filename=f"/images/{f_name}")
     db.session.commit()
-    return jsonify(msg="Success"), 200
+    return jsonify(user.serialize), 200
