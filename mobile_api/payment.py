@@ -4,8 +4,9 @@ from database.models import Cource, User, Payments, Billing
 from server_init import db
 import hashlib
 import requests
+import xml.etree.ElementTree as ET
 
-PAYMENT_HOST = "https://api.upay.uz/STAPI/STWS?wsdl"
+PAYMENT_HOST = "https://api.upay.uz/STAPI/STWS?wsdl=null"
 SECRET_KEY = "A01A0380CA3C61428C26A231F0E49A09"
 SEVICE_ID = "1442"
 LOGIN="engl1n3"
@@ -25,21 +26,50 @@ def card_registrate():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
 
-    url = PAYMENT_HOST+"/partnerRegisterCard"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey" : SECRET_KEY,
-        "AccessToken" : generate_md5(LOGIN+CardNumber+ExDate+PASSWORD),
-        "CardNumber" : CardNumber,
-        "Version" : Version,
-        "Lang" : Lang
+    access_token = generate_md5(LOGIN+CardNumber+ExDate+PASSWORD)
+    headers = {
+        'Content-Type': 'text/xml;'
     }
-
-    response = requests.post(url, data=form_data)
+    data = f'''
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+    <soapenv:Header/>
+    <soapenv:Body>
+    <st:partnerRegisterCard>
+    
+    <partnerRegisterCardRequest>
+        <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+        <AccessToken>{access_token}</AccessToken>
+        <CardNumber>{CardNumber}</CardNumber>
+        <ExDate>{ExDate}</ExDate>
+        <Version>{Version}</Version>
+        <Lang>{Lang}</Lang>
+    </partnerRegisterCardRequest>
+    
+    </st:partnerRegisterCard>
+    </soapenv:Body>
+    </soapenv:Envelope>
+    '''
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result" : {
+                "code":code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["ConfirmId"] = root.find("ConfirmId")
+            resp["CardPhone"] = root.find("CardPhone")
+
+        return jsonify(resp), 200
     else:
+        print(response.status_code)
+        print(response.reason)
         return jsonify(msg="Card Registration Error"), 404
 
 
@@ -50,20 +80,48 @@ def resend_sms():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
 
-    url = PAYMENT_HOST + "/partnerCardResendSms"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey": SECRET_KEY,
-        "AccessToken": generate_md5(LOGIN + ConfirmId + PASSWORD),
-        "ConfirmId": ConfirmId,
-        "Version": Version,
-        "Lang": Lang
+    headers = {
+        'Content-Type': 'text/xml;'
     }
 
-    response = requests.post(url, data=form_data)
+    data = f'''
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+        <soapenv:Header/>
+        <soapenv:Body>
+        <st:partnerCardResendSms>
+
+        <partnerCardResendSmsRequest>
+            <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+            <AccessToken>{generate_md5(LOGIN + ConfirmId + PASSWORD)}</AccessToken>
+            <ConfirmId>{ConfirmId}</ConfirmId>
+            <Version>{Version}</Version>
+            <Lang>{Lang}</Lang>
+        </partnerCardResendSmsRequest>
+
+        </st:partnerCardResendSms>
+        </soapenv:Body>
+        </soapenv:Envelope>
+        '''
+
+
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result": {
+                "code": code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["ConfirmId"] = root.find("ConfirmId")
+            resp["CardPhone"] = root.find("CardPhone")
+
+        return jsonify(resp), 200
     else:
         return jsonify(msg=response.text), response.status_code
 
@@ -76,21 +134,49 @@ def confirm_card():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
 
-    url = PAYMENT_HOST + "/partnerConfirmCard"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey": SECRET_KEY,
-        "AccessToken": generate_md5(LOGIN + ConfirmId + VerifyCode + PASSWORD),
-        "ConfirmId": ConfirmId,
-        "VerifyCode": VerifyCode,
-        "Version": Version,
-        "Lang": Lang
+    headers = {
+        'Content-Type': 'text/xml;'
     }
 
-    response = requests.post(url, data=form_data)
+    data = f'''
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+            <soapenv:Header/>
+            <soapenv:Body>
+            <st:partnerConfirmCard>
+
+            <partnerConfirmCardRequest>
+                <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+                <AccessToken>{generate_md5(LOGIN + ConfirmId + VerifyCode + PASSWORD)}</AccessToken>
+                <VerifyCode>{VerifyCode}</VerifyCode>
+                <Version>{Version}</Version>
+                <Lang>{Lang}</Lang>
+            </partnerConfirmCardRequest>
+
+            </st:partnerConfirmCard>
+            </soapenv:Body>
+            </soapenv:Envelope>
+            '''
+
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text, 200
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result": {
+                "code": code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["UzcardId"] = root.find("UzcardId")
+            resp["CardPhone"] = root.find("CardPhone")
+            resp["Balance"] = root.find("Balance")
+            resp["CardHolder"] = root.find("CardHolder")
+
+        return jsonify(resp), 200
     else:
         return jsonify(msg=response.text), response.status_code
 
@@ -101,20 +187,58 @@ def card_list():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
 
-    url = PAYMENT_HOST + "/partnerCardList"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey": SECRET_KEY,
-        "AccessToken": generate_md5(LOGIN + UzcardIds + PASSWORD),
-        "UzcardIds": UzcardIds,
-        "Version": Version,
-        "Lang": Lang
+    headers = {
+        'Content-Type': 'text/xml;'
     }
 
-    response = requests.post(url, data=form_data)
+    data = f'''
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+                <soapenv:Header/>
+                <soapenv:Body>
+                <st:partnerCardList>
+
+                <partnerCardListRequest>
+                    <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+                    <AccessToken>{generate_md5(LOGIN + UzcardIds + PASSWORD)}</AccessToken>
+                    <UzcardIds>{UzcardIds}</UzcardIds>
+                    <Version>{Version}</Version>
+                    <Lang>{Lang}</Lang>
+                </partnerCardListRequest>
+
+                </st:partnerCardList>
+                </soapenv:Body>
+                </soapenv:Envelope>
+                '''
+
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text, 200
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result": {
+                "code": code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["CardList"] = []
+            for sublist in root.find('CardList').findall('CardList'):
+                card = {
+                    "UzcardId":sublist.find('UzcardId').text,
+                    "FullName":sublist.find('FullName').text,
+                    "Pan":sublist.find('Pan').text,
+                    "ExpireDate":sublist.find('ExpireDate').text,
+                    "Phone":sublist.find('Phone').text,
+                    "Balance": sublist.find('Balance').text,
+                    "Sms": sublist.find('Sms').text,
+                    "Status": sublist.find('Status').text,
+                }
+                resp["CardList"].append(card)
+
+        return jsonify(resp), 200
     else:
         return jsonify(msg=response.text), response.status_code
 
@@ -144,26 +268,58 @@ def payment():
 
     PersonalAccount = payment.id
 
-    url = PAYMENT_HOST + "/partnerPayment"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey": SECRET_KEY,
-        "AccessToken": generate_md5(LOGIN +CardPhone + UzcardIds + SEVICE_ID + PersonalAccount + AmountInTiyin + PASSWORD),
-        "UzcardIds": UzcardIds,
-        "ServiceId": SEVICE_ID,
-        "PaymentType":"",
-        "PersonalAccount":PersonalAccount,
-        "RegionId":"",
-        "SubRegionId":"",
-        "AmountInTiyin": int(AmountInTiyin)*100,
-        "Version": Version,
-        "Lang": Lang
+    headers = {
+        'Content-Type': 'text/xml;'
     }
 
-    response = requests.post(url, data=form_data)
+    data = f'''
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+                <soapenv:Header/>
+                <soapenv:Body>
+                <st:partnerPayment>
+
+                <partnerPaymentRequest>
+                    <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+                    <AccessToken>{generate_md5(LOGIN +CardPhone + UzcardIds + SEVICE_ID + PersonalAccount + AmountInTiyin + PASSWORD)}</AccessToken>
+                    <UzcardIds>{UzcardIds}</UzcardIds>
+                    <ServiceId>{SEVICE_ID}</ServiceId>
+                    <PaymentType></PaymentType>
+                    <PersonalAccount>{PersonalAccount}</PersonalAccount>
+                    <RegionId></RegionId>
+                    <SubRegionId></SubRegionId>
+                    <AmountInTiyin>{int(AmountInTiyin)*100}</AmountInTiyin>
+                    <Version>{Version}</Version>
+                    <Lang>{Lang}</Lang>
+                </partnerPaymentRequest>
+
+                </st:partnerPayment>
+                </soapenv:Body>
+                </soapenv:Envelope>
+                '''
+
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text, 200
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result": {
+                "code": code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["Confirmed"] = root.find("Confirmed")
+            resp["TransactionId"] = root.find("TransactionId")
+            resp["UzcardTransactionId"] = root.find("UzcardTransactionId")
+            resp["PaymentDate"] = root.find("PaymentDate")
+            resp["PaymentAmount"] = root.find("PaymentAmount")
+            resp["ServiceId"] = root.find("ServiceId")
+            resp["CardPan"] = root.find("CardPan")
+
+        return jsonify(resp), 200
     else:
         return jsonify(msg=response.text), response.status_code
 
@@ -176,21 +332,53 @@ def confirm_payment():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
 
-    url = PAYMENT_HOST + "/partnerConfirmPayment"
+    url = PAYMENT_HOST
 
-    form_data = {
-        "StPimsApiPartnerKey": SECRET_KEY,
-        "AccessToken": generate_md5(LOGIN + ConfirmId + VerifyCode + PASSWORD),
-        "ConfirmId": ConfirmId,
-        "VerifyCode": VerifyCode,
-        "Version": Version,
-        "Lang": Lang
+    headers = {
+        'Content-Type': 'text/xml;'
     }
 
-    response = requests.post(url, data=form_data)
+    data = f'''
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
+                <soapenv:Header/>
+                <soapenv:Body>
+                <st:partnerConfirmPayment>
+
+                <partnerConfirmPaymentRequest>
+                    <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
+                    <AccessToken>{generate_md5(LOGIN + ConfirmId + VerifyCode + PASSWORD)}</AccessToken>
+                    <ConfirmId>{ConfirmId}</ConfirmId>
+                    <VerifyCode>{VerifyCode}</VerifyCode>
+                    <Version>{Version}</Version>
+                    <Lang>{Lang}</Lang>
+                </partnerConfirmPaymentRequest>
+
+                </st:partnerConfirmPayment>
+                </soapenv:Body>
+                </soapenv:Envelope>
+                '''
+
+    response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
-        return response.text, 200
+        root = ET.fromstring(response.text)
+        code = root.find("code")
+        resp = {
+            "Result": {
+                "code": code,
+                "Description": root.find("Description")
+            }
+        }
+        if code == "OK":
+            resp["Confirmed"] = root.find("Confirmed")
+            resp["TransactionId"] = root.find("TransactionId")
+            resp["UzcardTransactionId"] = root.find("UzcardTransactionId")
+            resp["PaymentDate"] = root.find("PaymentDate")
+            resp["PaymentAmount"] = root.find("PaymentAmount")
+            resp["ServiceId"] = root.find("ServiceId")
+            resp["CardPan"] = root.find("CardPan")
+
+        return jsonify(resp), 200
     else:
         return jsonify(msg=response.text), response.status_code
 

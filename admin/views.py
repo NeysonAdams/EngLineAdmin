@@ -386,10 +386,10 @@ class QuestionView(TableView):
     column_searchable_list = column_editable_list
 
     def on_model_change(view, context, model, name):
-        setattr(model, 'level', levels[context.level.data])
+        setattr(model, 'var_dif', levels[context.var_dif.data])
 
     form_extra_fields = {
-        'level': SelectField('Level',
+        'var_dif': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
 
