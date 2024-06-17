@@ -333,7 +333,7 @@ class ExesizeView (TableView):
 class ExesizesView (TableView):
     def picture_validation(form, field):
         if field.data:
-            #try:
+            try:
                 filename = field.data.filename
                 if filename[-4:] != '.jpg' and filename[-4:] != '.png' and filename[-4:] != '.gif':
                     raise ValidationError('file must be .jpg or .png or gif')
@@ -346,8 +346,8 @@ class ExesizesView (TableView):
                 image.save(img_path)
                 field.data = url_for('static', filename=f"/images/{f_name}")
                 # setattr(form._obj, 'img_url', url_for('static', filename=f"/images/{f_name}"))
-            #except:
-            #    f_name = field.data
+            except:
+                pass
 
     def on_model_change(view, context, model, name):
         setattr(model, 'img_url', context.img_url.data)
