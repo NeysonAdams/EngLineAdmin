@@ -89,7 +89,7 @@ def get_lesson():
     if not lesson:
         return jsonify(msg="Lesson not exist"), 404
 
-    return jsonify(lesson.serialize), 200
+    return jsonify(lesson.serialize(reiting)), 200
 
 @cources_bluepprint.route('/cource/inprogress', methods=['GET'])
 @jwt_required()
