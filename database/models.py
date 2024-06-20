@@ -246,6 +246,18 @@ class Lesson(db.Model):
         }
 
     @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "lesson_name": self.lesson_name,
+            "video_link": self.video_link,
+            "lesson_description": self.lesson_description,
+            "presentation_link": self.presentation_link,
+            "slides_link": self.slides_link,
+            "exesizes": [i.serialize for i in self.exesizes]
+        }
+
+    @property
     def serialize_title(self):
         return {
             "id": self.id,
