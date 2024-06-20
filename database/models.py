@@ -233,7 +233,7 @@ class Lesson(db.Model):
         return f"Name : {self.lesson_name}, Course : {self.cource.title})"
 
     @property
-    def serialize(self):
+    def serialize(self, score):
         return {
             "id": self.id,
             "lesson_name": self.lesson_name,
@@ -241,7 +241,8 @@ class Lesson(db.Model):
             "lesson_description": self.lesson_description,
             "presentation_link": self.presentation_link,
             "slides_link": self.slides_link,
-            "exesizes" : [i.serialize for i in self.exesizes]
+            "exesizes" : [i.serialize for i in self.exesizes],
+            "score":score,
         }
 
     @property
@@ -629,3 +630,9 @@ class Reiting(db.Model):
     score = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     lesson_id = db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        return {
+           "score": self.score,
+        }

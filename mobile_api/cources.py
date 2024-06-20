@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler
+from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler, Reiting
 from server_init import db
 
 cources_bluepprint = Blueprint('cources_bluepprint', __name__)
@@ -77,8 +77,15 @@ def get_lessons():
 @cources_bluepprint.route('/cource/get_lesson', methods=['POST'])
 @jwt_required()
 def get_lesson():
+    uid = get_jwt_identity()
     lesson_id=request.form.get('lesson_id')
     lesson = Lesson.query.filter_by(id=lesson_id).first()
+
+    reiting = Reiting.qurey.filter_by(user_id=uid, lesson_id=lesson_id).first()
+
+    if not reiting:
+        reiting = {"score":1}
+
     if not lesson:
         return jsonify(msg="Lesson not exist"), 404
 
