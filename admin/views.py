@@ -314,7 +314,7 @@ class TextTranslateView(TableView):
 
 
 class ExesizeView (TableView):
-
+    column_labels = dict(id="ID", lesson_name='Title', type='Type', level='Level', lesson="Lesson")
     form_columns = ['id','lesson_name', 'type', 'level','lesson', 'question', 'input', 'audio', 'video', 'words']
 
     def on_model_change(view, context, model, name):
@@ -327,7 +327,7 @@ class ExesizeView (TableView):
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
     column_labels = dict(lesson_name='Lesson Name', type="Type", level='Level')
-    column_editable_list = ['lesson_name','type']
+    column_editable_list = ['id','lesson_name','type']
     column_searchable_list = column_editable_list
 
 class ExesizesView (TableView):
