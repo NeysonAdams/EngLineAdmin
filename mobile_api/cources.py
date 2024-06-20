@@ -85,6 +85,8 @@ def get_lesson():
 
     if not reiting:
         reiting = {"score" : 1}
+    else:
+        reiting = reiting.serialize
 
     if not lesson:
         return jsonify(msg="Lesson not exist"), 404
