@@ -315,7 +315,7 @@ class TextTranslateView(TableView):
 
 class ExesizeView (TableView):
 
-    form_columns = ['lesson_name', 'type', 'level','lesson', 'question', 'input', 'audio', 'video', 'words']
+    form_columns = ['id','lesson_name', 'type', 'level','lesson', 'question', 'input', 'audio', 'video', 'words']
 
     def on_model_change(view, context, model, name):
         setattr(model, 'level', levels[context.level.data])
