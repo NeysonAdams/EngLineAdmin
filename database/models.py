@@ -232,8 +232,8 @@ class Lesson(db.Model):
     def __repr__(self):
         return f"Name : {self.lesson_name}, Course : {self.cource.title})"
 
-    @property
-    def serialize(self, score):
+
+    def serialize_score(self, score):
         return {
             "id": self.id,
             "lesson_name": self.lesson_name,

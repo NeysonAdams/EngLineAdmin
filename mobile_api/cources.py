@@ -84,12 +84,12 @@ def get_lesson():
     reiting = Reiting.query.filter_by(user_id=uid, lesson_id=lesson_id).first()
 
     if not reiting:
-        reiting = {"score":1}
+        reiting = {"score" : 1}
 
     if not lesson:
         return jsonify(msg="Lesson not exist"), 404
 
-    return jsonify(lesson.serialize(reiting) ), 200
+    return jsonify(lesson.serialize_score(reiting)), 200
 
 @cources_bluepprint.route('/cource/inprogress', methods=['GET'])
 @jwt_required()
