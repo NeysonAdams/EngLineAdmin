@@ -317,28 +317,28 @@ class Exesize(db.Model):
             "id": self.id,
             "lesson_name": self.lesson_name,
             "type": self.type,
-            "question": self.question.serialize_lesson
+            "question": self.question.serialize_lesson if self.question is not None else None
             }
         if self.type == "input_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
-                "inputquestion":self.input.serialize
+                "inputquestion":self.input.serialize if self.input is not None else None
             }
         if self.type == "audio_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
-                "audio": self.audio.serialize
+                "audio": self.audio.serialize if self.audio is not None else None
             }
         if self.type == "video_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
-                "video": self.video.serialize
+                "video": self.video.serialize if self.video is not None else None
             }
         if self.type == "words_question":
             return {
