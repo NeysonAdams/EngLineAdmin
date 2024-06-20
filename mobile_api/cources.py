@@ -81,7 +81,7 @@ def get_lesson():
     lesson_id=request.form.get('lesson_id')
     lesson = Lesson.query.filter_by(id=lesson_id).first()
 
-    reiting = Reiting.qurey.filter_by(user_id=uid, lesson_id=lesson_id).first()
+    reiting = Reiting.query.filter_by(user_id=uid, lesson_id=lesson_id).first()
 
     if not reiting:
         reiting = {"score":1}
