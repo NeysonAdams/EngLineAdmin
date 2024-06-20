@@ -356,15 +356,17 @@ class ExesizesView (TableView):
     def pic_formatter(self, context, model, name):
         return Markup('<img src="%s" width="100" height="50">' % model.img_url)
 
-    column_labels = dict(id="ID", name='Title', type='Type',  img_url='Title Image', level="Level")
+    column_labels = dict(id="ID", name='Title', type='Type', lenguage="Lenguage",  img_url='Title Image', level="Level")
 
-    form_columns = [ 'name', 'type','img_url', "level", 'exesize']
+    form_columns = [ 'name', 'type', 'lenguage','img_url', "level", 'exesize']
 
     form_extra_fields = {
         'type': SelectField('Type',
                             choices=['situation', 'speach', 'audio', 'reading', 'writing', 'qualification']),
         'level': SelectField('Level',
-                             choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
+                             choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']),
+        'lenguage':SelectField('Level',
+                             choices=['ru', 'uz']),
     }
 
     column_formatters = dict(img_url=pic_formatter)
