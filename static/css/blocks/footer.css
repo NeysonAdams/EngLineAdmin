@@ -1,0 +1,68 @@
+.footer {
+  background-color: rgba(206, 206, 255, 1);
+}
+
+.footer__container {
+  max-width: 1370px;
+  margin: 0 auto;
+  padding-top: 110px;
+  padding-bottom: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+.footer__logo-container {
+  align-self: center;
+}
+
+.footer__logo {
+  width: 389px;
+  height: 150px;
+}
+
+.footer__subtitle {
+  font-family: "Manrope", sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  width: 389px;
+}
+
+.footer__title {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 49px;
+  margin-bottom: 50px;
+}
+
+.footer__nav-links {
+  gap: 30px;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.footer__nav-link {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 43px;
+  text-decoration: none;
+  margin-left: 0;
+  padding-bottom: 30px;
+  color: black;
+}
+
+.footer__contact-label {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 43px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.footer__contact-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+}

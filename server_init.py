@@ -70,7 +70,6 @@ def security_context_processor():
         get_url=url_for
     )
 
-
 def add_words():
     with app.app_context():
         dict_files = ['bisnes_eng.json', 'comp_eng.json', 'economic_eng.json', 'short_eng.json']
@@ -99,9 +98,6 @@ def add_words():
                     dict_db.words.append(word)
                 db.session.commit()
             i=i+1
-
-
-
 
 def add_questions():
     with app.app_context():

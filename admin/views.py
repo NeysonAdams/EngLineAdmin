@@ -365,7 +365,7 @@ class ExesizesView (TableView):
                             choices=['situation', 'speach', 'audio', 'reading', 'writing', 'qualification']),
         'level': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']),
-        'lenguage':SelectField('Level',
+        'lenguage':SelectField('Lenguage',
                              choices=['ru', 'uz']),
     }
 

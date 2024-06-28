@@ -1,0 +1,49 @@
+.nav {
+  font-family: "Manrope", sans-serif;
+  max-width: 1370px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.nav__logo {
+  width: 84px;
+  height: 84px;
+  margin: 36px 0;
+}
+
+.nav__links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  list-style-type: none;
+}
+
+.nav__link {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 35px;
+  text-decoration: none;
+  transition: color 0.1s linear;
+}
+
+.nav__link:hover {
+  color: #9abff0;
+}
+
+.nav__button {
+  font-family: "Inter", sans-serif;
+  background-color: #fff;
+  width: 175px;
+  height: 54px;
+  color: rgba(0, 0, 255, 1);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  align-self: center;
+  border-radius: 15px;
+  cursor: pointer;
+}

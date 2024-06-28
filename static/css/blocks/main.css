@@ -1,0 +1,96 @@
+.main {
+  background-color: black;
+}
+
+.main__container {
+  max-width: 1370px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 65px;
+}
+
+.main__title {
+  max-width: 770px;
+  font-family: "Manrope", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 109px;
+  margin-top: 122px;
+  margin-bottom: 0;
+}
+
+.main__subtitle {
+  max-width: 668px;
+  font-family: "Manrope", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 41px;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+.main__play-button {
+  width: 332px;
+  height: 114px;
+  border-radius: 30px;
+  padding: 20px;
+  gap: 21px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.main__play-icon {
+  width: 63px;
+  height: 69px;
+}
+
+.main__dowload {
+  margin: 0;
+  padding: 0;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 24x;
+  line-height: 32px;
+  text-align: left;
+}
+
+.main__googleplay {
+  width: 194px;
+  height: 38px;
+}
+
+.main__bluesquare {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 153, 1),
+    rgba(0, 0, 255, 1)
+  );
+  width: 721px;
+  height: 832px;
+  position: absolute;
+  top: -100px;
+  right: -150px;
+  border-radius: 40px;
+}
+
+.main__phone-img-1 {
+  width: 295px;
+  height: 602px;
+  position: absolute;
+  bottom: 25px;
+  left: -90px;
+}
+
+.main__phone-img-2 {
+  width: 295px;
+  height: 602px;
+  position: absolute;
+  top: 30px;
+  left: 240px;
+}

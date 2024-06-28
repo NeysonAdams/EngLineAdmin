@@ -1,12 +1,185 @@
-<html>
-    <head>
-        <script type="text/javascript">
-            window.location.href = "{{ url_for('admin.index') }}";
-        </script>
-    </head>
-    <!--<body>
-        <div>
-            <a href="{{ url_for('admin.index') }}">Go to admin!</a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Learning Lenguages" />
+    <meta name="keywords" content=" Learning, English, Fast Learning" />
+
+    <title>Coffe Shop</title>
+
+    <link rel="shortcut icon" href="./static/img/images/logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/pages/index.css" />
+  </head>
+  <body>
+      <header class="header">
+        <nav class="nav">
+          <img
+            class="nav__logo"
+            alt="logo"
+            src="./static/img/images/header__logo.svg"
+          />
+          <ul class="nav__links">
+            <li>
+              <a class="nav__link" href="#main">Главная</a>
+            </li>
+            <li>
+              <a class="nav__link" href="#about">Почему мы</a>
+            </li>
+            <li>
+              <a class="nav__link" href="#popular">Популярные курсы</a>
+            </li>
+            <li>
+              <a class="nav__link" href="#questions">Вопросы</a>
+            </li>
+          </ul>
+          <button class="nav__button" type="button">Get Started</button>
+        </nav>
+      <main>
+        <section id="main" class="main">
+          <div class="main__container">
+
+            <div class="main__bluesquare">
+              <img class="main__phone-img-1" src="./static/img/images/4075388_1508 1.svg" alt="mobile">
+              <img class="main__phone-img-2" src="./static/img/images/4075388_1507 3.svg" alt="mobile">
+            </div>
+
+            <h1 class="main__title">ELE - Онлайн Курсы Английкого с ИИ</h1>
+            <p class="main__subtitle">Пройдите курсы делового английского и английского для врачей,  а также развивайте свою разговорную речь!</p>
+            <button class="main__play-button" type="button">
+              <img class="main__play-icon" src="./static/img/images/g1231.svg" alt="google play"/>
+              <div>
+                <p class="main__dowload">Скачать в</p>
+                <img class="main__googleplay" src="./static/img/images/g1237.svg" alt="google play"/>
+              </div>
+            </button>
+          </div>
+        </section>
+        <section id="about" class="about">
+          <div class="about__container">
+            <h2 class="about__title">Почему выбирают учить английский вместе с <span class="about__title-ele">ELE</span></h2>
+            <div class="about__grid">
+              <div class="about__card">
+                <h3 class="about_card-title">ИИ</h3>
+                <p class="about_card-discription">Искуственный Интелект поможет прокачать вашу разговорную речь онлайн</p>
+              </div>
+              <div class="about__card">
+                <h3 class="about_card-title"> 24/7 </h3>
+                <p class="about_card-discription">Учитесь из любой точки мира в удобное для вас время</p>
+              </div>
+              <div class="about__card">
+                <h3 class="about_card-title">77% </h3>
+                <p class="about_card-discription">Опрошенных студентов сказали что курсы в еLe помогли им в развитии  карьеры</p>
+              </div>
+              <div class="about__card">
+                <h3 class="about_card-title">10 Минут</h3>
+                <p class="about_card-discription">Среднее время освоения новой темы в нашем приложении</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="popular" class="popular">
+          <div class="popular__container">
+            <h2 class="popular__title">Популярные курсы </h2>
+            <div class="popular__grid">
+              <div class="popular__card">
+                <img class="popular__card-image" src="./static/img/images/Vector.svg" alt="img">
+                <h3 class="popular__card-title">Английский для врачей</h3>
+                <p class="popular__card-discription">Курс подходит для врачей которые хотят расширить свои границы в карьере</p>
+              </div>
+              <div class="popular__card">
+                <img class="popular__card-image" src="./static/img/images/Frame.svg" alt="img">
+                <h3 class="popular__card-title">Деловой английский</h3>
+                <p class="popular__card-discription">Курс подходит для тех кто хочет выйти на новый уровень в карьере и бизнесе</p>
+              </div>
+            </div>
+            <div class="popular__down-panel">
+              <div class="popular__disript-container">
+                <h3 class="popular__down-title">Скачивайте Прямо Сейчас!</h3>
+                <p class="popular__down-discription">Скачивайте наше приложение прямо сейчас и изучайте английский с комфортом в любое время в любой точке мира </p>
+              </div>
+              <button class="main__play-button" type="button">
+                <img class="main__play-icon" src="./static/img/images/g1231.svg" alt="google play"/>
+                <div>
+                  <p class="main__dowload">Скачать в</p>
+                  <img class="main__googleplay" src="./static/img/images/g1237.svg" alt="google play"/>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+        <section id="questions" class="questions">
+          <div class="questions__content">
+            <h3 class="questions__title">Вопросы</h3>
+            <div class="questions__container">
+              <div id="0" class="questions__dropdown">
+                <p  class="questions__label">Могу ли я попробовать ELE бесплатно?</p>
+                <div class="questions__dropdown-icon"></div>
+              </div>
+              <div class="questions__dropdown-answer">
+                <p  class="questions__label-answer">Да, в нашем приложении некоторые курсы и упражнения доступны бесплатно! Скачивайте ELE в Google Play!</p>
+              </div>
+              <div id="1" class="questions__dropdown">
+                <p class="questions__label">Как я смогу улучшить свою разговорную речь с помощью ELE?</p>
+                <div class="questions__dropdown-icon"></div>
+              </div>
+              <div class="questions__dropdown-answer">
+                <p  class="questions__label-answer">У нас есть упражнения где вас попросят ответить на вопрос устно и записать свой ответ. Искусственный Интеллект проанализирует вашу речь, исправит ошибки или даст вам рекомендации по улучшению вашей речи!</p>
+              </div>
+              <div id="2" class="questions__dropdown">
+                <p class="questions__label">Как мне оплатить занятия с ELE?</p>
+                <div class="questions__dropdown-icon"></div>
+              </div>
+              <div class="questions__dropdown-answer">
+                <p  class="questions__label-answer">Для этого вам понадобится нажать на понравившийся вам курс и  ввести данные вашей карты HUMO/UZCARD, тогда вам станут доступны наши платные курсы. Отменить подписку можно в любое время в настройках профиля</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="footer">
+        <div class="footer__container">
+          <div class="footer__logo-container">
+            <img class="footer__logo" src="./static/img/images/footer_logo.svg" alt="logo">
+            <p class="footer__subtitle">Учите английский с комфортом в приложении ELE</p>
+          </div>
+          <nav class="footer_nav">
+              <h3 class="footer__title">Навигация</h3>
+              <ul class="footer__nav-links">
+                <li>
+                  <a class="footer__nav-link" href="#main">Главная</a>
+                </li>
+                <li>
+                  <a class="footer__nav-link" href="#about">Почему мы</a>
+                </li>
+                <li>
+                  <a class="footer__nav-link" href="#popular">Популярные курсы</a>
+                </li>
+                <li>
+                  <a class="footer__nav-link" href="#questions">Вопросы</a>
+                </li>
+              </ul>
+          </nav>
+          <div class="footer__contacts">
+              <h3 class="footer__title">Наши контакты</h3>
+              <div class="footer__contact-label">
+                <img class="footer__contact-icon" src="./static/img/images/mdi_instagram.svg" alt="">
+                <span>eletalk.uz</span>
+              </div>
+
+              <div class="footer__contact-label">
+                <img class="footer__contact-icon" src="./static/img/images/uiw_mail.svg" alt="">
+                <span>admin@eletalk.uz</span>
+              </div>
+          </div>
         </div>
-    </body>-->
+      </footer>
+      <script src="./static/pages/question.js"></script>
+  </body>
 </html>

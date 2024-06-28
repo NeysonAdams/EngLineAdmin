@@ -10,6 +10,10 @@ admin_blueprint = Blueprint('admin_blueprint', __name__)
 def index():
     return render_template('index.html')
 
+@admin_blueprint.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 class Administration:
     def __init__(self, admin:Admin, db, app):
         self.admin = admin
