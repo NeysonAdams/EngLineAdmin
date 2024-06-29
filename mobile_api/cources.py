@@ -275,6 +275,6 @@ def addComment():
 @jwt_required()
 def getComments():
     lessonid = request.form.get('lessonid')
-    comments = Comments.query.filter(lesson_id=lessonid).all()
+    comments = Comments.query.filter_by(lesson_id=lessonid).all()
     return jsonify(comments=[i.serialize for i in comments]), 200
 
