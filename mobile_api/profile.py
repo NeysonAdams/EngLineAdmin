@@ -47,3 +47,23 @@ def change_avatar():
     user.img_url = url_for('static', filename=f"/images/{f_name}")
     db.session.commit()
     return jsonify(user.serialize), 200
+
+@profile.route('/profile/update', methods=['POST'])
+@jwt_required()
+def update():
+    user_id = get_jwt_identity()
+    user = User.query.filter_by(id=user_id).first()
+
+    userName = request.form.get('userName')
+    userEmail = request.form.get('userEmail')
+    userPhone = request.form.get('userPhone')
+
+    if not user:
+        return jsonify(msg="No user"), 404
+
+    user.name = userName
+    user.email = userEmail
+    user.phone_number = userPhone
+
+    db.session.commit()
+    return jsonify(user.serialize), 200
