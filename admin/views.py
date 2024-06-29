@@ -276,7 +276,7 @@ class AudioQuestionView(TableView):
 
 class InputQuestionView(TableView):
     form_columns = ['question', 'answer', 'level', 'type', 'isrecord']
-    column_labels = dict(question='Question', answer="Answer", level='Level', type="Type", isrecord='Recorded')
+    column_labels = dict(id="ID",question='Question', answer="Answer", level='Level', type="Type", isrecord='Recorded')
     column_editable_list = ['question', 'level']
     column_searchable_list = column_editable_list
 
