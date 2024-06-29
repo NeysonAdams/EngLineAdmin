@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     #if not os.path.exists(database_path):
     # test_build()
-    #creat_db()
+    creat_db()
     #build_sample_db()
     #add_questions()
     #add_words()

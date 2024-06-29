@@ -648,3 +648,18 @@ class Reiting(db.Model):
         return {
            "score": self.score,
         }
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    lesson_id = db.Column(db.Integer)
+
+    comment = db.Column(db.String(2000))
+
+    @property
+    def serialize(self):
+        user = User.query.filter_by(id=self.user_id).first()
+        return {
+            "userName": user.name,
+            "comment": self.comment
+        }

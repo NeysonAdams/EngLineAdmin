@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler, Reiting
+from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler, Reiting, Comments
 from server_init import db
 
 cources_bluepprint = Blueprint('cources_bluepprint', __name__)
@@ -250,3 +250,31 @@ def search():
 
     return jsonify(cources=[i.serialize for i in cources],
                    exesizes=[i.serialize for i in exesizes]), 200
+
+@cources_bluepprint.route('/cource/lessons/comments/add', methods=['POST'])
+@jwt_required()
+def addComment():
+    uid = get_jwt_identity()
+
+    lessonid = request.form.get('lessonid')
+    comment = request.form.get('comment')
+
+    new_comment = Comments()
+    new_comment.user_id = uid
+    new_comment.lesson_id = lessonid
+    new_comment.comment = comment
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+
+
+    return jsonify(new_comment.serialize), 200
+
+@cources_bluepprint.route('/cource/lessons/comments/get', methods=['POST'])
+@jwt_required()
+def getComments():
+    lessonid = request.form.get('lessonid')
+    comments = Comments.query.filter(lessonid=lessonid).all()
+    return jsonify(comments=[i.serialize for i in comments]), 200
+
