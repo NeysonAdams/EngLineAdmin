@@ -193,6 +193,20 @@ class Cource(db.Model):
         }
 
     @property
+    def serialize_header(self):
+
+        billing = Billing.query.filter(Billing.id==self.price).first()
+        return {
+            "id": self.id,
+            "title": self.title,
+            "level": self.level,
+            "price": billing.serialize,
+            "img_url": self.img_url,
+            "is_buy":self.is_buy,
+            "reiting":self.reiting
+        }
+
+    @property
     def serialize_lesons(self):
         billing = Billing.query.filter(Billing.id==self.price).first()
         return {
