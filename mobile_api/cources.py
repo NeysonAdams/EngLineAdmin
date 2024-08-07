@@ -196,9 +196,9 @@ def get_home_page():
     exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang).all()
 
 
-    return jsonify(cources=[i.serialize for i in cources],
-                   exesizes=[i.serialize for i in exesizes],
-                   my_cources=[i.serialize for i in user.cources_in_progress],
+    return jsonify(cources=[i.data for i in cources],
+                   exesizes=[i.serialize_header for i in exesizes],
+                   my_cources=[i.data for i in user.cources_in_progress],
                    user=user.serialize), 200
 
 

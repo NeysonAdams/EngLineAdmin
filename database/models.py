@@ -297,6 +297,16 @@ class Exesesizes(db.Model):
             "exesize": [i.serialize for i in self.exesize]
         }
 
+    @property
+    def serialize_header(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            'img_link': self.img_url,
+            'type': self.type,
+            'level': self.level
+        }
+
 class Exesize(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -383,6 +393,13 @@ class Exesize(db.Model):
                 "type": self.type,
                 "translation": translate_exec.serialize
             }
+
+    @property
+    def serialize_only_id(self):
+        return {
+            "id": self.id
+        }
+
 
 class Videoquestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
