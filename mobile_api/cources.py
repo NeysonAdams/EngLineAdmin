@@ -201,6 +201,20 @@ def get_home_page():
                    my_cources=[i.serialize_header for i in user.cources_in_progress],
                    user=user.serialize), 200
 
+@cources_bluepprint.route('/cource/exesizes', methods=['GET'])
+@jwt_required()
+def getExesizes():
+    id = request.form.get('id')
+
+    if not id:
+        return jsonify({"msg": "Missing parameter id"}), 400
+
+    exesizes = Exesesizes.query.filter(Exesesizes.id == id).first()
+
+    if not exesizes:
+        return jsonify({"msg": "PAckage not exist"}), 404
+
+    return jsonify(exesizes.serialize())
 
 @cources_bluepprint.route('/cource/set_search_lesson', methods=['POST'])
 @jwt_required()
