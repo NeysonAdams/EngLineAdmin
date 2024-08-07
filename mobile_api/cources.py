@@ -48,7 +48,13 @@ def get_speking_questions():
 @cources_bluepprint.route('/cource/all', methods=['GET'])
 @jwt_required()
 def all():
-    cources = Cource.query.all()
+
+    lenguage = request.args.get('ln')
+    cources = []
+    if not lenguage:
+        cources = Cource.query.all()
+    else:
+        cources = Cource.query.filter_by(lenguage=lenguage).all()
 
     return jsonify(cources= [i.data for i in cources]), 200
 
