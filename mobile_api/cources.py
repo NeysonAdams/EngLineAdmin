@@ -204,7 +204,7 @@ def get_home_page():
 @cources_bluepprint.route('/cource/exesizes', methods=['GET'])
 @jwt_required()
 def getExesizes():
-    id = request.form.get('id')
+    id = request.args.get('id')
 
     if not id:
         return jsonify({"msg": "Missing parameter id"}), 400
