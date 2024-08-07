@@ -214,7 +214,7 @@ def getExesizes():
     if not exesizes:
         return jsonify({"msg": "PAckage not exist"}), 404
 
-    return jsonify(exesizes.serialize())
+    return jsonify(exesizes.serialize)
 
 @cources_bluepprint.route('/cource/set_search_lesson', methods=['POST'])
 @jwt_required()
