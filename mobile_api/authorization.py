@@ -47,6 +47,7 @@ def create_user():
         return jsonify(user.auth_setialization(access_token, refresh_token)), 200
 
     new_user = User()
+    new_user.login = ""
     new_user.google_id = google_id
     new_user.facebook_id = facebook_id
     new_user.phone_number = phone
@@ -181,6 +182,7 @@ def facebook_auth():
             new_user = User()
             new_user.facebook_id = facebook_id
             new_user.name = name
+            new_user.login = name
             new_user.email = email
             new_user.img_url = img_url
             db.session.add(new_user)
@@ -236,6 +238,7 @@ def registrate():
     new_user.phone_number = phone_number
     new_user.password=hash_password(password)
     new_user.level = 0
+    new_user.login = name
 
     db.session.add(new_user)
     db.session.commit()
