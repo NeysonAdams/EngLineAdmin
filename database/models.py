@@ -203,7 +203,8 @@ class Cource(db.Model):
             "price": billing.serialize,
             "img_url": self.img_url,
             "is_buy":self.is_buy,
-            "reiting":self.reiting
+            "reiting":self.reiting,
+            "count": len(self.lessons)
         }
 
     @property
@@ -318,7 +319,8 @@ class Exesesizes(db.Model):
             "name": self.name,
             'img_link': self.img_url,
             'type': self.type,
-            'level': self.level
+            'level': self.level,
+            'count': len(self.self.exesize)
         }
 
 class Exesize(db.Model):
