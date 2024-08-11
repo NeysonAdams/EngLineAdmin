@@ -320,7 +320,7 @@ class Exesesizes(db.Model):
             'img_link': self.img_url,
             'type': self.type,
             'level': self.level,
-            'count': len(self.self.exesize)
+            'count': len(self.exesize)
         }
 
 class Exesize(db.Model):
