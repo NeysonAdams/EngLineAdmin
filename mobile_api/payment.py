@@ -6,13 +6,18 @@ import hashlib
 import requests
 import xml.etree.ElementTree as ET
 
-PAYMENT_HOST = "https://api.upay.uz/STAPI/STWS?wsdl=null"
-SECRET_KEY = "A01A0380CA3C61428C26A231F0E49A09"
-SEVICE_ID = "1442"
-LOGIN="engl1n3"
-PASSWORD = "m7W2OK"
+PAYMENT_HOST = ""
+SECRET_KEY = ""
+SEVICE_ID = ""
+LOGIN=""
+PASSWORD = ""
 
 payment_blueprint = Blueprint('payment_bluepprint', __name__)
+
+namespaces = {
+    'S': 'http://schemas.xmlsoap.org/soap/envelope/',
+    'ns2': 'http://st.apus.com/'
+}
 
 def generate_md5(input_string):
     md5_hash = hashlib.md5(input_string.encode()).hexdigest()
@@ -51,20 +56,23 @@ def card_registrate():
     </soapenv:Body>
     </soapenv:Envelope>
     '''
+    print(data)
     response = requests.post(url, headers=headers, data=data)
-
+    print(response.text)
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+        code = root.find('.//ns2:partnerRegisterCardResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerRegisterCardResponse//Result/Description', namespaces).text
+
         resp = {
             "Result" : {
                 "code":code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
-            resp["ConfirmId"] = root.find("ConfirmId")
-            resp["CardPhone"] = root.find("CardPhone")
+            resp["ConfirmId"] = root.find(".//ns2:partnerRegisterCardResponse//ConfirmId", namespaces).text
+            resp["CardPhone"] = root.find(".//ns2:partnerRegisterCardResponse//CardPhone", namespaces).text
 
         return jsonify(resp), 200
     else:
@@ -105,21 +113,24 @@ def resend_sms():
         </soapenv:Envelope>
         '''
 
-
+    print (data)
     response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+
+        print(response.text)
+        code = root.find('.//ns2:partnerCardResendSmsResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerCardResendSmsResponse//Result/Description', namespaces).text
         resp = {
             "Result": {
                 "code": code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
-            resp["ConfirmId"] = root.find("ConfirmId")
-            resp["CardPhone"] = root.find("CardPhone")
+            resp["ConfirmId"] = root.find(".//ns2:partnerCardResendSmsResponse//ConfirmId", namespaces).text
+            resp["CardPhone"] = root.find(".//ns2:partnerCardResendSmsResponse//CardPhone", namespaces).text
 
         return jsonify(resp), 200
     else:
@@ -136,10 +147,12 @@ def confirm_card():
 
     url = PAYMENT_HOST
 
+    print(ConfirmId)
+
     headers = {
         'Content-Type': 'text/xml;'
     }
-
+    print(f"{LOGIN}{ConfirmId}{VerifyCode}{PASSWORD}")
     data = f'''
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
             <soapenv:Header/>
@@ -148,7 +161,8 @@ def confirm_card():
 
             <partnerConfirmCardRequest>
                 <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
-                <AccessToken>{generate_md5(LOGIN + ConfirmId + VerifyCode + PASSWORD)}</AccessToken>
+                <AccessToken>{generate_md5(f"{LOGIN}{ConfirmId}{VerifyCode}{PASSWORD}")}</AccessToken>
+                <ConfirmId>{ConfirmId}</ConfirmId>
                 <VerifyCode>{VerifyCode}</VerifyCode>
                 <Version>{Version}</Version>
                 <Lang>{Lang}</Lang>
@@ -159,22 +173,25 @@ def confirm_card():
             </soapenv:Envelope>
             '''
 
+    print (data)
     response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+        print(response.text)
+        code = root.find('.//ns2:partnerConfirmCardResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerConfirmCardResponse//Result/Description', namespaces).text
         resp = {
             "Result": {
                 "code": code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
-            resp["UzcardId"] = root.find("UzcardId")
-            resp["CardPhone"] = root.find("CardPhone")
-            resp["Balance"] = root.find("Balance")
-            resp["CardHolder"] = root.find("CardHolder")
+            resp["UzcardId"] = root.find('.//ns2:partnerConfirmCardResponse//UzcardId', namespaces).text
+            resp["CardPhone"] = root.find('.//ns2:partnerConfirmCardResponse//CardPhone', namespaces).text
+            resp["Balance"] = root.find('.//ns2:partnerConfirmCardResponse//Balance', namespaces).text
+            resp["CardHolder"] = root.find('.//ns2:partnerConfirmCardResponse//CardHolder', namespaces).text
 
         return jsonify(resp), 200
     else:
@@ -202,7 +219,7 @@ def card_list():
                 <partnerCardListRequest>
                     <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
                     <AccessToken>{generate_md5(LOGIN + UzcardIds + PASSWORD)}</AccessToken>
-                    <UzcardIds>{UzcardIds}</UzcardIds>
+                    <CardList>{UzcardIds}</CardList>
                     <Version>{Version}</Version>
                     <Lang>{Lang}</Lang>
                 </partnerCardListRequest>
@@ -211,21 +228,24 @@ def card_list():
                 </soapenv:Body>
                 </soapenv:Envelope>
                 '''
-
+    print(data)
     response = requests.post(url, headers=headers, data=data)
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+        print(response.text)
+        code = root.find('.//ns2:partnerCardListResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerCardListResponse//Result/Description', namespaces).text
         resp = {
             "Result": {
                 "code": code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
             resp["CardList"] = []
-            for sublist in root.find('CardList').findall('CardList'):
+            cardList = root.find('.//ns2:partnerCardListResponse//CardList', namespaces)
+            for sublist in cardList.findall('CardList'):
                 card = {
                     "UzcardId":sublist.find('UzcardId').text,
                     "FullName":sublist.find('FullName').text,
@@ -249,7 +269,7 @@ def payment():
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
     BillingId = request.form.get('BillingId')
-    AmountInTiyin = request.form.get('AmountInTiyin')
+    AmountInTiyin = int(request.form.get('AmountInTiyin'))*100
     CardPhone = request.form.get('CardPhone')
 
     uid = get_jwt_identity()
@@ -273,7 +293,7 @@ def payment():
     headers = {
         'Content-Type': 'text/xml;'
     }
-
+    print(f"{LOGIN}{CardPhone}{UzcardIds}{SEVICE_ID}{PersonalAccount}{AmountInTiyin}{PASSWORD}")
     data = f'''
                 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:st="http://st.apus.com/">
                 <soapenv:Header/>
@@ -282,14 +302,15 @@ def payment():
 
                 <partnerPaymentRequest>
                     <StPimsApiPartnerKey>{SECRET_KEY}</StPimsApiPartnerKey>
-                    <AccessToken>{generate_md5(LOGIN +CardPhone + UzcardIds + SEVICE_ID + PersonalAccount + AmountInTiyin + PASSWORD)}</AccessToken>
-                    <UzcardIds>{UzcardIds}</UzcardIds>
+                    <AccessToken>{generate_md5(f"{LOGIN}{CardPhone}{UzcardIds}{SEVICE_ID}{PersonalAccount}{AmountInTiyin}{PASSWORD}")}</AccessToken>
+                    <CardPhone>{CardPhone}</CardPhone>
+                    <UzcardId>{UzcardIds}</UzcardId>
                     <ServiceId>{SEVICE_ID}</ServiceId>
                     <PaymentType></PaymentType>
                     <PersonalAccount>{PersonalAccount}</PersonalAccount>
                     <RegionId></RegionId>
                     <SubRegionId></SubRegionId>
-                    <AmountInTiyin>{int(AmountInTiyin)*100}</AmountInTiyin>
+                    <AmountInTiyin>{int(AmountInTiyin)}</AmountInTiyin>
                     <Version>{Version}</Version>
                     <Lang>{Lang}</Lang>
                 </partnerPaymentRequest>
@@ -301,23 +322,29 @@ def payment():
 
     response = requests.post(url, headers=headers, data=data)
 
+    print(data)
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+        code = root.find('.//ns2:partnerPaymentResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerPaymentResponse//Result/Description', namespaces).text
         resp = {
             "Result": {
                 "code": code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
-            resp["Confirmed"] = root.find("Confirmed")
-            resp["TransactionId"] = root.find("TransactionId")
-            resp["UzcardTransactionId"] = root.find("UzcardTransactionId")
-            resp["PaymentDate"] = root.find("PaymentDate")
-            resp["PaymentAmount"] = root.find("PaymentAmount")
-            resp["ServiceId"] = root.find("ServiceId")
-            resp["CardPan"] = root.find("CardPan")
+            try:
+                resp["ConfirmId"] = root.find('.//ns2:partnerConfirmPaymentResponse//ConfirmId', namespaces).text
+            except:
+                pass
+            resp["Confirmed"] = root.find('.//ns2:partnerPaymentResponse//Confirmed', namespaces).text
+            resp["TransactionId"] = root.find('.//ns2:partnerPaymentResponse//TransactionId', namespaces).text
+            resp["UzcardTransactionId"] = root.find('.//ns2:partnerPaymentResponse//UzcardTransactionId', namespaces).text
+            resp["PaymentDate"] = root.find('.//ns2:partnerPaymentResponse//PaymentDate', namespaces).text
+            resp["PaymentAmount"] = root.find('.//ns2:partnerPaymentResponse//PaymentAmount', namespaces).text
+            resp["ServiceId"] = root.find('.//ns2:partnerPaymentResponse//ServiceId', namespaces).text
+            resp["CardPan"] = root.find('.//ns2:partnerPaymentResponse//CardPan', namespaces).text
 
         return jsonify(resp), 200
     else:
@@ -362,21 +389,22 @@ def confirm_payment():
 
     if response.status_code == 200:
         root = ET.fromstring(response.text)
-        code = root.find("code")
+        code = root.find('.//ns2:partnerConfirmPaymentResponse//Result/code', namespaces).text
+        description = root.find('.//ns2:partnerConfirmPaymentResponse//Result/Description', namespaces).text
         resp = {
             "Result": {
                 "code": code,
-                "Description": root.find("Description")
+                "Description": description
             }
         }
         if code == "OK":
-            resp["Confirmed"] = root.find("Confirmed")
-            resp["TransactionId"] = root.find("TransactionId")
-            resp["UzcardTransactionId"] = root.find("UzcardTransactionId")
-            resp["PaymentDate"] = root.find("PaymentDate")
-            resp["PaymentAmount"] = root.find("PaymentAmount")
-            resp["ServiceId"] = root.find("ServiceId")
-            resp["CardPan"] = root.find("CardPan")
+            resp["Confirmed"] = root.find('.//ns2:partnerConfirmPaymentResponse//Confirmed', namespaces).text
+            resp["TransactionId"] = root.find('.//ns2:partnerConfirmPaymentResponse//TransactionId', namespaces).text
+            resp["UzcardTransactionId"] = root.find('.//ns2:partnerConfirmPaymentResponse//UzcardTransactionId', namespaces).text
+            resp["PaymentDate"] = root.find('.//ns2:partnerConfirmPaymentResponse//PaymentDate', namespaces).text
+            resp["PaymentAmount"] = root.find('.//ns2:partnerConfirmPaymentResponse//PaymentAmount', namespaces).text
+            resp["ServiceId"] = root.find('.//ns2:partnerConfirmPaymentResponse//ServiceId', namespaces).text
+            resp["CardPan"] = root.find('.//ns2:partnerConfirmPaymentResponse//CardPan', namespaces).text
 
         return jsonify(resp), 200
     else:
