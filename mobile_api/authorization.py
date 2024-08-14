@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from database.models import User
 from server_init import db
-from flask_security.utils import hash_password
+from flask_security.utils import hash_password, verify_password
 from twilio.rest import Client
 
 from config import TWILLIO_KEY, TWILlIO_SID, TWILLIO_SMS
@@ -207,7 +207,7 @@ def authintification():
     if not user:
         return jsonify(msg="User is not exist"), 404
 
-    if hash_password(password) != user.password:
+    if not verify_password(password, user.password):
         return jsonify(msg="Wrong password"), 404
 
     access_token = create_access_token(identity=user.id)
