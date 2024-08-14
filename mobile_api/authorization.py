@@ -287,6 +287,7 @@ def change_password_verify():
     else:
         to = request.form.get('phone_number')
         user = User.query.filter_by(phone_number=to).first()
+        to="+"+to
 
     code = request.form.get('code')
 
