@@ -271,6 +271,7 @@ def start_change_password():
         user = User.query.filter_by(phone_number=to).first()
         if not user:
             return jsonify(msg="User not exist"), 404
+        to="+"+to
         chanel="sms"
 
     client.verify.v2.services(TWILLIO_SMS).verifications.create(to=to, channel=chanel)
