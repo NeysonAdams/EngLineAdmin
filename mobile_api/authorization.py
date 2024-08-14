@@ -288,7 +288,7 @@ def change_password_verify():
         to = request.form.get('phone_number')
         user = User.query.filter_by(phone_number=to).first()
 
-    code = request.form.get('phone_number')
+    code = request.form.get('code')
 
     verify_status = client.verify.v2.services(TWILLIO_SMS).verification_checks.create(to=to, code=code)
 
