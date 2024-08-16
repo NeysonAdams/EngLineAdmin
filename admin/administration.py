@@ -7,7 +7,15 @@ from database.models import Role, Billing, User, Cource, Lesson, Exesize, Questi
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
 @admin_blueprint.route('/')
+@admin_blueprint.route('/eula')
+@admin_blueprint.route('/policy')
 def index():
+    return render_template('index.html')
+
+@admin_blueprint.route('/<lang>')
+@admin_blueprint.route('/<lang>/eula')
+@admin_blueprint.route('/<lang>/policy')
+def indexlang(lang):
     return render_template('index.html')
 
 @admin_blueprint.route('/admin')
