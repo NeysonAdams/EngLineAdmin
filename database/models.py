@@ -364,7 +364,7 @@ class Exesize(db.Model):
             return {
             "id": self.id,
             "lesson_name": self.lesson_name,
-            "type": self.type,
+            "type": type,
             "question": self.question.serialize_lesson if self.question is not None else None
             }
         if type == "input_question":
@@ -378,21 +378,21 @@ class Exesize(db.Model):
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
-                "type": self.type,
+                "type": type,
                 "audio": self.audio.serialize if self.audio is not None else None
             }
         if type == "video_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
-                "type": self.type,
+                "type": type,
                 "video": self.video.serialize if self.video is not None else None
             }
         if type == "words_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
-                "type": self.type,
+                "type": type,
                 "words": [w.serialize for w in self.words]
             }
         if type == "translate_exesize":
@@ -418,7 +418,7 @@ class Exesize(db.Model):
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
-                "type": self.type,
+                "type": type,
                 "translation": translate_exec.serialize
             }
 
