@@ -371,7 +371,7 @@ class Exesize(db.Model):
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
-                "type": self.type,
+                "type": type,
                 "inputquestion":self.input.serialize if self.input is not None else None
             }
         if type == "audio_question":
