@@ -347,7 +347,7 @@ class Exesize(db.Model):
                                backref=db.backref('exec', lazy='dynamic'))
 
     def __repr__(self):
-        return f"Name : {self.lesson_name}, Type : {self.type})"
+        return f"{self.id} ::Name : {self.lesson_name}, Type : {self.type})"
 
     @property
     def serialize(self):
