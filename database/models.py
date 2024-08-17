@@ -351,51 +351,51 @@ class Exesize(db.Model):
 
     @property
     def serialize(self):
-
+        type = self.type
         if self.type == "record_question":
             if self.input is not None:
-                self.type = "input_question"
+                type = "input_question"
             if self.audio is not None:
-                self.type = "audio_question"
+                type = "audio_question"
             if self.video is not None:
-                self.type = "video_question"
+                type = "video_question"
 
-        if self.type =="test_question":
+        if type =="test_question":
             return {
             "id": self.id,
             "lesson_name": self.lesson_name,
             "type": self.type,
             "question": self.question.serialize_lesson if self.question is not None else None
             }
-        if self.type == "input_question":
+        if type == "input_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
                 "inputquestion":self.input.serialize if self.input is not None else None
             }
-        if self.type == "audio_question":
+        if type == "audio_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
                 "audio": self.audio.serialize if self.audio is not None else None
             }
-        if self.type == "video_question":
+        if type == "video_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
                 "video": self.video.serialize if self.video is not None else None
             }
-        if self.type == "words_question":
+        if type == "words_question":
             return {
                 "id": self.id,
                 "lesson_name": self.lesson_name,
                 "type": self.type,
                 "words": [w.serialize for w in self.words]
             }
-        if self.type == "translate_exesize":
+        if type == "translate_exesize":
             if not self.translation:
                 translate_exec = TranslationQuestion()
 
