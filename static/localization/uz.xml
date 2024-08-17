@@ -32,6 +32,7 @@
     <button_yes>Ha</button_yes>
     <button_no>Yo'q</button_no>
     <button_check>Tekshirish</button_check>
+    <button_again>Yangidan</button_again>
 
     <label_text>Matn</label_text>
     <label_text_name>Matn nomi</label_text_name>
@@ -79,6 +80,8 @@
     <label_start_test_popup>Haqiqatan ham daraja oshirish testini boshlamoqchimisiz?</label_start_test_popup>
     <label_qualificationTest_failed>Afsuski, siz malaka imtihonidan o'ta olmadingiz. Keyinroq qayta urining!</label_qualificationTest_failed>
     <label_qualificationTest_failed_warning>Sinov muvaffaqiyatsiz bo'ladi. Ishonchingiz komilmi?</label_qualificationTest_failed_warning>
+    <label_well_done>A’lo</label_well_done>
+    <label_error_exesize>Ba'zi vazifalar noto'g'ri bajarilgan! To'g'irlashni xohlaysizmi?</label_error_exesize>
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
