@@ -351,6 +351,15 @@ class Exesize(db.Model):
 
     @property
     def serialize(self):
+
+        if self.type == "record_question":
+            if self.input is not None:
+                self.type = "input_question"
+            if self.audio is not None:
+                self.type = "audio_question"
+            if self.video is not None:
+                self.type = "video_question"
+
         if self.type =="test_question":
             return {
             "id": self.id,
@@ -402,6 +411,9 @@ class Exesize(db.Model):
                 db.session.commit()
             else:
                 translate_exec = TranslationQuestion().query.filter_by(id=self.translation).first()
+
+
+
 
             return {
                 "id": self.id,
