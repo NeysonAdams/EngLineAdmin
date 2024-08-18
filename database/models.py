@@ -107,7 +107,7 @@ class User(db.Model, UserMixin):
             "img_url": self.img_url,
         }
 
-    def auth_setialization(self, token, refresh_token):
+    def auth_setialization(self, token, refresh_token, isRegistrated):
         return {
             "id": self.id,
             "google_id": self.google_id,
@@ -118,7 +118,8 @@ class User(db.Model, UserMixin):
             "level": self.level,
             "img_url": self.img_url,
             "access_token": token,
-            "refresh_token": refresh_token
+            "refresh_token": refresh_token,
+            "isRegistrated": isRegistrated
         }
 
 class UserStatistic(db.Model):

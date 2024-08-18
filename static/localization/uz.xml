@@ -45,6 +45,7 @@
     <label_lessons>ta dars</label_lessons>
     <label_som>so'm</label_som>
     <label_time>Vaqt</label_time>
+    <label_duration>Davomiylik</label_duration>
     <label_date>Sana</label_date>
     <label_search>Nimani qidirmoqdamiz?</label_search>
     <label_current_pass>Hozirgi parol</label_current_pass>
@@ -82,6 +83,7 @@
     <label_qualificationTest_failed_warning>Sinov muvaffaqiyatsiz bo'ladi. Ishonchingiz komilmi?</label_qualificationTest_failed_warning>
     <label_well_done>A’lo</label_well_done>
     <label_error_exesize>Ba'zi vazifalar noto'g'ri bajarilgan! To'g'irlashni xohlaysizmi?</label_error_exesize>
+    <label_pres_and_hold>Bosib turing</label_pres_and_hold>
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
