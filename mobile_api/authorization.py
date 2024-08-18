@@ -122,7 +122,7 @@ def login():
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(user.auth_setialization(access_token, refresh_token, True)), 200
 
 
 @auth.route('/users/google_auth', methods=['POST'])
@@ -133,8 +133,9 @@ def google_auth():
     img_url = request.form.get('img_url')
 
     user = User.query.filter_by(email=email).first()
-
+    isRegistrated = False
     if user:
+        isRegistrated = True
         user.google_id = google_id
         user.login = ""
         user.name = name
@@ -157,7 +158,7 @@ def google_auth():
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(user.auth_setialization(access_token, refresh_token, isRegistrated)), 200
 
 @auth.route('/users/facebook_auth', methods=['POST'])
 def facebook_auth():
@@ -191,7 +192,7 @@ def facebook_auth():
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(user.auth_setialization(access_token, refresh_token, True)), 200
 
 @auth.route('/users/authintification', methods=["POST"])
 def authintification():

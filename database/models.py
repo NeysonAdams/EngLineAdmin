@@ -107,7 +107,7 @@ class User(db.Model, UserMixin):
             "img_url": self.img_url,
         }
 
-    def auth_setialization(self, token, refresh_token, isRegistrated):
+    def auth_setialization(self, token, refresh_token, isRegistrated=True):
         return {
             "id": self.id,
             "google_id": self.google_id,
