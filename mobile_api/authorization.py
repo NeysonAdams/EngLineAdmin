@@ -168,8 +168,9 @@ def facebook_auth():
     img_url = request.form.get('img_url')
 
     user = User.query.filter_by(email=email).first()
-
+    isRegistrated = False
     if user:
+        isRegistrated = True
         user.facebook_id = facebook_id
         user.login = ""
         user.name = name
@@ -192,7 +193,7 @@ def facebook_auth():
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token, True)), 200
+    return jsonify(user.auth_setialization(access_token, refresh_token, isRegistrated)), 200
 
 @auth.route('/users/authintification', methods=["POST"])
 def authintification():
