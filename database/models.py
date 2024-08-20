@@ -663,7 +663,7 @@ class Billing (db.Model):
     type = db.Column(db.String(255))
     amount = db.Column(db.Integer)
 
-    payment = db.relationship('Payments', backref='payment_billing', lazy=True)
+    payment = db.relationship('Payments', backref='billing', lazy=True)
 
     cource = db.relationship('Cource', backref='billing', lazy=True)
 
