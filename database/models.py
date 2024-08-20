@@ -95,6 +95,21 @@ class User(db.Model, UserMixin):
         return self.email
 
     @property
+    def admin_serialize(self):
+        return {
+            "id": self.id,
+            "google_id": self.google_id,
+            "facebook_id": self.facebook_id,
+            "name": self.name,
+            "login": self.login,
+            "email": self.email,
+            "level": self.level,
+            "img_url": self.img_url,
+            "phone_number":self.phone_number,
+
+        }
+
+    @property
     def serialize(self):
         return {
             "id": self.id,

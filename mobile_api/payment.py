@@ -280,8 +280,8 @@ def payment():
     billing = Billing.query.filter_by(id=BillingId).first()
 
     payment = Payments()
-    payment.user = user
-    payment.billing = billing
+    payment.user_id = user.id
+    payment.billing = billing.id
 
     db.session.add(payment)
     db.session.commit()
