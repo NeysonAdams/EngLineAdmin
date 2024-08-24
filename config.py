@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
-
-load_dotenv()
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 # Create dummy secrey key so we can use sessions
 SECRET_KEY = os.getenv("SECRET_KEY")
 
