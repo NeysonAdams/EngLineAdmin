@@ -262,9 +262,20 @@ def card_list():
     else:
         return jsonify(msg=response.text), response.status_code
 
+@payment_blueprint.route('/payment/test', methods=['POST'])
+def test():
+    billing = Billing.query.filter_by(id=0).first()
+
+    payment = Payments()
+    payment.user_id = 0
+    payment.billing = billing.id
+
+    db.session.add(payment)
+    db.session.commit()
+
 @payment_blueprint.route('/payment/payment', methods=['POST'])
-@jwt_required()
 def payment():
+
     UzcardIds = request.form.get('UzcardIds')
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
@@ -272,21 +283,7 @@ def payment():
     AmountInTiyin = int(request.form.get('AmountInTiyin'))*100
     CardPhone = request.form.get('CardPhone')
 
-    uid = get_jwt_identity()
-    user = User.query.filter_by(id=uid).first()
-    if not user:
-        return jsonify(msg="Mo user"), 400
-
-    billing = Billing.query.filter_by(id=BillingId).first()
-
-    payment = Payments()
-    payment.user_id = user.id
-    payment.billing = billing.id
-
-    db.session.add(payment)
-    db.session.commit()
-
-    PersonalAccount = payment.id
+    PersonalAccount = 0
 
     url = PAYMENT_HOST
 
