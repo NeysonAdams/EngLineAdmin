@@ -37,32 +37,43 @@ def ask_gpt(prompt):
     )
 
 def check_answer(question, user_answer, language):
-    # Формулируем запрос к GPT-3 для проверки правильности ответа
     prompt = f"""
-    Question: {question}\nAnswer: {user_answer}\nIs the answer correct?
-    return json array:
+     Question: {question}
+    Answer: {user_answer}
+
+    Read the text and evaluate the answer to the question based on two criteria:
+    1. Logical correctness: Check if the answer logically follows from the question and correctly addresses the question.
+
+
+    Return a JSON object with the following structure:
     {{
         "correct": bool variable shows if answer is correct
-        "description": if answer is not correct show right answer on {language} 
+        "description": if answer is not correct describe the reason on {language} 
     }}
     """
     response = ask_gpt(prompt)
     return response
 
-def check_text_question(text, questoion, answer, language):
+def check_text_question(text, question, answer, language):
     prompt = f"""
-    Text : {text}
-    Question: {questoion}
+    Text: {text}
+    Question: {question}
     Answer: {answer}
-    Read the text and check the answer on the question.
-    return json array:
+
+    Read the text and evaluate the answer to the question based on two criteria:
+    1. Logical correctness: Check if the answer logically follows from the text and correctly addresses the question.
+    2. Grammar correctness: Check if the answer is grammatically correct.
+
+    If the answer is logically correct, but contains grammatical errors, still consider the answer correct but return the grammatical errors.
+
+    Return a JSON object with the following structure:
     {{
-        "correct": bool variable shows if answer is correct,
-        "description": if answer is not correct show right answer on {language}
-        "errors": [ array of grammar or context errors
+        "correct": boolean,  // true if the answer is logically correct, false if not
+        "description": string,  // If the answer is incorrect, provide the correct answer in {language}. If the answer is correct, leave this field empty or null.
+        "errors": [  // Array of grammatical or contextual errors, if any
             {{
-                "answer_text": excerpt from the answer,
-                "correct": correct example of translation
+                "answer_text": string,  // The excerpt from the answer with an error
+                "correct": string  // The corrected version of the excerpt
             }}
             ...
         ]
@@ -138,5 +149,3 @@ def check_grammar(text, language):
     """
     response = ask_gpt(prompt)
     return response
-
-
