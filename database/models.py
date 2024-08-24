@@ -176,7 +176,7 @@ class Cource(db.Model):
     def __repr__(self):
         return self.title + " :: " + self.lenguage
 
-    @property
+
     def serialize(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
@@ -193,7 +193,7 @@ class Cource(db.Model):
             "lessons": [i.serialize for i in self.lessons]
         }
 
-    @property
+
     def data(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
@@ -208,7 +208,6 @@ class Cource(db.Model):
             "reiting":self.reiting
         }
 
-    @property
     def serialize_header(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
@@ -223,7 +222,6 @@ class Cource(db.Model):
             "count": len(self.lessons)
         }
 
-    @property
     def serialize_lesons(self, user):
         billing = Billing.query.filter(Billing.id==self.price).first()
         return {
