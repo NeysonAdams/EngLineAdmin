@@ -177,7 +177,7 @@ class Cource(db.Model):
         return self.title + " :: " + self.lenguage
 
     @property
-    def serialize(self):
+    def serialize(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
 
@@ -188,13 +188,13 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.is_buy,
+            "is_buy":self.id in user.cources_in_progress,
             "reiting":self.reiting,
             "lessons": [i.serialize for i in self.lessons]
         }
 
     @property
-    def data(self):
+    def data(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
         return {
@@ -204,12 +204,12 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.is_buy,
+            "is_buy":self.id in user.cources_in_progress,
             "reiting":self.reiting
         }
 
     @property
-    def serialize_header(self):
+    def serialize_header(self, user):
 
         billing = Billing.query.filter(Billing.id==self.price).first()
         return {
@@ -218,13 +218,13 @@ class Cource(db.Model):
             "level": self.level,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.is_buy,
+            "is_buy":self.id in user.cources_in_progress,
             "reiting":self.reiting,
             "count": len(self.lessons)
         }
 
     @property
-    def serialize_lesons(self):
+    def serialize_lesons(self, user):
         billing = Billing.query.filter(Billing.id==self.price).first()
         return {
             "id": self.id,
@@ -233,7 +233,7 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.is_buy,
+            "is_buy":self.id in user.cources_in_progress,
             "reiting":self.reiting,
             "lessons": [i.serialize_title for i in self.lessons]
         }
@@ -663,9 +663,9 @@ class Billing (db.Model):
     type = db.Column(db.String(255))
     amount = db.Column(db.Integer)
 
-    payment = db.relationship('Payments', backref='billing', lazy=True)
+    payment = db.relationship('Payments', backref='p_billing', lazy=True)
 
-    cource = db.relationship('Cource', backref='billing', lazy=True)
+    cource = db.relationship('Cource', backref='c_billing', lazy=True)
 
     def __repr__(self):
         return f"{self.id} : {self.type} : {self.amount}"

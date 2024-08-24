@@ -50,13 +50,18 @@ def get_speking_questions():
 def all():
 
     lenguage = request.args.get('ln')
+
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+    if not user:
+        return jsonify(msg="No user"), 400
     cources = []
     if not lenguage:
         cources = Cource.query.all()
     else:
         cources = Cource.query.filter_by(lenguage=lenguage).all()
 
-    return jsonify(cources= [i.data for i in cources]), 200
+    return jsonify(cources= [i.data(user) for i in cources]), 200
 
 @cources_bluepprint.route('/cource/bylevel', methods=['GET'])
 @jwt_required()
@@ -75,10 +80,14 @@ def get_lessons():
     cource_id = request.form.get('cource_id')
     cource = Cource.query.filter_by(id=cource_id).first()
 
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+    if not user:
+        return jsonify(msg="Mo user"), 400
     if not cource:
         return jsonify(msg="Cource not exist"), 404
 
-    return jsonify(cource.serialize_lesons), 200
+    return jsonify(cource.serialize_lesons(user)), 200
 
 @cources_bluepprint.route('/cource/get_lesson', methods=['POST'])
 @jwt_required()
@@ -129,7 +138,7 @@ def passed():
 @jwt_required()
 def add_progress():
     uid = get_jwt_identity()
-    cource_id = request.form.get('name')
+    cource_id = request.form.get('id')
 
     user = User.query.filter_by(id=uid).first()
 
@@ -202,7 +211,7 @@ def get_home_page():
     exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang).all()
 
 
-    return jsonify(cources=[i.serialize_header for i in cources],
+    return jsonify(cources=[i.serialize_header(user) for i in cources],
                    exesizes=[i.serialize_header for i in exesizes],
                    my_cources=[i.serialize_header for i in user.cources_in_progress],
                    user=user.serialize), 200
@@ -221,6 +230,18 @@ def getExesizes():
         return jsonify({"msg": "PAckage not exist"}), 404
 
     return jsonify(exesizes.serialize)
+
+@cources_bluepprint.route('/cource/save', methods=['POST'])
+@jwt_required()
+def save():
+
+
+    cource_id = request.form.get('Cource_id')
+    lang  = request.form.get('Lang')
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+
+
 
 @cources_bluepprint.route('/cource/set_search_lesson', methods=['POST'])
 @jwt_required()
@@ -250,8 +271,15 @@ def set_search_lesson():
 @cources_bluepprint.route('/cource/search', methods=['POST'])
 @jwt_required()
 def search():
+    uid = get_jwt_identity()
     query = request.form.get('query')
     config = str(request.form.get('config'))
+
+
+    user = User.query.filter_by(id=uid).first()
+    if not user:
+        return jsonify(msg="User is not exist"), 401
+
 
     cources = []
     exesizes = []
@@ -263,12 +291,12 @@ def search():
         exesizes = Exesesizes.query.filter(Exesesizes.name.contains(query)).all()
 
     if config == "c":
-        return jsonify(cources=[i.serialize for i in cources]), 200
+        return jsonify(cources=[i.serialize(user) for i in cources]), 200
     if config == "e":
         return  jsonify(exesizes=[i.serialize for i in exesizes]),200
 
 
-    return jsonify(cources=[i.serialize for i in cources],
+    return jsonify(cources=[i.serialize() for i in cources],
                    exesizes=[i.serialize for i in exesizes]), 200
 
 @cources_bluepprint.route('/cource/lessons/comments/add', methods=['POST'])
