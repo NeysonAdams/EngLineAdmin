@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 # Create dummy secrey key so we can use sessions
 SECRET_KEY = os.getenv("SECRET_KEY")
 

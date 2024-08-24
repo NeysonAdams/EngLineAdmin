@@ -1,7 +1,4 @@
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 from server_init import app,  creat_db, build_sample_db, add_questions,add_words, test_build
 
