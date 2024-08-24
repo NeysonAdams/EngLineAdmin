@@ -138,7 +138,7 @@ def passed():
 @jwt_required()
 def add_progress():
     uid = get_jwt_identity()
-    cource_id = request.form.get('id')
+    cource_id = int(request.form.get('id'))
 
     user = User.query.filter_by(id=uid).first()
 
@@ -148,7 +148,7 @@ def add_progress():
     course = Cource.query.filter_by(id=cource_id).first()
 
     if not course:
-        return jsonify(msg="Course is not exist"), 401
+        return jsonify(msg=f"Course is not exist {cource_id}"), 404
 
     user.cources_in_progress.append(course)
 
