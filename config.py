@@ -7,6 +7,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # Create in-memory database
 DATABASE_FILE = os.getenv("DATABASE_FILE")
+print(f"DATABASE_FILE ::: {DATABASE_FILE}")
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_FILE
 SQLALCHEMY_ECHO = True
 
