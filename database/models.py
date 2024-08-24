@@ -188,7 +188,7 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.id in user.cources_in_progress,
+            "is_buy":self in user.cources_in_progress,
             "reiting":self.reiting,
             "lessons": [i.serialize for i in self.lessons]
         }
@@ -204,7 +204,7 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.id in user.cources_in_progress,
+            "is_buy":self in user.cources_in_progress,
             "reiting":self.reiting
         }
 
@@ -217,7 +217,7 @@ class Cource(db.Model):
             "level": self.level,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.id in user.cources_in_progress,
+            "is_buy":self in user.cources_in_progress,
             "reiting":self.reiting,
             "count": len(self.lessons)
         }
@@ -231,7 +231,7 @@ class Cource(db.Model):
             "discription": self.discription,
             "price": billing.serialize,
             "img_url": self.img_url,
-            "is_buy":self.id in user.cources_in_progress,
+            "is_buy":self in user.cources_in_progress,
             "reiting":self.reiting,
             "lessons": [i.serialize_title for i in self.lessons]
         }
