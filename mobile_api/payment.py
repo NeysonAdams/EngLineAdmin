@@ -6,11 +6,7 @@ import hashlib
 import requests
 import xml.etree.ElementTree as ET
 
-PAYMENT_HOST = ""
-SECRET_KEY = ""
-SEVICE_ID = ""
-LOGIN=""
-PASSWORD = ""
+from config import PAYMENT_HOST, SECRET_KEY, SEVICE_ID, LOGIN, PASSWORD
 
 payment_blueprint = Blueprint('payment_bluepprint', __name__)
 

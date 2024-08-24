@@ -1,8 +1,7 @@
-import os.path
-
+from config import GPT_KEY
 from openai import OpenAI
 
-api_key = ""
+api_key = GPT_KEY
 
 client = OpenAI(
     # This is the default and can be omitted
@@ -48,7 +47,7 @@ def check_answer(question, user_answer, language):
     Return a JSON object with the following structure:
     {{
         "correct": bool variable shows if answer is correct
-        "description": if answer is not correct describe the reason on {language} 
+        "description": if answer is not correct show right answer on {language} 
     }}
     """
     response = ask_gpt(prompt)

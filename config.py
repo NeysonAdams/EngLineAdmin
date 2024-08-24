@@ -1,15 +1,19 @@
+import os
+
+
+
 # Create dummy secrey key so we can use sessions
-SECRET_KEY = ''
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # Create in-memory database
-DATABASE_FILE = 'sample_db.sqlite'
+DATABASE_FILE = os.getenv("DATABASE_FILE")
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + DATABASE_FILE
 SQLALCHEMY_ECHO = True
 
 # Flask-Security config
 SECURITY_URL_PREFIX = "/admin"
-SECURITY_PASSWORD_HASH = ""
-SECURITY_PASSWORD_SALT = ""
+SECURITY_PASSWORD_HASH = os.getenv("SECURITY_PASSWORD_HASH")
+SECURITY_PASSWORD_SALT = os.getenv("SECURITY_PASSWORD_SALT")
 
 # Flask-Security URLs, overridden because they don't put a / at the end
 SECURITY_LOGIN_URL = "/login/"
@@ -28,6 +32,14 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 ENG_LEVELS = ['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced']
 INPUTS_TYPES = ['add_missing', 'check_grammar', 'check_answer', 'choose_variant']
 
-TWILlIO_SID=""
-TWILLIO_KEY=""
-TWILLIO_SMS=''
+TWILlIO_SID=os.getenv("TWILlIO_SID")
+TWILLIO_KEY=os.getenv("TWILLIO_KEY")
+TWILLIO_SMS=os.getenv("TWILLIO_SMS")
+
+PAYMENT_HOST = os.getenv("PAYMENT_HOST")
+SECRET_KEY = os.getenv("SECRET_KEY")
+SEVICE_ID = os.getenv("SEVICE_ID")
+LOGIN=os.getenv("LOGIN")
+PASSWORD = os.getenv("PASSWORD")
+
+GPT_KEY = os.getenv("GPT_KEY")
