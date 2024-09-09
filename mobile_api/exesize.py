@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Lesson, User, Inputquestion, Audioquestion, Videoquestion, LessonSchedler, TranslationQuestion, Exesesizes
+from database.models import Exesize, Lesson, User, Inputquestion, Audioquestion, Videoquestion, LessonSchedler, TranslationQuestion, Exesesizes, Subscription
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
@@ -31,6 +31,7 @@ def get():
 @exesize_blueprint.route('/exesize/get_exesizes', methods=['POST'])
 @jwt_required()
 def get_exesizes():
+    uid = get_jwt_identity()
     language = request.form.get("language")
     type = request.form.get("type")
     level = request.form.get("level")
@@ -40,7 +41,9 @@ def get_exesizes():
     if not exesizes:
         return jsonify(status="Fall"), 200
 
-    return jsonify(status="Success", exesizes=exesizes), 200
+    subscription = Subscription.query.filter_by(user_id=uid).first()
+
+    return jsonify(status="Success", exesizes=exesizes.serialize(subscription)), 200
 
 @exesize_blueprint.route('/exesize/check_input', methods=['POST'])
 @jwt_required()

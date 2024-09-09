@@ -18,6 +18,8 @@ from config import INPUTS_TYPES
 from database.models import Billing
 from mobile_api.aicomponent import text_to_speach, speach_to_text, generate_text
 
+import hashlib
+
 levels = {
             "Beginner": 1,
             "Elementary": 2,
@@ -396,39 +398,16 @@ class QuestionView(TableView):
     }
 
 class SubscriptionView(TableView):
+    column_labels = dict(type='Type', code='Discription', user_id='User', expiration_date="Date")
 
-    def picture_validation(form, field):
-        if field.data:
-            filename = field.data.filename
-            if filename[-4:] != '.jpg' and filename[-4:] != '.png' and filename[-4:] != '.gif':
-                raise ValidationError('file must be .jpg or .png or gif')
+    form_columns = ['type', 'code', 'user_id', 'expiration_date']
 
-            f_name = f"img_s_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+    form_extra_fields = {
+        'type': SelectField('Type',
+                            choices=['MONTH', '3MONTH', 'YEAR', 'SUB'])
+    }
 
-            img_path = os.path.join(images_folder, f_name)
-            field.data = field.data.stream.read()
-            image = Image.open(io.BytesIO(field.data))
-            image.save(img_path)
-            field.data = url_for('static', filename=f"/images/{f_name}")
-            # setattr(form._obj, 'img_url', url_for('static', filename=f"/images/{f_name}"))
-
-    def on_model_change(view, context, model, name):
-        setattr(model, 'img_url', context.img_url.data)
-
-
-    def pic_formatter(view, context, model, name):
-       return Markup('<img src="%s">' % model.image_source)
-
-
-    form_columns = ['name', 'discription', 'price', 'is_active', 'img_url']
-    column_labels = dict(name='Title', discription='Discription', price='Price',
-                         is_active='Active', img_url='Image URL')
-
-    column_formatters = dict(img_url=pic_formatter)
-    form_overrides = dict(img_url=FileUploadField)
-    form_args = dict(img_url=dict(validators=[picture_validation]))
-
-    column_editable_list = ['name']
+    column_editable_list = ['type', 'user_id', 'code']
     column_searchable_list = column_editable_list
 
 class BillingView(TableView):
@@ -457,6 +436,26 @@ class SpeackingLessonScheduller(TableView):
     column_editable_list = ['topic', 'level', 'date']
     column_searchable_list = column_editable_list
 
+def generate_promo_code():
+    current_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    hash_object = hashlib.sha256(current_date.encode())
+    hash_string = ''.join(filter(str.isdigit, hash_object.hexdigest()))
+    promo_code = hash_string[:6]
+    return promo_code
+
+class PromoView(TableView):
+
+    form_columns = ["type", "max_count", "users"]
+    column_labels = dict(type='Type', code="Code", max_count='Max Use', current_count="Used")
+
+    def on_model_change(self, model, form, is_created):
+        model.code = generate_promo_code()
+        super(PromoView, self).on_model_add(model, form, is_created)
+
+    form_extra_fields = {
+        'type': SelectField('Type',
+                                choices=["MULTY", "SINGLE", "MULTYNONE"])
+    }
 
 
 # class WordView(TableView):

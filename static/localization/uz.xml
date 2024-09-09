@@ -167,4 +167,13 @@
     <search_all>Hammasi</search_all>
     <search_cource>Kurslar</search_cource>
     <search_exec>Mashqlar</search_exec>
+
+    <subcription_title>Obuna</subcription_title>
+    <subcription_month>Oy</subcription_month>
+    <subcription_year>Yil</subcription_year>
+    <subcription_confirm>Tasdiqlash</subcription_confirm>
+    <subcription_unsubscribe>Obunani bekor qilish</subcription_unsubscribe>
+    <subcription_update>Yangilash</subcription_update>
+    <subcription_promo>Promo kod</subcription_promo>
+    <payment_subscription_avtivate>Obuna faollashtirildi</payment_subscription_avtivate>
 </main>

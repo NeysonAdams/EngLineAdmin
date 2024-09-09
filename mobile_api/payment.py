@@ -275,7 +275,6 @@ def payment():
     UzcardIds = request.form.get('UzcardIds')
     Version = request.form.get('Version')
     Lang = request.form.get('Lang')
-    BillingId = request.form.get('BillingId')
     AmountInTiyin = int(request.form.get('AmountInTiyin'))*100
     CardPhone = request.form.get('CardPhone')
 

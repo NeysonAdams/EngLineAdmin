@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import User
+from database.models import User, Subscription
 from server_init import db
 from flask_security.utils import hash_password, verify_password
 from twilio.rest import Client
+from mobile_api.subscription import addSubscription
 
 from config import TWILLIO_KEY, TWILlIO_SID, TWILLIO_SMS
 
@@ -37,14 +38,17 @@ def create_user():
     if user:
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
-        return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+        return jsonify(user.auth_serialization(access_token, refresh_token)), 200
 
     user = User.query.filter_by(facebook_id=facebook_id).first()
 
     if user:
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
-        return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+
+        subscription = Subscription.query.filter_by(user_id=user.id).first()
+
+        return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
 
     new_user = User()
     new_user.login = ""
@@ -58,9 +62,11 @@ def create_user():
     db.session.add(new_user)
     db.session.commit()
 
+    subscription, created = addSubscription(user, "SUB", "")
+
     access_token = create_access_token(identity=new_user.id)
     refresh_token = create_refresh_token(identity=new_user.id)
-    return jsonify(new_user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(new_user.auth_serialization(access_token, refresh_token, subscription)), 200
 
 
 @auth.route('/users/set_name', methods=['POST'])
@@ -120,9 +126,11 @@ def login():
     if not user:
         return jsonify(msg="User is not exist"), 401
 
+    subscription = Subscription.query.filter_by(user_id=user.id).first()
+
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token, True)), 200
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription, True)), 200
 
 
 @auth.route('/users/google_auth', methods=['POST'])
@@ -131,7 +139,7 @@ def google_auth():
     name = request.form.get('name')
     email = request.form.get('email')
     img_url = request.form.get('img_url')
-
+    subscription = None
     user = User.query.filter_by(email=email).first()
     isRegistrated = False
     if user:
@@ -142,6 +150,7 @@ def google_auth():
         user.email = email
         user.img_url = img_url
         db.session.commit()
+        subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
         user = User.query.filter_by(google_id=google_id).first()
 
@@ -155,10 +164,11 @@ def google_auth():
             db.session.add(new_user)
             db.session.commit()
             user = new_user
+            subscription, created = addSubscription(user, "SUB", "")
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token, isRegistrated)), 200
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription, isRegistrated)), 200
 
 @auth.route('/users/facebook_auth', methods=['POST'])
 def facebook_auth():
@@ -166,7 +176,7 @@ def facebook_auth():
     name = request.form.get('name')
     email = request.form.get('email')
     img_url = request.form.get('img_url')
-
+    subscription = None
     user = User.query.filter_by(email=email).first()
     isRegistrated = False
     if user:
@@ -177,6 +187,7 @@ def facebook_auth():
         user.email = email
         user.img_url = img_url
         db.session.commit()
+        subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
         user = User.query.filter_by(facebook_id=facebook_id).first()
 
@@ -190,10 +201,11 @@ def facebook_auth():
             db.session.add(new_user)
             db.session.commit()
             user = new_user
+            subscription, created = addSubscription(user, "SUB", "")
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token, isRegistrated)), 200
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription, isRegistrated)), 200
 
 @auth.route('/users/authintification', methods=["POST"])
 def authintification():
@@ -212,9 +224,10 @@ def authintification():
     if not verify_password(password, user.password):
         return jsonify(msg="Wrong password"), 404
 
+    subscription = Subscription.query.filter_by(user_id=user.id).first()
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
 
 
 @auth.route('/users/registrate', methods=["POST"])
@@ -245,9 +258,11 @@ def registrate():
     db.session.add(new_user)
     db.session.commit()
 
+    subscription, created = addSubscription(user, "SUB", "")
+
     access_token = create_access_token(identity=new_user.id)
     refresh_token = create_refresh_token(identity=new_user.id)
-    return jsonify(new_user.auth_setialization(access_token, refresh_token)), 200
+    return jsonify(new_user.auth_serialization(access_token, refresh_token, subscription)), 200
 
 
 @auth.route('/users/verify_number', methods=["POST"])

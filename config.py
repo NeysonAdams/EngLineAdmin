@@ -43,3 +43,6 @@ LOGIN=os.getenv("LOGIN")
 PASSWORD = os.getenv("PASSWORD")
 
 GPT_KEY = os.getenv("GPT_KEY")
+
+
+ENKRKEY = os.getenv("ENKRKEY")

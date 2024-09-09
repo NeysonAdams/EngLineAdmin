@@ -15,10 +15,14 @@ import json
 db = SQLAlchemy()
 
 # Define models
-roles_users = db.Table(
-    'roles_users',
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
+roles_users = db.Table('roles_users',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id'), primary_key=True)
+)
+
+promo_users = db.Table('promo_users',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('promo_id', db.Integer, db.ForeignKey('promo.id'), primary_key=True)
 )
 
 user_cources_pased = db.Table(
@@ -53,9 +57,8 @@ users_exec_stat = db.Table(
 
 
 class Role(db.Model, RoleMixin):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), unique=True)
 
     def __str__(self):
         return self.name
@@ -75,8 +78,7 @@ class User(db.Model, UserMixin):
     confirmed_at = db.Column(db.DateTime())
     fs_uniquifier = db.Column(db.String(64), unique=True)
 
-    roles = db.relationship('Role', secondary=roles_users,
-                            backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
     cources_pased = db.relationship('Cource', secondary=user_cources_pased,
                                  backref=db.backref('cource_passed', lazy='dynamic'))
@@ -91,9 +93,12 @@ class User(db.Model, UserMixin):
 
     speach_lesson = db.relationship('LessonSchedler', backref='schedler_user', lazy=True)
 
+    subscription = db.relationship('Subscription', backref='user_subscription', uselist=False)
+
     def __str__(self):
         return self.email
 
+    # Serialization methods
     @property
     def admin_serialize(self):
         return {
@@ -105,8 +110,7 @@ class User(db.Model, UserMixin):
             "email": self.email,
             "level": self.level,
             "img_url": self.img_url,
-            "phone_number":self.phone_number,
-
+            "phone_number": self.phone_number,
         }
 
     @property
@@ -122,7 +126,7 @@ class User(db.Model, UserMixin):
             "img_url": self.img_url,
         }
 
-    def auth_setialization(self, token, refresh_token, isRegistrated=True):
+    def auth_serialization(self, token, refresh_token, subscription, isRegistrated=True):
         return {
             "id": self.id,
             "google_id": self.google_id,
@@ -134,7 +138,8 @@ class User(db.Model, UserMixin):
             "img_url": self.img_url,
             "access_token": token,
             "refresh_token": refresh_token,
-            "isRegistrated": isRegistrated
+            "isRegistrated": isRegistrated,
+            "subscription": {} if not subscription else subscription.serialize
         }
 
 class UserStatistic(db.Model):
@@ -315,15 +320,16 @@ class Exesesizes(db.Model):
     exesize =db.relationship('Exesize', secondary=exesizes_table,
                                backref=db.backref('exesize_list', lazy='dynamic'))
 
-    @property
-    def serialize(self):
+    def serialize(self, subscription):
         return {
             "id": self.id,
             "name": self.name,
             'img_link': self.img_url,
             'type':self.type,
             'level':self.level,
-            "exesize": [i.serialize for i in self.exesize]
+            "exesize": [i.serialize for i in self.exesize],
+            "subscription": {} if not subscription else subscription.serialize
+
         }
 
     @property
@@ -571,22 +577,25 @@ class Question (db.Model):
             "var_dif": self.var_dif
         }
 
+
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    discription = db.Column(db.String(255))
-    price = db.Column(db.String(255))
-    is_active = db.Column(db.Boolean())
-    img_url = db.Column(db.String(255))
+    type = db.Column(db.String(255))  # Убедитесь, что это поле существует
+    is_active = db.Column(db.Boolean)
+    code = db.Column(db.String(255))
+    expiration_date = db.Column(db.DateTime)
+    paymentdata = db.Column(db.String(2255))
+    status = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)  # Используем 'users.id'
 
     @property
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
-            "discription": self.discription,
+            "code": self.code,
+            "status":self.status,
             "is_active": self.is_active,
-            "img_url": self.img_url
+            "type": self.type
         }
 
 
@@ -722,3 +731,12 @@ class Comments(db.Model):
             "userName": user.name,
             "comment": self.comment
         }
+
+class Promo(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    code = db.Column(db.String(255), unique=True)
+    type = db.Column(db.String(255))
+    max_count = db.Column(db.Integer)
+    current_count = db.Column(db.Integer)
+    is_active = db.Column(db.Boolean())
+    users = db.relationship('User', secondary=promo_users, backref=db.backref('promo_users', lazy='dynamic'))

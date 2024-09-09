@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler, Reiting, Comments
+from database.models import Cource, User, Lesson, Question, Inputquestion, Audioquestion, Videoquestion, Exesesizes, LessonSchedler, Reiting, Comments, Subscription
 from server_init import db
 
 cources_bluepprint = Blueprint('cources_bluepprint', __name__)
@@ -219,6 +219,7 @@ def get_home_page():
 @cources_bluepprint.route('/cource/exesizes', methods=['GET'])
 @jwt_required()
 def getExesizes():
+    uid = get_jwt_identity()
     id = request.args.get('id')
 
     if not id:
@@ -227,9 +228,11 @@ def getExesizes():
     exesizes = Exesesizes.query.filter(Exesesizes.id == id).first()
 
     if not exesizes:
-        return jsonify({"msg": "PAckage not exist"}), 404
+        return jsonify({"msg": "Package not exist"}), 404
 
-    return jsonify(exesizes.serialize)
+    subscription = Subscription.query.filter_by(user_id=uid).first()
+
+    return jsonify(exesizes.serialize(subscription))
 
 @cources_bluepprint.route('/cource/save', methods=['POST'])
 @jwt_required()
@@ -295,9 +298,10 @@ def search():
     if config == "e":
         return  jsonify(exesizes=[i.serialize for i in exesizes]),200
 
+    subscription = Subscription.query.filter_by(user_id=uid).first()
 
     return jsonify(cources=[i.serialize() for i in cources],
-                   exesizes=[i.serialize for i in exesizes]), 200
+                   exesizes=[i.serialize(subscription) for i in exesizes]), 200
 
 @cources_bluepprint.route('/cource/lessons/comments/add', methods=['POST'])
 @jwt_required()

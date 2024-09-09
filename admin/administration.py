@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView
-from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller
-from database.models import Role, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion
+from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView
+from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -70,6 +70,10 @@ class Administration:
                              name="Разговорный урок"))
 
         self.admin.add_view(
-            SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Subscriptions"))
+            SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Подписки"))
+
+        self.admin.add_view(
+            PromoView(Promo, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
+                             name="Промокод"))
 
 

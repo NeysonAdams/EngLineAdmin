@@ -166,4 +166,13 @@
     <search_all>Все</search_all>
     <search_cource>Курсы</search_cource>
     <search_exec>Упражнения</search_exec>
+
+    <subcription_title>Подписка</subcription_title>
+    <subcription_month>Месяц</subcription_month>
+    <subcription_year>Год</subcription_year>
+    <subcription_confirm>Подтвердить</subcription_confirm>
+    <subcription_unsubscribe>Отменить</subcription_unsubscribe>
+    <subcription_update>Обновить</subcription_update>
+    <subcription_promo>Промокод</subcription_promo>
+    <payment_subscription_avtivate>Подписка активированна</payment_subscription_avtivate>
 </main>

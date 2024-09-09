@@ -1,9 +1,11 @@
 from flask import Flask, url_for
 from flask_security import Security, SQLAlchemyUserDatastore
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask_security.utils import hash_password
 import flask_admin
 from flask_admin import helpers as admin_helpers
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
 from flask_cors import CORS
 
@@ -19,6 +21,7 @@ from mobile_api.statistics import statistic_blueprint
 from mobile_api.payment import payment_blueprint
 from mobile_api.video_streamimg import video_stram_blueprint
 from mobile_api.profile import profile
+from mobile_api.subscription import subscription_blueprint, subscriptionUpdate
 
 import json
 
@@ -26,6 +29,7 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 db.init_app(app)
 jwt = JWTManager(app)
+migrate = Migrate(app, db)
 CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 admin = flask_admin.Admin(
     app,
@@ -44,6 +48,7 @@ app.register_blueprint(statistic_blueprint)
 app.register_blueprint(payment_blueprint)
 app.register_blueprint(video_stram_blueprint)
 app.register_blueprint(profile)
+app.register_blueprint(subscription_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -60,6 +65,14 @@ levels = {
     "Pre-Advanced":5,
     "Advanced":6
 }
+
+scheduler = BackgroundScheduler()
+def scheduled_task():
+    subscriptionUpdate(app)
+
+scheduler.add_job(scheduled_task, 'cron', hour=10, minute=0)
+
+scheduler.start()
 
 @security.context_processor
 def security_context_processor():
