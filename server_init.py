@@ -1,6 +1,7 @@
 from flask import Flask, url_for
 from flask_security import Security, SQLAlchemyUserDatastore
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import asyncio
 from flask_security.utils import hash_password
 import flask_admin
 from flask_admin import helpers as admin_helpers
@@ -66,11 +67,10 @@ levels = {
     "Advanced":6
 }
 
-scheduler = BackgroundScheduler()
-def scheduled_task():
-    subscriptionUpdate(app)
 
-scheduler.add_job(scheduled_task, 'cron', hour=10, minute=0)
+scheduler = AsyncIOScheduler()
+
+scheduler.add_job(lambda: asyncio.create_task(subscriptionUpdate(app)), 'cron', hour=10, minute=0)
 
 scheduler.start()
 
