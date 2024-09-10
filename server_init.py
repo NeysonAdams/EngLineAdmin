@@ -1,13 +1,12 @@
 from flask import Flask, url_for
 from flask_security import Security, SQLAlchemyUserDatastore
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
 from flask_security.utils import hash_password
 import flask_admin
 from flask_admin import helpers as admin_helpers
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-
+import datetime
 from flask_cors import CORS
 
 from database.models import Role, User, db, Question, Dictionary, Englishword, Russianword, Inputquestion
@@ -66,13 +65,27 @@ levels = {
     "Pre-Advanced":5,
     "Advanced":6
 }
+async def scheduled_task():
+    subscriptionUpdate(app)
 
+async def scheduler():
+    while True:
+        # Запуск задачи каждый день в 10:00 по времени сервера
+        now = datetime.datetime.now()
+        target_time = now.replace(hour=10, minute=0, second=0, microsecond=0)
 
-scheduler = AsyncIOScheduler()
+        # Если текущее время больше целевого, сдвигаем на следующий день
+        if now > target_time:
+            target_time += datetime.timedelta(days=1)
 
-scheduler.add_job(lambda: asyncio.create_task(subscriptionUpdate(app)), 'cron', hour=10, minute=0)
+        # Вычисляем, сколько осталось до 10:00
+        wait_time = (target_time - now).total_seconds()
 
-scheduler.start()
+        # Ждем до целевого времени
+        await asyncio.sleep(wait_time)
+
+        # Выполняем задачу
+        await scheduled_task()
 
 @security.context_processor
 def security_context_processor():
