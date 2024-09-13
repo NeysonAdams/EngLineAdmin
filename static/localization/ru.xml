@@ -175,4 +175,6 @@
     <subcription_update>Обновить</subcription_update>
     <subcription_promo>Промокод</subcription_promo>
     <payment_subscription_avtivate>Подписка активированна</payment_subscription_avtivate>
+    <promo_active_message>Вы получили доступ к AI заданиям на месяц</promo_active_message>
+    <promo_not_found>Неверный промокод</promo_not_found>
 </main>

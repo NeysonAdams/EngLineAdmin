@@ -176,4 +176,6 @@
     <subcription_update>Yangilash</subcription_update>
     <subcription_promo>Promo kod</subcription_promo>
     <payment_subscription_avtivate>Obuna faollashtirildi</payment_subscription_avtivate>
+    <promo_active_message>Sizga AI topshiriqlariga bir oylik kirish huquqi berildi</promo_active_message>
+    <promo_not_found>Notog'ri promo kod</promo_not_found>
 </main>
