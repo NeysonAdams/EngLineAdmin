@@ -398,7 +398,7 @@ class QuestionView(TableView):
     }
 
 class SubscriptionView(TableView):
-    column_labels = dict(type='Type', code='Discription', user_id='User', expiration_date="Date")
+    column_labels = dict(type='Type', code='Code', user_id='User', expiration_date="Date")
 
     form_columns = ['type', 'code', 'user_id', 'expiration_date']
 
@@ -448,9 +448,11 @@ class PromoView(TableView):
     form_columns = ["type", "max_count", "users"]
     column_labels = dict(type='Type', code="Code", max_count='Max Use', current_count="Used")
 
-    def on_model_change(self, model, form, is_created):
-        model.code = generate_promo_code()
-        super(PromoView, self).on_model_add(model, form, is_created)
+    def on_model_change(view, context, model, name):
+        code = generate_promo_code()
+        setattr(model, 'code', code)
+        setattr(model, 'current_count', 0)
+
 
     form_extra_fields = {
         'type': SelectField('Type',

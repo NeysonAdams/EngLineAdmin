@@ -5,7 +5,7 @@ from server_init import db
 from config import ENKRKEY
 
 import hashlib
-import datetime
+from datetime import datetime
 import json
 
 subscription_blueprint = Blueprint('subscription_blueprint', __name__)
@@ -30,7 +30,7 @@ def decrypt(encrypted_string: str, key1: int, key2: int) -> str:
     return ''.join(decrypted_chars)
 
 def generate_unique_code(email: str) -> str:
-    current_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     base_string = email + current_date
 
@@ -41,7 +41,7 @@ def generate_unique_code(email: str) -> str:
     return unique_code
 
 
-def add_months(source_date, months):
+def add_months(source_date, months)->datetime:
     # Получаем новый месяц и год
     month = source_date.month - 1 + months
     year = source_date.year + month // 12
@@ -54,33 +54,37 @@ def add_months(source_date, months):
 
     return datetime(year, month, day)
 
-def addSubscription(user:User, type:str, payment:str):
+def addSubscription(user:User, stype:str, payment:str):
 
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
     s = Subscription.query.filter_by(user_id=user.id, is_active=True).first()
 
-    if s.type == "SUB":
-        if s.is_active:
-            current_date = s.expiration_date
-        db.session.delete(s)
-    else:
-        return None,  False
+    if s:
+        if s.type == "SUB":
+            if s.is_active:
+                current_date = s.expiration_date
+            db.session.delete(s)
+        else:
+            return s,  False
 
-    if type == "MONTH" or type == "SUB":
+    if stype == "MONTH" or stype == "SUB":
         current_date = add_months(current_date, 1)
-    elif type == "3MONTH":
+    elif stype == "3MONTH":
         current_date = add_months(current_date, 3)
-    elif type == "YEAR":
+    elif stype == "YEAR":
         current_date = add_months(current_date, 12)
 
-    subscription = Subscription()
-    subscription.type = type
-    subscription.code = generate_unique_code(user.email)
-    subscription.expiration_date = current_date
-    subscription.is_active = True
-    subscription.user_id =user.id
-    subscription.paymentdata = payment
-    subscription.status = "ACTIVE"
+    print(f"Тип current_date: {type(current_date)}, Значение: {current_date}")
+
+    subscription = Subscription(
+        type=stype,
+        code=generate_unique_code(user.email),
+        expiration_date=current_date,
+        is_active=True,
+        user_id=user.id,
+        paymentdata=payment,
+        status="ACTIVE"
+    )
 
     db.session.add(subscription)
     db.session.commit()
@@ -219,8 +223,9 @@ def validate_promo():
 
     code = request.form.get('code')
 
-    if not user:
-        return jsonify(msg="No user"), 400
+    promos = Promo.query.all()
+    for p in promos:
+        print("Code : "+p.code)
 
     promo = Promo.query.filter_by(code=code).first()
 
@@ -232,23 +237,25 @@ def validate_promo():
             return jsonify(msg="Pro Code Still Activated"), 404
         if user not in promo.users:
             return jsonify(msg="Pro Code not for this user"), 404
+        subscription, is_created = addSubscription(user, "SUB", "")
         promo.is_active = True
         db.session.commit()
-        subscription, is_created = addSubscription(user, "MONTH", "")
         if is_created:
-            return jsonify(subscription), 200
+            return jsonify(subscription.serialize), 200
 
 
     if promo.type == "MULTY":
         if promo.max_count == promo.current_count:
             return jsonify(msg="Pro Code Expired"), 404
         else:
+            if not promo.current_count:
+                promo.current_count = 0
             promo.current_count = promo.current_count + 1
             promo.users.append(user)
             db.session.commit()
-            subscription, is_created = addSubscription(user, "MONTH", "")
+            subscription, is_created = addSubscription(user, "SUB", "")
             if is_created:
-                return jsonify(subscription), 200
+                return jsonify(subscription.serialize), 200
 
     if promo.type == "MULTYNONE":
         if promo.max_count == promo.current_count:

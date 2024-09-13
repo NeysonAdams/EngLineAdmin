@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import TypeDecorator, String
 from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 from flask_security import Security, SQLAlchemyUserDatastore, \
     UserMixin, RoleMixin, login_required, current_user
@@ -577,7 +578,6 @@ class Question (db.Model):
             "var_dif": self.var_dif
         }
 
-
 class Subscription(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(255))  # Убедитесь, что это поле существует
@@ -585,7 +585,7 @@ class Subscription(db.Model):
     code = db.Column(db.String(255))
     expiration_date = db.Column(db.DateTime)
     paymentdata = db.Column(db.String(2255))
-    status = db.Column(db.DateTime)
+    status = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)  # Используем 'users.id'
 
     @property
@@ -736,7 +736,7 @@ class Promo(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     code = db.Column(db.String(255), unique=True)
     type = db.Column(db.String(255))
-    max_count = db.Column(db.Integer)
-    current_count = db.Column(db.Integer)
+    max_count = db.Column(db.Integer, nullable=False)
+    current_count = db.Column(db.Integer, nullable=False)
     is_active = db.Column(db.Boolean())
     users = db.relationship('User', secondary=promo_users, backref=db.backref('promo_users', lazy='dynamic'))
