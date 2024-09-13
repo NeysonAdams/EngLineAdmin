@@ -157,10 +157,13 @@ def registr_speach_lesson():
 @jwt_required()
 def get_situations():
 
+    uid = get_jwt_identity()
     lang = request.form.get('language')
     exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang and Exesesizes.type=="situation").all()
 
-    return jsonify(exesizes=[i.serialize for i in exesizes]), 200
+    subscription = Subscription.query.filter_by(user_id=uid).first()
+
+    return jsonify(exesizes=[i.serialize(subscription) for i in exesizes]), 200
 
 @exesize_blueprint.route('/exesize/check_recorded', methods=['POST'])
 @jwt_required()
