@@ -740,3 +740,43 @@ class Promo(db.Model):
     current_count = db.Column(db.Integer, nullable=False)
     is_active = db.Column(db.Boolean())
     users = db.relationship('User', secondary=promo_users, backref=db.backref('promo_users', lazy='dynamic'))
+
+
+class Devices(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    udid = db.Column(db.String(255))
+    email = db.Column(db.String(255))
+
+
+class Chattopic(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255))
+    description = db.Column(db.String(2555))
+    img_url = db.Column(db.String(255))
+
+
+    chat = db.relationship('Chat', backref='chat_topic', lazy=True)
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "img_url" : self.img_url
+        }
+
+class Chat(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    chat_data = db.Column(db.String)
+
+    topic = db.Column(db.Integer, db.ForeignKey('chattopic.id'), nullable=False)
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "chat_data": json.loads(self.chat_data),
+            "topic": self.topic.serialize
+        }

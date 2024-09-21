@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView
-from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView
-from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion
+from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView
+from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -70,10 +70,14 @@ class Administration:
                              name="Разговорный урок"))
 
         self.admin.add_view(
-            SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow', name="Подписки"))
+            SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-address-card', name="Подписки"))
 
         self.admin.add_view(
-            PromoView(Promo, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
+            PromoView(Promo, self.db.session, menu_icon_type='fa', menu_icon_value='fa-qrcode',
                              name="Промокод"))
+
+        self.admin.add_view(
+            ChatTopicView(Chattopic, self.db.session, menu_icon_type='fa', menu_icon_value='fa-weixin',
+                      name="Чат Комнаты"))
 
 

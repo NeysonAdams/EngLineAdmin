@@ -177,4 +177,11 @@
     <payment_subscription_avtivate>Подписка активированна</payment_subscription_avtivate>
     <promo_active_message>Вы получили доступ к AI заданиям на месяц</promo_active_message>
     <promo_not_found>Неверный промокод</promo_not_found>
+
+    <chat_topic>Темы</chat_topic>
+    <chat_chats>Чат</chat_chats>
+
+    <speach_lesson_title>Разговоный урок!\nНачни сейчас</speach_lesson_title>
+    <speach_lesson_description>Продолжительность урока: 15 минут</speach_lesson_description>
+    <speach_lesson_button>Бронируй сейчас</speach_lesson_button>
 </main>

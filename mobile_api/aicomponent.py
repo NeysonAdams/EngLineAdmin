@@ -148,3 +148,37 @@ def check_grammar(text, language):
     """
     response = ask_gpt(prompt)
     return response
+
+def chat_start(topic, scenario, user_name):
+    prompt = f"""
+    Generate a welcome message for a chat based on the following details: 
+    topic is '{topic}', 
+    scenario is '{scenario}', 
+    and the user's name is '{user_name}'. 
+    The message should be strictly in English and align with the topic and scenario. 
+    Return the result in the following JSON format:
+    {{
+        'message': 'Generated message here'
+    }}
+    """
+
+    response = ask_gpt(prompt)
+    return response
+
+def chat_answer(topic, scenario, user_name, data, message):
+    prompt = f"""
+        Generate an answer message for a chat based on the following details: 
+        the topic is '{topic}', 
+        the scenario is '{scenario}', 
+        the user's name is '{user_name}', 
+        all chat messages are: {data}, 
+        and the user's last message is: '{message}'. 
+        The generated message should be strictly in English, align with the topic and scenario, 
+        and serve as an answer to the user's last message. 
+        If the user's message contains an error, 
+        the response should start with 'I am sorry but...' followed by the correction,
+        and then proceed to answer the user's question. Return the result in the following JSON format:
+        {{
+            'message': 'Generated message here',
+        }}
+        """

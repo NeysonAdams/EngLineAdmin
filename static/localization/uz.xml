@@ -178,4 +178,8 @@
     <payment_subscription_avtivate>Obuna faollashtirildi</payment_subscription_avtivate>
     <promo_active_message>Sizga AI topshiriqlariga bir oylik kirish huquqi berildi</promo_active_message>
     <promo_not_found>Notog'ri promo kod</promo_not_found>
+
+    <speach_lesson_title>Сўзлашув дарси!\nҲозироқ бошланг</speach_lesson_title>
+    <speach_lesson_description>Дарс давомийлиги: 15 дақиқа</speach_lesson_description>
+    <speach_lesson_button>Ҳозироқ бронланг</speach_lesson_button>
 </main>

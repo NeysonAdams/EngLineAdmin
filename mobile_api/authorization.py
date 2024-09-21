@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import User, Subscription
+from database.models import User, Subscription, Devices
 from server_init import db
 from flask_security.utils import hash_password, verify_password
 from twilio.rest import Client
@@ -30,10 +30,12 @@ def create_user():
     email = request.form.get('email')
     level = request.form.get('level')
     img_url = request.form.get('img_url')
-
+    udid = request.form.get('udid')
 
 
     user = User.query.filter_by(google_id=google_id).first()
+
+    devices = Devices.query.filter_by(udid=udid).first()
 
     if user:
         access_token = create_access_token(identity=user.id)
@@ -49,6 +51,17 @@ def create_user():
         subscription = Subscription.query.filter_by(user_id=user.id).first()
 
         return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
+
+
+    if devices and devices.email != email:
+        return jsonify(msg="This device already added"), 404
+
+    if not devices:
+        device = Devices(
+            udid = udid,
+            email=email
+        )
+        db.session.add(device)
 
     new_user = User()
     new_user.login = ""
