@@ -271,7 +271,7 @@ def registrate():
     db.session.add(new_user)
     db.session.commit()
 
-    subscription, created = addSubscription(user, "SUB", "")
+    subscription, created = addSubscription(new_user, "SUB", "")
 
     access_token = create_access_token(identity=new_user.id)
     refresh_token = create_refresh_token(identity=new_user.id)
