@@ -159,7 +159,7 @@ def get_situations():
 
     uid = get_jwt_identity()
     lang = request.form.get('language')
-    exesizes = Exesesizes.query.filter(Exesesizes.lenguage==lang and Exesesizes.type=="situation").all()
+    exesizes = Exesesizes.query.filter((Exesesizes.lenguage == lang) & (Exesesizes.type == "situation")).all()
 
     subscription = Subscription.query.filter_by(user_id=uid).first()
 
