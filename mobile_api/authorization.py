@@ -145,6 +145,42 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, True)), 200
 
+@auth.route('/users/apple_auth', methods=['POST'])
+def apple_auth():
+    google_id = request.form.get('id')
+    name = request.form.get('name')
+    email = request.form.get('email')
+
+    subscription = None
+    user = User.query.filter_by(email=email).first()
+    isRegistrated = False
+    if user:
+        isRegistrated = True
+        user.google_id = google_id
+        user.login = ""
+        user.name = name
+        user.email = email
+        user.img_url = ""
+        db.session.commit()
+        subscription = Subscription.query.filter_by(user_id=user.id).first()
+    else:
+        user = User.query.filter_by(google_id=google_id).first()
+
+        if not user:
+            new_user = User()
+            new_user.google_id = google_id
+            new_user.login = ""
+            new_user.name = name
+            new_user.email = email
+            new_user.img_url = ""
+            db.session.add(new_user)
+            db.session.commit()
+            user = new_user
+            subscription, created = addSubscription(user, "SUB", "")
+
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription, isRegistrated)), 200
 
 @auth.route('/users/google_auth', methods=['POST'])
 def google_auth():
