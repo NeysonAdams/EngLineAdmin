@@ -356,14 +356,15 @@ class Exesize(db.Model):
     input_id = db.Column(db.Integer, db.ForeignKey('inputquestion.id'), nullable=True)
     audio_id = db.Column(db.Integer, db.ForeignKey('audioquestion.id'), nullable=True)
     video_id = db.Column(db.Integer, db.ForeignKey('videoquestion.id'), nullable=True)
+
     word_ex_id = db.Column(db.Integer, db.ForeignKey('wordexecesize.id'), nullable=True)
+    wordexecesize = db.relationship('Wordexecesize', backref='exesizes')
 
     lesson = db.relationship('Lesson', backref=db.backref('exec', lazy='dynamic'))
     question = db.relationship('Question', backref=db.backref('eq', lazy='dynamic'))
     input = db.relationship('Inputquestion', backref=db.backref('ei', lazy='dynamic'))
     audio = db.relationship('Audioquestion', backref=db.backref('ea', lazy='dynamic'))
     video = db.relationship('Videoquestion', backref=db.backref('ev', lazy='dynamic'))
-    wordexecesize = db.relationship('Wordexecesize', backref=db.backref('eww', lazy='dynamic'))
     translation = db.Column(db.Integer, nullable=True)
 
     words = db.relationship('Englishword', secondary=words_in_exes,
@@ -815,7 +816,6 @@ class Wordexecesize(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255))
     wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, backref=db.backref('wordslink', lazy='dynamic'))
-    exesize = db.relationship('Exesize', backref=db.backref('eww', lazy='dynamic'))
     @property
     def serialize(self):
         return {
