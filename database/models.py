@@ -358,7 +358,7 @@ class Exesize(db.Model):
     video_id = db.Column(db.Integer, db.ForeignKey('videoquestion.id'), nullable=True)
 
     word_ex_id = db.Column(db.Integer, db.ForeignKey('wordexecesize.id'), nullable=True)
-    wordexecesize = db.relationship('Wordexecesize', backref='exesizes')
+    wordexecesize = db.relationship('Wordexecesize', backref='wexesizes')
 
     lesson = db.relationship('Lesson', backref=db.backref('exec', lazy='dynamic'))
     question = db.relationship('Question', backref=db.backref('eq', lazy='dynamic'))
