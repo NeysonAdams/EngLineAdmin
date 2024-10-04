@@ -818,6 +818,10 @@ class Wordexecesize(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255))
     wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, backref=db.backref('wordslink', lazy='dynamic'))
+
+    def __repr__(self):
+        return f"{self.name}"
+
     @property
     def serialize(self):
         return {
