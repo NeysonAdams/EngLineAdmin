@@ -493,8 +493,8 @@ class ChatTopicView(TableView):
     form_args = dict(img_url=dict(validators=[picture_validation]))
 
 class WordsExecizeView(TableView):
-    form_columns = ["id", "name"]
-    column_labels = dict(id='ID', name="Name")
+    form_columns = ["name", "wordslink"]
+    column_labels = dict( name="Name", wordslink="Words")
 
 class DictionaryView(TableView):
     form_columns = ["eng_word", "rus_word", "uzb_word"]
