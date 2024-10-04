@@ -69,8 +69,6 @@ class Administration:
             SpeackingLessonScheduller(LessonSchedler, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
                              name="Разговорный урок"))
 
-        self.admin.add_view(
-            SubscriptionView(Subscription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-address-card', name="Подписки"))
 
         self.admin.add_view(
             WordsExecizeView(Wordexecesize, self.db.session, menu_icon_type='fa', menu_icon_value='fa-list',
