@@ -8,6 +8,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # Create in-memory database
 DATABASE_FILE = os.getenv("DATABASE_FILE")
 SQLALCHEMY_DATABASE_URI = 'mysql+' + DATABASE_FILE
+
+SQLALCHEMY_POOL_RECYCLE= 299
+SQLALCHEMY_TRACK_MODIFICATIONS= False
+
 SQLALCHEMY_ECHO = True
 
 # Flask-Security config

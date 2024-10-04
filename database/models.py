@@ -356,12 +356,14 @@ class Exesize(db.Model):
     input_id = db.Column(db.Integer, db.ForeignKey('inputquestion.id'), nullable=True)
     audio_id = db.Column(db.Integer, db.ForeignKey('audioquestion.id'), nullable=True)
     video_id = db.Column(db.Integer, db.ForeignKey('videoquestion.id'), nullable=True)
+    word_ex_id = db.Column(db.Integer, db.ForeignKey('wordexecesize.id'), nullable=True)
 
     lesson = db.relationship('Lesson', backref=db.backref('exec', lazy='dynamic'))
     question = db.relationship('Question', backref=db.backref('eq', lazy='dynamic'))
     input = db.relationship('Inputquestion', backref=db.backref('ei', lazy='dynamic'))
     audio = db.relationship('Audioquestion', backref=db.backref('ea', lazy='dynamic'))
     video = db.relationship('Videoquestion', backref=db.backref('ev', lazy='dynamic'))
+    wordexecesize = db.relationship('Wordexecesize', backref=db.backref('ewwe', lazy='dynamic'))
     translation = db.Column(db.Integer, nullable=True)
 
     words = db.relationship('Englishword', secondary=words_in_exes,
@@ -415,6 +417,12 @@ class Exesize(db.Model):
                 "lesson_name": self.lesson_name,
                 "type": type,
                 "words": [w.serialize for w in self.words]
+            }
+        if type == "word_pair_exesize":
+            return{
+                "id": self.id,
+                "word_ex": self.wordexecesize,
+                "type": type
             }
         if type == "translate_exesize":
             if not self.translation:
@@ -779,4 +787,37 @@ class Chat(db.Model):
             "id": self.id,
             "chat_data": json.loads(self.chat_data),
             "topic": self.topic.serialize
+        }
+
+words_execesizes_list = db.Table('words_execesizes_list',
+    db.Column('wordexecesize_id', db.Integer, db.ForeignKey('wordexecesize.id'), primary_key=True),
+    db.Column('wordslink_id', db.Integer, db.ForeignKey('wordslink.id'), primary_key=True)
+)
+
+class Wordslink(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    eng_word = db.Column(db.String(255))
+    rus_word = db.Column(db.String(255))
+    uzb_word = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"{self.id} : {self.eng_word} : {self.rus_word} : {self.uzb_word}"
+
+    @property
+    def serialize(self):
+        return {
+            "eng": self.eng_word,
+            "rus": self.rus_word,
+            "uzb": self.uzb_word
+        }
+
+class Wordexecesize(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255))
+    wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, backref=db.backref('wordslink', lazy='dynamic'))
+    exesize = db.relationship('Exesize', backref=db.backref('eww', lazy='dynamic'))
+    @property
+    def serialize(self):
+        return {
+            "words": [w.serialize for w in self.wordslink]
         }

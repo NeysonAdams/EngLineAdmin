@@ -316,14 +316,14 @@ class TextTranslateView(TableView):
 
 
 class ExesizeView (TableView):
-    form_columns = ['lesson_name', 'type', 'level','lesson', 'question', 'input', 'audio', 'video', 'words']
+    form_columns = ['lesson_name', 'type', 'level','lesson', 'question', 'input', 'audio', 'video', 'wordexecesize', 'words']
 
     def on_model_change(view, context, model, name):
         setattr(model, 'level', levels[context.level.data])
 
     form_extra_fields = {
         'type': SelectField('Type',
-                            choices=['test_question', 'input_question', 'audio_question', 'video_question', 'words_question', 'record_question', 'translate_exesize']),
+                            choices=['test_question', 'input_question', 'audio_question', 'video_question', 'word_pair_exesize', 'record_question', 'translate_exesize']),
         'level': SelectField('Level',
                              choices=['Beginner', 'Elementary', 'Pre-Intermediate', 'Intermediate', 'Advanced'])
     }
@@ -492,6 +492,13 @@ class ChatTopicView(TableView):
     form_overrides = dict(img_url=FileUploadField)
     form_args = dict(img_url=dict(validators=[picture_validation]))
 
+class WordsExecizeView(TableView):
+    form_columns = ["id", "name"]
+    column_labels = dict(id='ID', name="Name")
+
+class DictionaryView(TableView):
+    form_columns = ["eng_word", "rus_word", "uzb_word"]
+    column_labels = dict(eng_word='English', rus_word="Russian", uzb_word='Uzbeck')
 
 
 # class WordView(TableView):
