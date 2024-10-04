@@ -796,6 +796,7 @@ words_execesizes_list = db.Table('words_execesizes_list',
 )
 
 class Wordslink(db.Model):
+    __tablename__ = 'wordslink'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     eng_word = db.Column(db.String(255))
     rus_word = db.Column(db.String(255))
@@ -813,6 +814,7 @@ class Wordslink(db.Model):
         }
 
 class Wordexecesize(db.Model):
+    __tablename__ = 'wordexecesize'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255))
     wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, backref=db.backref('wordslink', lazy='dynamic'))
