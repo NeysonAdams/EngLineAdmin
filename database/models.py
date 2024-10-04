@@ -363,7 +363,6 @@ class Exesize(db.Model):
     input = db.relationship('Inputquestion', backref=db.backref('ei', lazy='dynamic'))
     audio = db.relationship('Audioquestion', backref=db.backref('ea', lazy='dynamic'))
     video = db.relationship('Videoquestion', backref=db.backref('ev', lazy='dynamic'))
-    wordexecesize = db.relationship('Wordexecesize', backref=db.backref('ewwe', lazy='dynamic'))
     translation = db.Column(db.Integer, nullable=True)
 
     words = db.relationship('Englishword', secondary=words_in_exes,
@@ -421,7 +420,7 @@ class Exesize(db.Model):
         if type == "word_pair_exesize":
             return{
                 "id": self.id,
-                "word_ex": self.wordexecesize,
+                "word_ex": self.word_ex_id.serialize,
                 "type": type
             }
         if type == "translate_exesize":
