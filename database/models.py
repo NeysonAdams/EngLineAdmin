@@ -323,6 +323,9 @@ class Exesesizes(db.Model):
     exesize =db.relationship('Exesize', secondary=exesizes_table,
                                backref=db.backref('exesize_list', lazy='dynamic'))
 
+    def __repr__(self):
+        return f"{self.id} :: {self.name}"
+
     def serialize(self, subscription):
         return {
             "id": self.id,
