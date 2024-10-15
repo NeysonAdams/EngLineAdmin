@@ -831,9 +831,15 @@ class Wordexecesize(db.Model):
         }
 
 
-levelvs_exesizes = db.Table('levelvs_exesizes',
-    db.Column('levels_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+levelvs_exesizes = Table(
+    'levelvs_exesizes',
+    Base.metadata,
+    Column('level_id', Integer, ForeignKey('levels.id'), primary_key=True),
+    Column('exesize_id', Integer, ForeignKey('exesizes.id'), primary_key=True)
 )
 
 class Levels(db.Model):
@@ -841,6 +847,9 @@ class Levels(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('lvlex', lazy='dynamic'))
+
+    def __repr__(self):
+        return f"{self.id}"
 
     @property
     def serialize(self):
