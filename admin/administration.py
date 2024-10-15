@@ -32,11 +32,11 @@ class Administration:
         self.admin.add_view(TableView(Role, self.db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Роли"))
         self.admin.add_view(UserView(User, self.db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Пользователи"))
 
-        self.admin.add_view(CourceView(Cource, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
-                                name="Курсы"))
+        #self.admin.add_view(CourceView(Cource, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
+        #                        name="Курсы"))
 
-        self.admin.add_view(
-            LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
+        #self.admin.add_view(
+        #    LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
 
         self.admin.add_view(
             LevelView(Levels, self.db.session, menu_icon_type='fa', menu_icon_value='fa-rocket',
