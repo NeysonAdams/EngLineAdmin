@@ -840,7 +840,7 @@ class Levels(db.Model):
     __tablename__ = 'levels'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    exesizes_link = db.relationship('Exesizes', secondary=levelvs_exesizes, backref=db.backref('lvlex', lazy='dynamic'))
+    exesizes_link = db.relationship('LExesizes', secondary=levelvs_exesizes, backref=db.backref('lvlex', lazy='dynamic'))
 
     @property
     def serialize(self):
