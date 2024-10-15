@@ -835,7 +835,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-levelvs_exesizes = Table(
+levelvs_exesizes = db.Table(
     'levelvs_exesizes',
     Base.metadata,
     Column('level_id', Integer, ForeignKey('levels.id'), primary_key=True),
