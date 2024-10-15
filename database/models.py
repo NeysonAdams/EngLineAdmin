@@ -832,7 +832,7 @@ class Wordexecesize(db.Model):
 
 
 levelvs_exesizes = db.Table('levelvs_exesizes',
-    db.Column('levels_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('levels_id', db.Integer, db.ForeignKey('levels.id'), primary_key=True),
     db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
 )
 
