@@ -502,6 +502,8 @@ class DictionaryView(TableView):
 
 
 class LevelView(TableView):
+
+    form_columns = ["exesizes_link"]
     column_labels = dict(id='ID')
 
 # class WordView(TableView):
