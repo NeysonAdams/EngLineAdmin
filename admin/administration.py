@@ -38,9 +38,9 @@ class Administration:
         #self.admin.add_view(
         #    LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
 
-        #self.admin.add_view(
-        #    LevelView(Levels, self.db.session, menu_icon_type='fa', menu_icon_value='fa-rocket',
-        #              name="Уровни"))
+        self.admin.add_view(
+            LevelView(Levels, self.db.session, menu_icon_type='fa', menu_icon_value='fa-rocket',
+                      name="Уровни"))
 
         self.admin.add_view(
             ExesizesView(Exesesizes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
