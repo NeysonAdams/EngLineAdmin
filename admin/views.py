@@ -503,8 +503,13 @@ class DictionaryView(TableView):
 
 class LevelView(TableView):
 
-    form_columns = ["exesizes_link"]
-    column_labels = dict(id='ID')
+    form_columns = ["language","exesizes_link"]
+    column_labels = dict(id='ID', language="Language")
+
+    form_extra_fields = {
+        'language': SelectField('Language',
+                                choices=['ru', 'uz']),
+    }
 
 # class WordView(TableView):
 #     def audio_validation(form, field):

@@ -842,6 +842,7 @@ levelvs_exesizes = db.Table('levelvs_exesizes',
 class Levels(db.Model):
     __tablename__ = 'levels'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    language = db.Column(db.String(45))
 
     exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('exesesizes', lazy='dynamic'))
 
