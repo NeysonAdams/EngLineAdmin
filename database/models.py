@@ -846,8 +846,11 @@ class Levels(db.Model):
     __tablename__ = 'levels'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('lvlex', lazy='dynamic'))
-
+    exesizes_link = relationship(
+        'Exesizes',
+        secondary=levelvs_exesizes,
+        back_populates='levels_link'
+    )
     def __repr__(self):
         return f"{self.id}"
 
