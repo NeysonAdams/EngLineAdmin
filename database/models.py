@@ -78,6 +78,8 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
     fs_uniquifier = db.Column(db.String(64), unique=True)
+    experiance = db.Column(db.Integer)
+    current_level = db.Column(db.Integer)
 
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
@@ -826,4 +828,23 @@ class Wordexecesize(db.Model):
     def serialize(self):
         return {
             "words": [w.serialize for w in self.wordslink]
+        }
+
+
+levelvs_exesizes = db.Table('levelvs_exesizes',
+    db.Column('levels_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
+)
+
+class Levels(db.Model):
+    __tablename__ = 'levels'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    exesizes_link = db.relationship('Exesizes', secondary=levelvs_exesizes, backref=db.backref('lvlex', lazy='dynamic'))
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "exesizes": [w.serialize for w in self.exesizes_link]
         }

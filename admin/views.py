@@ -501,6 +501,9 @@ class DictionaryView(TableView):
     column_labels = dict(eng_word='English', rus_word="Russian", uzb_word='Uzbeck')
 
 
+class LevelView(TableView):
+    column_labels = dict(id='ID')
+
 # class WordView(TableView):
 #     def audio_validation(form, field):
 #         if field.data:

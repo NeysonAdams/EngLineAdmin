@@ -381,3 +381,7 @@ def change_password():
 
     return jsonify(msg="succes"), 200
 
+#@auth.route('/users/auth_login', methods=['GET'])
+#@jwt_required()
+#def login():
+#    uid = get_jwt_identity()

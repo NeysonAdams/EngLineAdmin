@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView, WordsExecizeView, DictionaryView
-from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView
-from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic, Wordexecesize, Wordslink
+from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView, LevelView
+from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic, Wordexecesize, Wordslink, Levels
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -37,6 +37,10 @@ class Administration:
 
         self.admin.add_view(
             LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
+
+        self.admin.add_view(
+            LevelView(Levels, self.db.session, menu_icon_type='fa', menu_icon_value='fa-rocket',
+                      name="Уровни"))
 
         self.admin.add_view(
             ExesizesView(Exesesizes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
@@ -86,8 +90,10 @@ class Administration:
             PromoView(Promo, self.db.session, menu_icon_type='fa', menu_icon_value='fa-qrcode',
                              name="Промокод"))
 
-        self.admin.add_view(
-            ChatTopicView(Chattopic, self.db.session, menu_icon_type='fa', menu_icon_value='fa-weixin',
-                      name="Чат Комнаты"))
+
+
+        #self.admin.add_view(
+        #    ChatTopicView(Chattopic, self.db.session, menu_icon_type='fa', menu_icon_value='fa-weixin',
+        #              name="Чат Комнаты"))
 
 
