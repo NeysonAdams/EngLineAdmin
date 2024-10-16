@@ -23,6 +23,9 @@ from mobile_api.video_streamimg import video_stram_blueprint
 from mobile_api.profile import profile
 from mobile_api.subscription import subscription_blueprint, subscriptionUpdate
 from mobile_api.chat import chat_blueprint
+from mobile_api.analyticks import analytiks_blueprint
+from mobile_api.levels import level_blueprint
+from mobile_api.quests import quests_blueprint
 
 import json
 
@@ -51,6 +54,9 @@ app.register_blueprint(video_stram_blueprint)
 app.register_blueprint(profile)
 app.register_blueprint(subscription_blueprint)
 app.register_blueprint(chat_blueprint)
+app.register_blueprint(analytiks_blueprint)
+app.register_blueprint(level_blueprint)
+app.register_blueprint(quests_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
