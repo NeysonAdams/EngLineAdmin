@@ -1,8 +1,8 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
 from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView, WordsExecizeView, DictionaryView
-from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView, LevelView
-from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic, Wordexecesize, Wordslink, Levels
+from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView, LevelView, QuestView, TheoryView, FrazesView
+from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Quests, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic, Wordexecesize, Wordslink, Levels, Theory, Frazes
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -32,11 +32,7 @@ class Administration:
         self.admin.add_view(TableView(Role, self.db.session, menu_icon_type='fa', menu_icon_value='fa-server', name="Роли"))
         self.admin.add_view(UserView(User, self.db.session, menu_icon_type='fa', menu_icon_value='fa-users', name="Пользователи"))
 
-        #self.admin.add_view(CourceView(Cource, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
-        #                        name="Курсы"))
 
-        #self.admin.add_view(
-        #    LessonView(Lesson, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Уроки"))
 
         self.admin.add_view(
             LevelView(Levels, self.db.session, menu_icon_type='fa', menu_icon_value='fa-rocket',
@@ -70,8 +66,14 @@ class Administration:
             BillingView(Billing, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
                              name="Биллинг"))
         self.admin.add_view(
-            SpeackingLessonScheduller(LessonSchedler, self.db.session, menu_icon_type='fa', menu_icon_value='fa-location-arrow',
-                             name="Разговорный урок"))
+            QuestView(Quests, self.db.session, menu_icon_type='fa', menu_icon_value='fa-question',
+                             name="Квесты"))
+
+        self.admin.add_view(TheoryView(Theory, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
+                               name="Фразы Дня"))
+
+        self.admin.add_view(
+           FrazesView(Frazes, self.db.session, menu_icon_type='fa', menu_icon_value='fa-gears', name="Фразы"))
 
 
         self.admin.add_view(

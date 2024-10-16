@@ -503,14 +503,53 @@ class DictionaryView(TableView):
 
 class LevelView(TableView):
 
-    form_columns = ["language","exesizes_link"]
-    column_labels = dict(id='ID', language="Language")
+    form_columns = ["language","exesizes_link", "number"]
+    column_labels = dict(id='ID', language="Language", number="Порядкрвый номер уровня")
 
     form_extra_fields = {
         'language': SelectField('Language',
                                 choices=['ru', 'uz']),
     }
 
+class TheoryView(TableView):
+    form_columns = ["description", "observing_date", "frazes"]
+    column_labels = dict(id='ID', description="Описание", observing_date="Дата просмотра")
+
+class FrazesView(TableView):
+    form_columns = ["fraze", "russian_fraze", "uzbek_fraze"]
+    column_labels = dict(id='ID', fraze="Фраза", russian_fraze="Русский", uzbek_fraze="Узбекский")
+
+class QuestView(TableView):
+    def picture_validation(form, field):
+        if field.data:
+            try:
+                filename = field.data.filename
+                if filename[-4:] != '.jpg' and filename[-4:] != '.png' and filename[-4:] != '.gif':
+                    raise ValidationError('file must be .jpg or .png or gif')
+
+                f_name = f"img_chat_t_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}{filename[-4:]}"
+
+                img_path = os.path.join(images_folder, f_name )
+                field.data = field.data.stream.read()
+                image = Image.open(io.BytesIO(field.data))
+                image.save(img_path)
+                field.data = url_for('static', filename=f"/images/{f_name}")
+                # setattr(form._obj, 'img_url', url_for('static', filename=f"/images/{f_name}"))
+            except:
+                f_name = field.data
+
+
+    form_columns = ["name", "description", "img_url", "count"]
+    column_labels = dict(name='Title', description="Description", img_url='Image', count="Count")
+    def on_model_change(view, context, model, name):
+        setattr(model, 'img_url', context.img_url.data)
+
+    def pic_formatter(self, context, model, name):
+       return Markup('<img src="%s" width="100" height="100">' % model.img_url)
+
+    column_formatters = dict(img_url=pic_formatter)
+    form_overrides = dict(img_url=FileUploadField)
+    form_args = dict(img_url=dict(validators=[picture_validation]))
 # class WordView(TableView):
 #     def audio_validation(form, field):
 #         if field.data:

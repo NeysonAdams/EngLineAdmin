@@ -842,6 +842,7 @@ levelvs_exesizes = db.Table('levelvs_exesizes',
 class Levels(db.Model):
     __tablename__ = 'levels'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    number = db.Column(db.Integer)
     language = db.Column(db.String(45))
 
     exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('exesesizes', lazy='dynamic'))
@@ -852,6 +853,152 @@ class Levels(db.Model):
     @property
     def serialize(self):
         return {
-            "id": self.id,
+            "number": self.number,
             "exesizes": [w.serialize for w in self.exesizes_link]
         }
+
+class LevelsStat(db.Model):
+    __tablename__ = 'levelstat'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    level_id = db.Column(db.Integer)
+    errors_count = db.Column(db.Integer)
+    passed_count = db.Column(db.Integer)
+    max_count = db.Column(db.Integer)
+    number = db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "level_id": self.level_id,
+            "errors_count": self.errors_count,
+            "passed_count": self.passed_count,
+            "number": self.number
+        }
+
+date_analyticks = db.Table('date_analyticks',
+    db.Column('dateanalyticks_id', db.Integer, db.ForeignKey('dateanalyticks.id'), primary_key=True),
+    db.Column('useranalytickinfo_id', db.Integer, db.ForeignKey('useranalytickinfo.id'), primary_key=True)
+)
+
+class Dateanalyticks(db.Model):
+    __tablename__ = 'dateanalyticks'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    date = db.Column(db.DateTime)
+    minutes = db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        return {
+            "date": self.date,
+            "minutes": self.minutes
+        }
+
+class Useranalytickinfo(db.Model):
+    __tablename__ = 'useranalytickinfo'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    from_where = db.Column(db.String(45))
+    why_reason = db.Column(db.String(45))
+    goal = db.Column(db.String(45))
+
+    date_link = db.relationship('Dateanalyticks', secondary=date_analyticks,
+                                    backref=db.backref('date_analyticks', lazy='dynamic'))
+
+    @property
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "from_where": self.from_where,
+            "why_reason": self.why_reason,
+            "goal": self.goal,
+            "dates":[d.serialize for d in self.date_link]
+        }
+
+
+class Quests(db.Model):
+    __tablename__ = 'quests'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    name = db.Column(db.String(45))
+    description = db.Column(db.String(255))
+    img_url = db.Column(db.String(255))
+    count = db.Column(db.Integer)
+
+    uquests = db.relationship('Userquest', secondary=quest_user,
+                                backref=db.backref('quest_user', lazy='dynamic'))
+
+    def serialize(self, user_id=None):
+        data = {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "img_url": self.img_url,
+            "count": self.count,
+            "uquests": []
+        }
+        if user_id:
+            uquests = self.uquests.filter(Userquest.user_id == user_id).all()
+            data['uquests'] = [uquest.serialize for uquest in uquests]
+
+        return data
+
+class Userquest(db.Model):
+    __tablename__ = 'userquest'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    current_count=db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        return {
+            "user_id": self.user_id,
+            "current_count": self.current_count
+        }
+
+
+quest_user = db.Table('quest_user',
+    db.Column('quests_id', db.Integer, db.ForeignKey('quests.id'), primary_key=True),
+    db.Column('userquest_id', db.Integer, db.ForeignKey('userquest.id'), primary_key=True)
+)
+
+class Theory(db.Model):
+    __tablename__ = 'theory'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    description = db.Column(db.String(2555))
+    observing_date = db.Column(db.DateTime)
+
+    frazes = db.relationship('Frazes', secondary=theory_fraze,
+                              backref=db.backref('theory_fraze', lazy='dynamic'))
+
+    @property
+    def serialize(self):
+        return {
+            "description": self.description,
+            "observing_date": self.observing_date,
+            "frazes": [f.serialize for f in frazes]
+        }
+
+class Frazes(db.Model):
+    __tablename__ = 'frazes'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fraze = db.Column(db.String(255))
+    russian_fraze = db.Column(db.String(255))
+    uzbek_fraze = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"{self.fraze}"
+
+    @property
+    def serialize(self):
+        return {
+            "fraze": self.fraze,
+            "russian_fraze": self.russian_fraze,
+            "uzbek_fraze": self.uzbek_fraze
+        }
+
+theory_fraze = db.Table('theory_fraze',
+    db.Column('frazes_id', db.Integer, db.ForeignKey('frazes.id'), primary_key=True),
+    db.Column('theory_id', db.Integer, db.ForeignKey('theory.id'), primary_key=True)
+)
