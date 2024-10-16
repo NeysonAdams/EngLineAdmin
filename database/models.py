@@ -917,6 +917,10 @@ class Useranalytickinfo(db.Model):
         }
 
 
+quest_user = db.Table('quest_user',
+    db.Column('quests_id', db.Integer, db.ForeignKey('quests.id'), primary_key=True),
+    db.Column('userquest_id', db.Integer, db.ForeignKey('userquest.id'), primary_key=True)
+)
 class Quests(db.Model):
     __tablename__ = 'quests'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -957,10 +961,9 @@ class Userquest(db.Model):
             "current_count": self.current_count
         }
 
-
-quest_user = db.Table('quest_user',
-    db.Column('quests_id', db.Integer, db.ForeignKey('quests.id'), primary_key=True),
-    db.Column('userquest_id', db.Integer, db.ForeignKey('userquest.id'), primary_key=True)
+theory_fraze = db.Table('theory_fraze',
+    db.Column('frazes_id', db.Integer, db.ForeignKey('frazes.id'), primary_key=True),
+    db.Column('theory_id', db.Integer, db.ForeignKey('theory.id'), primary_key=True)
 )
 
 class Theory(db.Model):
@@ -998,7 +1001,3 @@ class Frazes(db.Model):
             "uzbek_fraze": self.uzbek_fraze
         }
 
-theory_fraze = db.Table('theory_fraze',
-    db.Column('frazes_id', db.Integer, db.ForeignKey('frazes.id'), primary_key=True),
-    db.Column('theory_id', db.Integer, db.ForeignKey('theory.id'), primary_key=True)
-)
