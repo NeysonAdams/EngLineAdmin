@@ -184,4 +184,35 @@
     <speach_lesson_title>Разговоный урок!\nНачни сейчас</speach_lesson_title>
     <speach_lesson_description>Продолжительность урока: 15 минут</speach_lesson_description>
     <speach_lesson_button>Бронируй сейчас</speach_lesson_button>
+
+    <analityks_title_one>Как вы узнали об eLe?</analityks_title_one>
+    <analityks_title_two>Для чего вы изучаете язык?</analityks_title_two>
+    <analityks_title_three>Сколько времени в день вы готовы уделить изучению?</analityks_title_three>
+    <analityks_title_four>Включите уведомление для того что бы могли вам напоминать об бобучении!</analityks_title_four>
+
+    <analityks_tile_0>Друзья</analityks_tile_0>
+    <analityks_tile_1>TV</analityks_tile_1>
+    <analityks_tile_2>Tiktok</analityks_tile_2>
+    <analityks_tile_3>Facebook | Instagramm</analityks_tile_3>
+    <analityks_tile_4>Новости | Статьи | Сайты </analityks_tile_4>
+    <analityks_tile_5>YouTube</analityks_tile_5>
+    <analityks_tile_6>Google Поисковик </analityks_tile_6>
+    <analityks_tile_7>Другое</analityks_tile_7>
+    <analityks_tile_8>Для Работы</analityks_tile_8>
+    <analityks_tile_9>Культурное развитие</analityks_tile_9>
+    <analityks_tile_10>Тренеровка Мозгов</analityks_tile_10>
+    <analityks_tile_11>Семья и Друзья</analityks_tile_11>
+    <analityks_tile_12>Путешествие</analityks_tile_12>
+    <analityks_tile_13>Школа</analityks_tile_13>
+    <analityks_tile_14>Другое</analityks_tile_14>
+    <analityks_tile_15>Обычный</analityks_tile_15>
+    <analityks_tile_16>Регулярный</analityks_tile_16>
+    <analityks_tile_17>Серьёзный</analityks_tile_17>
+    <analityks_tile_18>Интенсивный</analityks_tile_18>
+
+
+    <analityks_time_0>5 минут в день</analityks_time_0>
+    <analityks_time_1>10 минут в день</analityks_time_1>
+    <analityks_time_2>15 минут в день</analityks_time_2>
+    <analityks_time_3>20 минут в день</analityks_time_3>
 </main>

@@ -182,4 +182,34 @@
     <speach_lesson_title>Сўзлашув дарси!\nҲозироқ бошланг</speach_lesson_title>
     <speach_lesson_description>Дарс давомийлиги: 15 дақиқа</speach_lesson_description>
     <speach_lesson_button>Ҳозироқ бронланг</speach_lesson_button>
+
+    <analityks_title_one>eLe haqida qanday bilib oldingiz?</analityks_title_one>
+    <analityks_title_two>Siz tilni nima uchun o‘rganmoqdasiz?</analityks_title_two>
+    <analityks_title_three>Kuniga qancha vaqtni o‘qishga ajratishga tayyorsiz?</analityks_title_three>
+    <analityks_title_four>Ta'lim haqida sizga eslatma yuborishimiz uchun bildirishnomalarni yoqing!</analityks_title_four>
+
+    <analityks_tile_0>Do'stlar</analityks_tile_0>
+    <analityks_tile_1>TV</analityks_tile_1>
+    <analityks_tile_2>TikTok</analityks_tile_2>
+    <analityks_tile_3>Facebook | Instagram</analityks_tile_3>
+    <analityks_tile_4>Yangiliklar | Maqolalar | Saytlar</analityks_tile_4>
+    <analityks_tile_5>YouTube</analityks_tile_5>
+    <analityks_tile_6>Google qidiruvi</analityks_tile_6>
+    <analityks_tile_7>Boshqa</analityks_tile_7>
+    <analityks_tile_8>Ish uchun</analityks_tile_8>
+    <analityks_tile_9>Madaniy rivojlanish</analityks_tile_9>
+    <analityks_tile_10>Miya mashqlari</analityks_tile_10>
+    <analityks_tile_11>Oila va Do'stlar</analityks_tile_11>
+    <analityks_tile_12>Sayohat</analityks_tile_12>
+    <analityks_tile_13>Maktab</analityks_tile_13>
+    <analityks_tile_14>Boshqa</analityks_tile_14>
+    <analityks_tile_15>Oddiy</analityks_tile_15>
+    <analityks_tile_16>Muntazam</analityks_tile_16>
+    <analityks_tile_17>Jiddiy</analityks_tile_17>
+    <analityks_tile_18>Intensiv</analityks_tile_18>
+
+    <analityks_time_0>Kuniga 5 daqiqa</analityks_time_0>
+    <analityks_time_1>Kuniga 10 daqiqa</analityks_time_1>
+    <analityks_time_2>Kuniga 15 daqiqa</analityks_time_2>
+    <analityks_time_3>Kuniga 20 daqiqa</analityks_time_3>
 </main>

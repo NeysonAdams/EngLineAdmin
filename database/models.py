@@ -909,7 +909,6 @@ class Useranalytickinfo(db.Model):
     @property
     def serialize(self):
         return {
-            "user_id": self.user_id,
             "from_where": self.from_where,
             "why_reason": self.why_reason,
             "goal": self.goal,
