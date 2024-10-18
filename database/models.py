@@ -78,8 +78,8 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
     fs_uniquifier = db.Column(db.String(64), unique=True)
-    experiance = db.Column(db.Integer)
-    current_level = db.Column(db.Integer)
+    experiance = db.Column(db.Integer, default=0, nullable=False)
+    current_level = db.Column(db.Integer, default=1, nullable=False)
 
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 

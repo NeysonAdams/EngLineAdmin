@@ -71,6 +71,8 @@ def create_user():
     new_user.email = email
     new_user.level = level
     new_user.img_url = img_url
+    new_user.experiance = 0
+    new_user.current_level = 1
 
     db.session.add(new_user)
     db.session.commit()
@@ -173,6 +175,8 @@ def apple_auth():
             new_user.name = name
             new_user.email = email
             new_user.img_url = ""
+            new_user.experiance = 0
+            new_user.current_level = 1
             db.session.add(new_user)
             db.session.commit()
             user = new_user
@@ -210,6 +214,8 @@ def google_auth():
             new_user.name = name
             new_user.email = email
             new_user.img_url = img_url
+            new_user.experiance = 0
+            new_user.current_level = 1
             db.session.add(new_user)
             db.session.commit()
             user = new_user
@@ -247,6 +253,8 @@ def facebook_auth():
             new_user.login = name
             new_user.email = email
             new_user.img_url = img_url
+            new_user.experiance = 0
+            new_user.current_level = 1
             db.session.add(new_user)
             db.session.commit()
             user = new_user
@@ -303,6 +311,8 @@ def registrate():
     new_user.password=hash_password(password)
     new_user.level = 0
     new_user.login = name
+    new_user.experiance = 0
+    new_user.current_level = 1
 
     db.session.add(new_user)
     db.session.commit()
