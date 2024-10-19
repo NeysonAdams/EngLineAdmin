@@ -9,6 +9,18 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DATABASE_FILE = os.getenv("DATABASE_FILE")
 SQLALCHEMY_DATABASE_URI = 'mysql+' + DATABASE_FILE
 
+SQLALCHEMY_ENGINE_OPTIONS = {
+    'pool_pre_ping': True,
+    'pool_recycle': 1800,  # Recycle connections every 30 minutes
+    'pool_size': 5,
+    'max_overflow': 10,
+    'connect_args': {
+        'connect_timeout': 10,
+        'read_timeout': 30,
+        'write_timeout': 30,
+    },
+}
+
 SQLALCHEMY_POOL_RECYCLE= 299
 SQLALCHEMY_TRACK_MODIFICATIONS= False
 
