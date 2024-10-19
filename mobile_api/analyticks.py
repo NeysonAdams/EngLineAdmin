@@ -19,16 +19,24 @@ def add():
     why_reason = request.form.get("why_reason")
     goal = request.form.get("goal")
 
-    uai = Useranalytickinfo()
-    uai.user_id = user_id
-    uai.from_where = from_where
-    uai.why_reason = why_reason
-    uai.goal = goal
+    uai = Useranalytickinfo.query().filter_by(user_id=user_id).first()
 
-    db.session.add(uai)
+    if not uai:
+        uai = Useranalytickinfo()
+        uai.user_id = user_id
+        uai.from_where = from_where
+        uai.why_reason = why_reason
+        uai.goal = goal
+        db.session.add(uai)
+    else:
+        uai.user_id = user_id
+        uai.from_where = from_where
+        uai.why_reason = why_reason
+        uai.goal = goal
+
     db.session.commit()
 
-    return jsonify(message="Success"), 200
+    return jsonify(uai), 200
 
 @analytiks_blueprint.route('/analytiks/date', methods=['POST', 'GET'])
 @jwt_required()
