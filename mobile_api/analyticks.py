@@ -36,7 +36,7 @@ def add():
 
     db.session.commit()
 
-    return jsonify(uai), 200
+    return jsonify(uai.serialize), 200
 
 @analytiks_blueprint.route('/analytiks/date', methods=['POST', 'GET'])
 @jwt_required()
