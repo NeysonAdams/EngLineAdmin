@@ -19,7 +19,7 @@ def add():
     why_reason = request.form.get("why_reason")
     goal = request.form.get("goal")
 
-    uai = Useranalytickinfo.query().filter_by(user_id=user_id).first()
+    uai = Useranalytickinfo.query.filter_by(user_id=user_id).first()
 
     if not uai:
         uai = Useranalytickinfo()
