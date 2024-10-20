@@ -53,6 +53,17 @@ def main():
 
     stats = LevelsStat.query.filter((LevelsStat.user_id==user_id) & (LevelsStat.number >= min) & (LevelsStat.number <max)).all()
 
+    if len (stats) == 0 :
+        lvl = LevelsStat()
+        lvl.user_id = user_id
+        lvl.level_id = 0;
+        lvl.number = 1
+        lvl.passed_count = 0
+        lvl.errors_count = 0
+        db.session.add(lvl)
+        db.session.commit()
+        stats.append(lvl)
+
     return jsonify(
         user=user.serialize,
         stats = [s.serialize for s in stats],

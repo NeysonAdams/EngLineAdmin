@@ -127,6 +127,8 @@ class User(db.Model, UserMixin):
             "email": self.email,
             "level": self.level,
             "img_url": self.img_url,
+            "experiance": self.experiance,
+            "current_level": self.current_level
         }
 
     def auth_serialization(self, token, refresh_token, subscription, isRegistrated=True):
@@ -869,11 +871,13 @@ class LevelsStat(db.Model):
 
     @property
     def serialize(self):
+        levels = LevelsStat.query.filter_by(id=self.level_id).first()
         return {
             "user_id": self.user_id,
             "level_id": self.level_id,
             "errors_count": self.errors_count,
             "passed_count": self.passed_count,
+            "package_count": len(levels.exesizes_link),
             "number": self.number
         }
 
