@@ -856,7 +856,7 @@ class Levels(db.Model):
     def serialize(self):
         return {
             "number": self.number,
-            "exesizes": [w.serialize for w in self.exesizes_link]
+            "exesizes": [w.serialize_header for w in self.exesizes_link]
         }
 
 class LevelsStat(db.Model):
