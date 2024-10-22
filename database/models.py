@@ -1004,3 +1004,15 @@ class Frazes(db.Model):
             "uzbek_fraze": self.uzbek_fraze
         }
 
+class UserLevelExp(db.Model):
+    __tablename__ = 'userlevelexp'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    level = db.Column(db.Integer)
+    max = db.Column(db.Integer)
+
+    @property
+    def serialize(self):
+        return {
+            "level": self.level,
+            "max": self.max
+        }

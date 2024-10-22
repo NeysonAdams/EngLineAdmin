@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes
+from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
@@ -93,6 +93,17 @@ def update():
     number = request.form.get("number")
     errors = request.form.get("errors")
     ex_number = request.form.get("ex_number")
+    expirience = request.form.get("expirience")
+
+    user = User.query.filter_by(id=user_id).first()
+
+    lvl_info = UserLevelExp.query.filter_by(level = user.level).first()
+
+    if user.experiance + expirience > lvl_info.max:
+        user.experiance = user.experiance + expirience - lvl_info.max
+        user.current_level = user.current_level+1
+    else:
+        user.experiance = user.experiance + expirience
 
     record = LevelsStat.query.filter_by(user_id=user_id, number=number).first()
 
@@ -104,7 +115,9 @@ def update():
 
     db.session.commit()
 
-    return jsonify(record.serialize), 200
+    return jsonify(user=user.serialize,
+                   info=lvl_info.serialize,
+                   level=record.serialize), 200
 
 @level_blueprint.route('/levels/get', methods=['POST'])
 @jwt_required()

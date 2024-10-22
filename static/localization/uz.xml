@@ -33,6 +33,7 @@
     <button_no>Yo'q</button_no>
     <button_check>Tekshirish</button_check>
     <button_again>Yangidan</button_again>
+    <button_share>Do'stni taklif qilish</button_share>
 
     <label_text>Matn</label_text>
     <label_text_name>Matn nomi</label_text_name>
@@ -212,4 +213,12 @@
     <analityks_time_1>Kuniga 10 daqiqa</analityks_time_1>
     <analityks_time_2>Kuniga 15 daqiqa</analityks_time_2>
     <analityks_time_3>Kuniga 20 daqiqa</analityks_time_3>
+
+    <monday>Du</monday>
+    <tuesday>Se</tuesday>
+    <wednesday>Ch</wednesday>
+    <thursday>Pa</thursday>
+    <friday>Ju</friday>
+    <saturday>Sh</saturday>
+    <sunday>Ya</sunday>
 </main>

@@ -33,6 +33,7 @@
     <button_no>Нет</button_no>
     <button_check>Проверить</button_check>
     <button_again>Заново</button_again>
+    <button_share>Пригласить друга</button_share>
 
     <label_text>Текст</label_text>
     <label_text_name>Название текста</label_text_name>
@@ -215,4 +216,12 @@
     <analityks_time_1>10 минут в день</analityks_time_1>
     <analityks_time_2>15 минут в день</analityks_time_2>
     <analityks_time_3>20 минут в день</analityks_time_3>
+
+    <monday>Пн</monday>
+    <tuesday>Вт</tuesday>
+    <wensday>Ср</wensday>
+    <thursday>Чт</thursday>
+    <friday>Пт</friday>
+    <saturday>Сб</saturday>
+    <sunday>Вс</sunday>
 </main>
