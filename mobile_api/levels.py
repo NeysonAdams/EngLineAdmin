@@ -35,9 +35,9 @@ def get_number(current_number:int):
     return min, max, page
 
 
-@level_blueprint.route('/levels/main', methods=['GET'])
+@level_blueprint.route('/levels/main/<str:language>', methods=['GET'])
 @jwt_required()
-def main():
+def main(language:str):
     user_id = get_jwt_identity()
 
     user = User.query.filter_by(id=user_id).first()
@@ -56,7 +56,7 @@ def main():
     if len (stats) == 0 :
         lvl = LevelsStat()
         lvl.user_id = user_id
-        lvl.level_id = 0;
+        lvl.level_id = 1 if language=="ru" else 2
         lvl.number = 1
         lvl.passed_count = 0
         lvl.errors_count = 0
