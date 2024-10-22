@@ -35,9 +35,9 @@ def get_number(current_number:int):
     return min, max, page
 
 
-@level_blueprint.route('/levels/main/<str:language>', methods=['GET'])
+@level_blueprint.route('/levels/main/<string:language>', methods=['GET'])
 @jwt_required()
-def main(language:str):
+def main(language):
     user_id = get_jwt_identity()
 
     user = User.query.filter_by(id=user_id).first()
