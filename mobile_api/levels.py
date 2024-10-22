@@ -93,7 +93,7 @@ def update():
     number = request.form.get("number")
     errors = request.form.get("errors")
     ex_number = request.form.get("ex_number")
-    expirience = request.form.get("expirience")
+    expirience = int (request.form.get("expirience"))
 
     user = User.query.filter_by(id=user_id).first()
 
