@@ -871,7 +871,7 @@ class LevelsStat(db.Model):
 
     @property
     def serialize(self):
-        levels = LevelsStat.query.filter_by(id=self.level_id).first()
+        levels = Levels.query.filter_by(id=self.level_id).first()
         return {
             "user_id": self.user_id,
             "level_id": self.level_id,
