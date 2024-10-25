@@ -80,6 +80,8 @@ class User(db.Model, UserMixin):
     fs_uniquifier = db.Column(db.String(64), unique=True)
     experiance = db.Column(db.Integer, default=0, nullable=False)
     current_level = db.Column(db.Integer, default=1, nullable=False)
+    days = db.Column(db.Integer, default=0)
+    timing = db.Column(db.Integer, default=5)
 
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
@@ -114,6 +116,10 @@ class User(db.Model, UserMixin):
             "level": self.level,
             "img_url": self.img_url,
             "phone_number": self.phone_number,
+            "experiance": self.experiance,
+            "current_level": self.current_level,
+            "days": self.days,
+            "timing": self.timing
         }
 
     @property
@@ -128,7 +134,9 @@ class User(db.Model, UserMixin):
             "level": self.level,
             "img_url": self.img_url,
             "experiance": self.experiance,
-            "current_level": self.current_level
+            "current_level": self.current_level,
+            "days": self.days,
+            "timing": self.timing
         }
 
     def auth_serialization(self, token, refresh_token, subscription, isRegistrated=True):
@@ -144,7 +152,11 @@ class User(db.Model, UserMixin):
             "access_token": token,
             "refresh_token": refresh_token,
             "isRegistrated": isRegistrated,
-            "subscription": {} if not subscription else subscription.serialize
+            "subscription": {} if not subscription else subscription.serialize,
+            "experiance": self.experiance,
+            "current_level": self.current_level,
+            "days": self.days,
+            "timing": self.timing
         }
 
 class UserStatistic(db.Model):

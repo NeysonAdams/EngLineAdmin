@@ -18,9 +18,12 @@ def add():
     from_where = request.form.get("from_where")
     why_reason = request.form.get("why_reason")
     goal = request.form.get("goal")
+    timing = request.form.get("timing")
 
     uai = Useranalytickinfo.query.filter_by(user_id=user_id).first()
 
+    user = User.query.filter_by(id=user_id).first()
+    user.timing = int(timing)
     if not uai:
         uai = Useranalytickinfo()
         uai.user_id = user_id
@@ -44,6 +47,7 @@ def date():
     user_id = get_jwt_identity()
 
     user_info = Useranalytickinfo.query.filter_by(user_id=user_id).first()
+    user = User.query.filter_by(id=user_id).first()
 
     if request.method == 'GET':
         if not user_info:
@@ -91,6 +95,19 @@ def date():
 
         # Сохраняем изменения
         db.session.add(date_record)
+
+        previous_day = date_obj - timedelta(days=1)
+
+        pdate_record = Dateanalyticks.query.join(date_analyticks).filter(
+            date_analyticks.c.useranalytickinfo_id == user_info.id,
+            Dateanalyticks.date == previous_day
+        ).first()
+
+        if pdate_record:
+            user.days += 1
+        else:
+            user.days = 0
+
         db.session.commit()
 
         return jsonify({"message": "Данные успешно обновлены"}), 200

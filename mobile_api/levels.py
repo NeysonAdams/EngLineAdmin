@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp
+from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp, Useranalytickinfo
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
@@ -64,9 +64,13 @@ def main(language):
         db.session.commit()
         stats.append(lvl)
 
+    records = user_info.date_link.order_by(Dateanalyticks.date.desc()).limit(31).all()
+    data = [record.serialize for record in records]
+
     return jsonify(
         user=user.serialize,
         stats = [s.serialize for s in stats],
+        analyticks = data,
         page=page
     ), 200
 
