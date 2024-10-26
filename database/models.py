@@ -956,11 +956,11 @@ class Quests(db.Model):
     count = db.Column(db.Integer)
     type = db.Column(db.String(45))
 
-    description = db.relationship('QuestDiscription', secondary=quest_discription_table,
+    description = db.relationship('QuestDescription', secondary=quest_discription_table,
                              backref=db.backref('quest_discription_table', lazy='dynamic'))
 
     def serialize(self, language):
-        descr = self.description.filter(QuestDiscription.language == language).first()
+        descr = self.description.filter(QuestDescription.language == language).first()
         data = {
             "id": self.id,
             "name": descr.name,
