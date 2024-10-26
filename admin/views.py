@@ -560,7 +560,7 @@ class QuestView(TableView):
 
     form_extra_fields = {
         'type': SelectField('Type',
-                                choices=['TASK', 'LEVEL', 'USERLEVEL', 'TIMING']),
+                                choices=['TASK', 'LEVEL', 'USERLEVEL', 'TIMING', 'EXPERIENCE', 'NOERROR']),
     }
 
 # class WordView(TableView):
