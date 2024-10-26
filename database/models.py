@@ -932,34 +932,43 @@ class Useranalytickinfo(db.Model):
         }
 
 
-quest_user = db.Table('quest_user',
+quest_discription_table = db.Table('quest_discription_table',
     db.Column('quests_id', db.Integer, db.ForeignKey('quests.id'), primary_key=True),
-    db.Column('userquest_id', db.Integer, db.ForeignKey('userquest.id'), primary_key=True)
+    db.Column('quest_discription_id', db.Integer, db.ForeignKey('quest_discription.id'), primary_key=True)
 )
+
+class QuestDescription(db.Model):
+    __tablename__ = 'quest_discription'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    language = db.Column(db.String(45))
+    name = db.Column(db.String(45))
+    description = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"{self.language} :: {self.name}"
+
 class Quests(db.Model):
     __tablename__ = 'quests'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    name = db.Column(db.String(45))
-    description = db.Column(db.String(255))
     img_url = db.Column(db.String(255))
     count = db.Column(db.Integer)
+    type = db.Column(db.String(45))
 
-    uquests = db.relationship('Userquest', secondary=quest_user,
-                                backref=db.backref('quest_user', lazy='dynamic'))
+    description = db.relationship('QuestDiscription', secondary=quest_discription_table,
+                             backref=db.backref('quest_discription_table', lazy='dynamic'))
 
-    def serialize(self, user_id=None):
+    def serialize(self, language):
+        descr = self.description.filter(QuestDiscription.language == language).first()
         data = {
             "id": self.id,
-            "name": self.name,
-            "description": self.description,
+            "name": descr.name,
+            "description": descr.description,
             "img_url": self.img_url,
             "count": self.count,
-            "uquests": []
+            "type": self.type
         }
-        if user_id:
-            uquests = self.uquests.filter(Userquest.user_id == user_id).all()
-            data['uquests'] = [uquest.serialize for uquest in uquests]
 
         return data
 
@@ -968,12 +977,17 @@ class Userquest(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer)
     current_count=db.Column(db.Integer)
+    date = db.Column(db.DateTime)
 
-    @property
-    def serialize(self):
+    quest_id = db.Column(db.Integer, db.ForeignKey('quests.id'))
+
+    quest = db.relationship('Quests', backref='quest_user', lazy=True)
+
+    def serialize(self, language):
         return {
             "user_id": self.user_id,
-            "current_count": self.current_count
+            "current_count": self.current_count,
+            "quest": self.quest.serialize(language)
         }
 
 theory_fraze = db.Table('theory_fraze',

@@ -519,6 +519,13 @@ class FrazesView(TableView):
     form_columns = ["fraze", "russian_fraze", "uzbek_fraze"]
     column_labels = dict(id='ID', fraze="Фраза", russian_fraze="Русский", uzbek_fraze="Узбекский")
 
+
+class QuestDescriptionView(TableView):
+    form_columns = ["name", "description", "language"]
+    form_extra_fields = {
+        'language': SelectField('Language',
+                                choices=['ru', 'uz']),
+    }
 class QuestView(TableView):
     def picture_validation(form, field):
         if field.data:
@@ -539,8 +546,8 @@ class QuestView(TableView):
                 f_name = field.data
 
 
-    form_columns = ["name", "description", "img_url", "count"]
-    column_labels = dict(name='Title', description="Description", img_url='Image', count="Count")
+    form_columns = ["type", "description", "img_url", "count"]
+    column_labels = dict( img_url='Image', count="Count", description="Description")
     def on_model_change(view, context, model, name):
         setattr(model, 'img_url', context.img_url.data)
 
@@ -550,6 +557,12 @@ class QuestView(TableView):
     column_formatters = dict(img_url=pic_formatter)
     form_overrides = dict(img_url=FileUploadField)
     form_args = dict(img_url=dict(validators=[picture_validation]))
+
+    form_extra_fields = {
+        'type': SelectField('Type',
+                                choices=['TASK', 'LEVEL', 'USERLEVEL', 'TIMING']),
+    }
+
 # class WordView(TableView):
 #     def audio_validation(form, field):
 #         if field.data:
