@@ -552,7 +552,7 @@ class QuestView(TableView):
         setattr(model, 'img_url', context.img_url.data)
 
     def pic_formatter(self, context, model, name):
-       return Markup('<img src="%s" width="100" height="100">' % model.img_url)
+       return Markup('<img src="%s" width="20" height="20">' % model.img_url)
 
     column_formatters = dict(img_url=pic_formatter)
     form_overrides = dict(img_url=FileUploadField)
