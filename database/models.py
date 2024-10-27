@@ -985,7 +985,7 @@ class Userquest(db.Model):
 
     def serialize(self, language):
         return {
-            "user_id": self.user_id,
+            "id": self.id,
             "current_count": self.current_count,
             "quest": self.quest.serialize(language)
         }

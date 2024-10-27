@@ -224,4 +224,7 @@
     <friday>Пт</friday>
     <saturday>Сб</saturday>
     <sunday>Вс</sunday>
+
+    <quest_title>Привет!</quest_title>
+    <quest_subtitle>Выполный ежедневные квесты и получай награды. Квесты добавляются каждый день</quest_subtitle>
 </main>
