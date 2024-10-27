@@ -64,6 +64,8 @@ def main(language):
         db.session.commit()
         stats.append(lvl)
 
+    user_info = Useranalytickinfo.query.filter_by(user_id=user_id).first()
+
     records = user_info.date_link.order_by(Dateanalyticks.date.desc()).limit(31).all()
     data = [record.serialize for record in records]
 
