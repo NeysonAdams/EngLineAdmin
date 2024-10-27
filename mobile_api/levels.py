@@ -67,7 +67,7 @@ def main(language):
     user_info = Useranalytickinfo.query.filter_by(user_id=user_id).first()
 
     if user_info:
-        records = user_info.date_link.order_by(Dateanalyticks.date.desc()).limit(31).all()
+        records = sorted(user_info.date_link, key=lambda x: x.date, reverse=True)[:31]
         data = [record.serialize for record in records]
     else:
         # Если user_info отсутствует, задаем data пустым массивом или другим значением по умолчанию
