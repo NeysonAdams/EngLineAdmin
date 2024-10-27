@@ -17,8 +17,8 @@ def get():
     date_str =  request.form.get("date")
     language = request.form.get("language")
 
-    if not date_str or minutes is None:
-        return jsonify({"message": "Необходимо передать 'date' и 'minutes'"}), 400
+    if not date_str is None:
+        return jsonify({"message": "Необходимо передать 'date'"}), 400
 
     # Парсинг даты
     try:
@@ -56,23 +56,18 @@ def get():
 @quests_blueprint.route('/quests/update', methods=['POST'])
 @jwt_required()
 def update():
-    user_id = get_jwt_identity()
+    #user_id = get_jwt_identity()
     quest_id = request.form.get("quest_id")
     count = request.form.get("count", type=int)
 
-    quest = Quests.query.filter_by(id=quest_id).first()
-
-    uquests = Userquest.query.filter(Userquest.user_id == user_id).first()
-
-    if uquests is None:
-        uquests = Userquest()
-        uquests.user_id = user_id
-        uquests.current_count = count
-        db.session.add(uquests)
-    else:
-        uquests.current_count = count
-
+    quest = Userquest.query.filter_by(id=quest_id).first()
+    quest.current_count = count
     db.session.commit()
 
-    return jsonify(quest=quest.seralize(user_id)), 200
+    return jsonify(msg="Sawed"), 200
 
+@quests_blueprint.route('/quests/update/all', methods=['POST'])
+@jwt_required()
+def update_all():
+    quest_id = request.form.get("quest_id")
+    count = request.form.get("count", type=int)
