@@ -7,7 +7,7 @@ from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
 
-import datetime
+from datetime import datetime
 
 from server_init import db
 quests_blueprint = Blueprint('quests_blueprint', __name__)
