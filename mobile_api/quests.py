@@ -14,10 +14,10 @@ quests_blueprint = Blueprint('quests_blueprint', __name__)
 @jwt_required()
 def get():
     user_id = get_jwt_identity()
-    date_str =  request.form.get("date")
+    date_str = request.form.get("date")
     language = request.form.get("language")
 
-    if not date_str is None:
+    if date_str is None:
         return jsonify({"message": "Необходимо передать 'date'"}), 400
 
     # Парсинг даты

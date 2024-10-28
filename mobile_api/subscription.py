@@ -41,17 +41,21 @@ def generate_unique_code(email: str) -> str:
     return unique_code
 
 
-def add_months(source_date, months)->datetime:
-    # Получаем новый месяц и год
-    month = source_date.month - 1 + months
-    year = source_date.year + month // 12
+def add_time(source_date, months=0, weeks=0) -> datetime:
+    # Добавляем недели с помощью timedelta
+    result_date = source_date + timedelta(weeks=weeks)
+
+    # Получаем новый месяц и год, добавив нужное количество месяцев
+    month = result_date.month - 1 + months
+    year = result_date.year + month // 12
     month = month % 12 + 1
 
     # Корректируем день, если результат выходит за пределы месяца
-    day = min(source_date.day,
+    day = min(result_date.day,
               [31, 29 if year % 4 == 0 and year % 100 != 0 or year % 400 == 0 else 28, 31, 30, 31, 30, 31, 31, 30, 31,
                30, 31][month - 1])
 
+    # Возвращаем скорректированную дату
     return datetime(year, month, day)
 
 def addSubscription(user:User, stype:str, payment:str):
@@ -67,12 +71,14 @@ def addSubscription(user:User, stype:str, payment:str):
         else:
             return s,  False
 
-    if stype == "MONTH" or stype == "SUB":
-        current_date = add_months(current_date, 1)
+    if stype == "SUB":
+        current_date = add_months(current_date, 0, 1)
+    elif stype == "MONTH":
+        current_date = add_months(current_date, 1, 0)
     elif stype == "3MONTH":
-        current_date = add_months(current_date, 3)
+        current_date = add_months(current_date, 3, 0)
     elif stype == "YEAR":
-        current_date = add_months(current_date, 12)
+        current_date = add_months(current_date, 12, 0)
 
     print(f"Тип current_date: {type(current_date)}, Значение: {current_date}")
 

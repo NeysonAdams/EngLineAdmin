@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp, Useranalytickinfo
+from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp, Useranalytickinfo, Subscription
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
@@ -73,11 +73,13 @@ def main(language):
         # Если user_info отсутствует, задаем data пустым массивом или другим значением по умолчанию
         data = []
 
+
+
     return jsonify(
         user=user.serialize,
         stats = [s.serialize for s in stats],
         analyticks = data,
-        page=page
+        page=page,
     ), 200
 
 @level_blueprint.route('/levels/page/<int:page>', methods=['GET'])
@@ -155,4 +157,7 @@ def get():
         db.session.add(stat)
         db.session.commit()
 
-    return jsonify(level.serialize), 200
+    subscription = Subscription.query.filter_by(user_id=user_id).first()
+
+    return jsonify(level=level.serialize,
+                   subscription=subscription.serialize), 200
