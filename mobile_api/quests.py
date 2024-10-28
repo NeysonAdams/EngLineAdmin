@@ -39,7 +39,7 @@ def get():
     uquests = Userquest.query.filter(Userquest.user_id == user_id).all()
 
     if len(uquests) > 0:
-        return jsonify(quests=[q.seralize(language) for q in uquests]), 200
+        return jsonify(quests=[q.serialize(language) for q in uquests]), 200
 
     quests = Quests.query.order_by(func.random()).limit(5).all()
     uquests = []
