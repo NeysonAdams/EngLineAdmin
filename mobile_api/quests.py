@@ -7,7 +7,7 @@ from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
 
-from datetime import datetime
+from datetime import datetime as dt
 
 from server_init import db
 quests_blueprint = Blueprint('quests_blueprint', __name__)
@@ -24,7 +24,7 @@ def get():
 
     # Парсинг даты
     try:
-        date_obj = datetime.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
+        date_obj = dt.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
     except ValueError:
         return jsonify({"message": "Некорректный формат даты. Используйте 'ГГГГ-ММ-ДД'"}), 400
 
