@@ -53,7 +53,7 @@ def get():
         db.session.add(uq)
     db.session.commit()
 
-    return jsonify(quests=[q.seralize(language) for q in uquests]), 200
+    return jsonify(quests=[q.serialize(language) for q in uquests]), 200
 
 @quests_blueprint.route('/quests/update', methods=['POST'])
 @jwt_required()
