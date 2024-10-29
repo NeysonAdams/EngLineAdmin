@@ -102,7 +102,7 @@ def check_audio():
     if not question:
         return jsonify(message="Question not exist"), 404
 
-    ai_response = check_text_question(text=question.audio_query, questoion=question.question, answer=answer, language=language)
+    ai_response = check_text_question(text=question.audio_query, question=question.question, answer=answer, language=language)
     j_obj = json.loads(ai_response.choices[0].message.content)
     return jsonify(check_audio=j_obj, check_answer=None, check_grammar=None, check_translation=None), 200
 
