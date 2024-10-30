@@ -107,6 +107,21 @@ def update():
     ex_number = request.form.get("ex_number")
     expirience = int (request.form.get("expirience"))
 
+    if not level_id:
+        return jsonify(message="Missing required form fields 'level_id'"), 400
+
+    if not number:
+        return jsonify(message="Missing required form fields 'number'"), 400
+
+    if not errors:
+        return jsonify(message="Missing required form fields 'errors'"), 400
+
+    if not ex_number:
+        return jsonify(message="Missing required form fields 'ex_number'"), 400
+
+    if not expirience:
+        return jsonify(message="Missing required form fields 'expirience'"), 400
+
     user = User.query.filter_by(id=user_id).first()
     lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
 
