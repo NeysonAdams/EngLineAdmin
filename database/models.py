@@ -867,6 +867,7 @@ class Levels(db.Model):
     @property
     def serialize(self):
         return {
+            "id": self.id,
             "number": self.number,
             "exesizes": [w.serialize_header for w in self.exesizes_link]
         }
