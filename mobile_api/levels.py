@@ -120,7 +120,7 @@ def update():
         if not ex_number:
             return jsonify(message="Missing required form fields 'ex_number'"), 400
 
-        if not expirience:
+        if expirience is None:
             return jsonify(message="Missing required form fields 'expirience'"), 400
 
         user = User.query.filter_by(id=user_id).first()
@@ -146,8 +146,10 @@ def update():
                        info=lvl_info.serialize,
                        level=record.serialize), 200
     except ValueError as e:
+        print("Ошибка значения:", str(e))
         return jsonify(message=f"Value error: {str(e)}"), 400
     except Exception as e:
+        print("Ошибка значения:", str(e))
         return jsonify(message=f"An unexpected error occurred: {str(e)}"), 500
 
 @level_blueprint.route('/levels/get', methods=['POST'])
