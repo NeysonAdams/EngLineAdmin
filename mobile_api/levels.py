@@ -108,7 +108,6 @@ def update():
     expirience = int (request.form.get("expirience"))
 
     user = User.query.filter_by(id=user_id).first()
-
     lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
 
     if user.experiance + expirience > lvl_info.max:
