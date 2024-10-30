@@ -102,7 +102,7 @@ def page(page:int):
 def update():
         user_id = get_jwt_identity()
         level_id = request.form.get("level_id")
-        number = request.form.get("number")
+        number = int(request.form.get("number"))
         errors = request.form.get("errors")
         ex_number = request.form.get("ex_number")
         expirience = int (request.form.get("expirience"))
