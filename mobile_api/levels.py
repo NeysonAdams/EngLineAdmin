@@ -100,50 +100,55 @@ def page(page:int):
 @level_blueprint.route('/levels/update', methods=['POST'])
 @jwt_required()
 def update():
-    user_id = get_jwt_identity()
-    level_id = request.form.get("level_id")
-    number = request.form.get("number")
-    errors = request.form.get("errors")
-    ex_number = request.form.get("ex_number")
-    expirience = int (request.form.get("expirience"))
+    try:
+        user_id = get_jwt_identity()
+        level_id = request.form.get("level_id")
+        number = request.form.get("number")
+        errors = request.form.get("errors")
+        ex_number = request.form.get("ex_number")
+        expirience = int (request.form.get("expirience"))
 
-    if not level_id:
-        return jsonify(message="Missing required form fields 'level_id'"), 400
+        if not level_id:
+            return jsonify(message="Missing required form fields 'level_id'"), 400
 
-    if not number:
-        return jsonify(message="Missing required form fields 'number'"), 400
+        if not number:
+            return jsonify(message="Missing required form fields 'number'"), 400
 
-    if not errors:
-        return jsonify(message="Missing required form fields 'errors'"), 400
+        if not errors:
+            return jsonify(message="Missing required form fields 'errors'"), 400
 
-    if not ex_number:
-        return jsonify(message="Missing required form fields 'ex_number'"), 400
+        if not ex_number:
+            return jsonify(message="Missing required form fields 'ex_number'"), 400
 
-    if not expirience:
-        return jsonify(message="Missing required form fields 'expirience'"), 400
+        if not expirience:
+            return jsonify(message="Missing required form fields 'expirience'"), 400
 
-    user = User.query.filter_by(id=user_id).first()
-    lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
+        user = User.query.filter_by(id=user_id).first()
+        lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
 
-    if user.experiance + expirience > lvl_info.max:
-        user.experiance = user.experiance + expirience - lvl_info.max
-        user.current_level = user.current_level+1
-    else:
-        user.experiance = user.experiance + expirience
+        if user.experiance + expirience > lvl_info.max:
+            user.experiance = user.experiance + expirience - lvl_info.max
+            user.current_level = user.current_level+1
+        else:
+            user.experiance = user.experiance + expirience
 
-    record = LevelsStat.query.filter_by(user_id=user_id, number=number).first()
+        record = LevelsStat.query.filter_by(user_id=user_id, number=number).first()
 
-    if record is None:
-        return jsonify(message="No Record"), 404
+        if record is None:
+            return jsonify(message="No Record"), 404
 
-    record.errors_count = int(errors)
-    record.passed_count = int(ex_number)
+        record.errors_count = int(errors)
+        record.passed_count = int(ex_number)
 
-    db.session.commit()
+        db.session.commit()
 
-    return jsonify(user=user.serialize,
-                   info=lvl_info.serialize,
-                   level=record.serialize), 200
+        return jsonify(user=user.serialize,
+                       info=lvl_info.serialize,
+                       level=record.serialize), 200
+    except ValueError as e:
+        return jsonify(message=f"Value error: {str(e)}"), 400
+    except Exception as e:
+        return jsonify(message=f"An unexpected error occurred: {str(e)}"), 500
 
 @level_blueprint.route('/levels/get', methods=['POST'])
 @jwt_required()
