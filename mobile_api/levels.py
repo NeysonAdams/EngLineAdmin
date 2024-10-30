@@ -172,4 +172,5 @@ def get():
     subscription = Subscription.query.filter_by(user_id=user_id).first()
 
     return jsonify(level=level.serialize,
+                   stat=record.serialize,
                    subscription=subscription.serialize), 200
