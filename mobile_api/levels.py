@@ -109,7 +109,7 @@ def update():
 
     user = User.query.filter_by(id=user_id).first()
 
-    lvl_info = UserLevelExp.query.filter_by(level = user.level).first()
+    lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
 
     if user.experiance + expirience > lvl_info.max:
         user.experiance = user.experiance + expirience - lvl_info.max
