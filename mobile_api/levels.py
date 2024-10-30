@@ -124,6 +124,11 @@ def update():
             return jsonify(message="Missing required form fields 'expirience'"), 400
 
         user = User.query.filter_by(id=user_id).first()
+
+        if user.current_level==0:
+            user.current_level =1
+            db.session.commit()
+
         lvl_info = UserLevelExp.query.filter_by(level=user.current_level).first()
 
         if user.experiance + expirience > lvl_info.max:
