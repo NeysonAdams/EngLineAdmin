@@ -100,7 +100,6 @@ def page(page:int):
 @level_blueprint.route('/levels/update', methods=['POST'])
 @jwt_required()
 def update():
-    try:
         user_id = get_jwt_identity()
         level_id = request.form.get("level_id")
         number = request.form.get("number")
@@ -151,12 +150,6 @@ def update():
         return jsonify(user=user.serialize,
                        info=lvl_info.serialize,
                        level=record.serialize), 200
-    except ValueError as e:
-        print("Ошибка значения:", str(e))
-        return jsonify(message=f"Value error: {str(e)}"), 400
-    except Exception as e:
-        print("Ошибка значения:", str(e))
-        return jsonify(message=f"An unexpected error occurred: {str(e)}"), 500
 
 @level_blueprint.route('/levels/get', methods=['POST'])
 @jwt_required()
