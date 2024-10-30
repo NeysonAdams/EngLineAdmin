@@ -108,7 +108,7 @@ def update():
         ex_number = request.form.get("ex_number")
         expirience = int (request.form.get("expirience"))
 
-
+        level = Levels.query.filter_by(id=level_id).first()
         user = User.query.filter_by(id=user_id).first()
 
         if user.current_level==0:
@@ -130,6 +130,21 @@ def update():
 
         record.errors_count = int(errors)
         record.passed_count = int(ex_number)
+
+        if record.passed_count == len(level.exesizes_link):
+            next_level = Levels.query.filter_by(language=level.language, number=number+1).first()
+
+            next_record = LevelsStat.query.filter_by(user_id=user_id, number=number+1).first()
+
+            if not next_record:
+                stat = LevelsStat()
+                stat.user_id = user_id
+                stat.level_id = next_level.id
+                stat.number = number+1
+                stat.errors_count = 0
+                stat.passed_count = 0
+                stat.max_count = len(next_level.exesizes_link)
+                db.session.add(stat)
 
         db.session.commit()
 
