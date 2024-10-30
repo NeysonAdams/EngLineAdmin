@@ -118,11 +118,11 @@ def update():
 
     record = LevelsStat.query.filter_by(user_id=user_id, number=number).first()
 
-    if record == None:
-        jsonify(message="No Record"), 404
+    if record is None:
+        return jsonify(message="No Record"), 404
 
-    record.errors_count = errors
-    record.passed_count = ex_number
+    record.errors_count = int(errors)
+    record.passed_count = int(ex_number)
 
     db.session.commit()
 
