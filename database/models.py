@@ -1010,7 +1010,7 @@ class Theory(db.Model):
                               backref=db.backref('theory_fraze_br', lazy='dynamic'))
 
 
-    description = db.relationship('TDescription', secondary=theory_fraze,
+    description = db.relationship('TDescription', secondary=theory_description,
                               backref=db.backref('theory_description', lazy='dynamic'))
 
     def serialize(self, language):
