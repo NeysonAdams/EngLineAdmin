@@ -958,7 +958,7 @@ class Quests(db.Model):
     type = db.Column(db.String(45))
 
     description = db.relationship('QuestDescription', secondary=quest_discription_table,
-                             backref=db.backref('quest_discription_table', lazy='dynamic'))
+                             backref=db.backref('quest_discriptions', lazy='dynamic'))
 
     def serialize(self, language):
         descr = next((d for d in self.description if d.language == language), None)
