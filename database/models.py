@@ -996,22 +996,41 @@ theory_fraze = db.Table('theory_fraze',
     db.Column('theory_id', db.Integer, db.ForeignKey('theory.id'), primary_key=True)
 )
 
+theory_description = db.Table('theory_description',
+    db.Column('tdescription_id', db.Integer, db.ForeignKey('tdescription.id'), primary_key=True),
+    db.Column('theory_id', db.Integer, db.ForeignKey('theory.id'), primary_key=True)
+)
+
 class Theory(db.Model):
     __tablename__ = 'theory'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    description = db.Column(db.String(2555))
     observing_date = db.Column(db.DateTime)
 
     frazes = db.relationship('Frazes', secondary=theory_fraze,
                               backref=db.backref('theory_fraze', lazy='dynamic'))
 
-    @property
-    def serialize(self):
+
+    description = db.relationship('theory_description', secondary=theory_fraze,
+                              backref=db.backref('theory_description', lazy='dynamic'))
+
+    def serialize(self, language):
+        description = next((d for d in self.description if d.language == language), None)
         return {
-            "description": self.description,
+            "description": description.description,
             "observing_date": self.observing_date,
             "frazes": [f.serialize for f in frazes]
         }
+
+class TDescription(db.Model):
+    __tablename__ = 'tdescription'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+    language = db.Column(db.String(45))
+    name = db.Column(db.String(45))
+    description = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"{self.language} :: {self.name}"
 
 class Frazes(db.Model):
     __tablename__ = 'frazes'

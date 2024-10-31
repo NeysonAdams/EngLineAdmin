@@ -34,6 +34,8 @@
     <button_check>Проверить</button_check>
     <button_again>Заново</button_again>
     <button_share>Пригласить друга</button_share>
+    <button_share_2>Поделиться</button_share_2>
+    <copy_link_button>Копировать</copy_link_button>
 
     <label_text>Текст</label_text>
     <label_text_name>Название текста</label_text_name>

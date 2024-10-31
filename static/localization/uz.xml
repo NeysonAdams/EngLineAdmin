@@ -34,6 +34,7 @@
     <button_check>Tekshirish</button_check>
     <button_again>Yangidan</button_again>
     <button_share>Do'stni taklif qilish</button_share>
+    <button_share_2>Ulashish</button_share_2>   <copy_link_button>Havolani ko‘chirish</copy_link_button>
 
     <label_text>Matn</label_text>
     <label_text_name>Matn nomi</label_text_name>
