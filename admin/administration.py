@@ -1,6 +1,6 @@
 from flask_admin import Admin
 from flask import Blueprint, render_template
-from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView, WordsExecizeView, DictionaryView, QuestDescriptionView
+from .views import TableView, UserView, CourceView, LessonView, ExesizeView, QuestionView, SubscriptionView, TextTranslateView, WordsExecizeView, DictionaryView, QuestDescriptionView, ThemsDescriptionView
 from .views import VideoQuestionView, BillingView, AudioQuestionView, InputQuestionView, ExesizesView, SpeackingLessonScheduller, PromoView, ChatTopicView, LevelView, QuestView, TheoryView, FrazesView
 from database.models import Role, Promo, Billing, User, Cource, Lesson, Exesize, Question, Subscription, Videoquestion, Audioquestion, Inputquestion, Quests, Exesesizes, LessonSchedler, TranslationQuestion, Chattopic, Wordexecesize, Wordslink, Levels, Theory, Frazes
 from database.models import QuestDescription, TDescription
@@ -78,7 +78,7 @@ class Administration:
                                name="Фразы Дня"))
 
         self.admin.add_view(
-            QuestDescriptionView(TDescription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
+            ThemsDescriptionView(TDescription, self.db.session, menu_icon_type='fa', menu_icon_value='fa-balance-scale',
                                  name="Фразы Дня Описание"))
 
         self.admin.add_view(

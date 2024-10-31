@@ -526,6 +526,13 @@ class QuestDescriptionView(TableView):
         'language': SelectField('Language',
                                 choices=['ru', 'uz']),
     }
+
+class ThemsDescriptionView(TableView):
+    form_columns = ["name", "description", "language"]
+    form_extra_fields = {
+        'language': SelectField('Language',
+                                choices=['ru', 'uz']),
+    }
 class QuestView(TableView):
     def picture_validation(form, field):
         if field.data:
