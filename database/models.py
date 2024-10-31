@@ -1004,7 +1004,7 @@ theory_description = db.Table('theory_description',
 class Theory(db.Model):
     __tablename__ = 'theory'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    observing_date = db.Column(db.DateTime)
+    observing_date = db.Column(db.Date)
 
     frazes = db.relationship('Frazes', secondary=theory_fraze,
                               backref=db.backref('theory_fraze_br', lazy='dynamic'))
