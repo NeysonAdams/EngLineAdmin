@@ -1007,7 +1007,7 @@ class Theory(db.Model):
     observing_date = db.Column(db.DateTime)
 
     frazes = db.relationship('Frazes', secondary=theory_fraze,
-                              backref=db.backref('theory_fraze', lazy='dynamic'))
+                              backref=db.backref('theory_fraze_br', lazy='dynamic'))
 
 
     description = db.relationship('TDescription', secondary=theory_fraze,
