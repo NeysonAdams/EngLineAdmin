@@ -441,7 +441,7 @@ class Exesize(db.Model):
         if type == "word_pair_exesize":
             return{
                 "id": self.id,
-                "word_ex": self.wordexecesize.serialize,
+                "word_ex": self.wordexecesize.serialize if self.wordexecesize is not None else None,
                 "type": type
             }
         if type == "translate_exesize":
