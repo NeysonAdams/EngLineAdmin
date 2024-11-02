@@ -88,9 +88,10 @@ def date():
             # Если записи нет, создаем новую и связываем с пользователем
             date_record = Dateanalyticks(date=date_obj, minutes=minutes)
             user_info.date_link.append(date_record)
+            db.session.add(date_record)
 
         # Сохраняем изменения
-        db.session.add(date_record)
+        db.session.commit()
 
         previous_day = date_obj - timedelta(days=1)
 
