@@ -6,7 +6,7 @@ from database.models import Exesize, Levels, LevelsStat, User, Exesesizes, Datea
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
-
+from datetime import datetime as dt
 from server_init import db
 analytiks_blueprint = Blueprint('analytiks_blueprint', __name__)
 
@@ -66,17 +66,13 @@ def date():
         date_str = request.form.get("date")
         minutes = request.form.get("minutes", type=int)
 
-        # Проверка входных данных
-        if not date_str or minutes is None:
-            return jsonify({"message": "Необходимо передать 'date' и 'minutes'"}), 400
+        if date_str is None:
+            return jsonify({"message": "Необходимо передать 'date'"}), 400
 
-        # Парсинг даты
         try:
-            date_obj = datetime.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
+            date_obj = dt.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
         except ValueError:
             return jsonify({"message": "Некорректный формат даты. Используйте 'ГГГГ-ММ-ДД'"}), 400
-
-        # Ищем информацию о пользователе
 
 
         # Ищем запись Dateanalyticks с указанной датой, связанной с пользователем
