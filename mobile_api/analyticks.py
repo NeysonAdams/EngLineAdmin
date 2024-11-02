@@ -76,7 +76,7 @@ def date():
 
 
         # Ищем запись Dateanalyticks с указанной датой, связанной с пользователем
-        date_record = Dateanalyticks.query.join(date_analyticks).filter(
+        date_record = Dateanalyticks.query.filter(
             date_analyticks.c.useranalytickinfo_id == user_info.id,
             Dateanalyticks.date == date_obj
         ).first()
@@ -95,7 +95,7 @@ def date():
 
         previous_day = date_obj - timedelta(days=1)
 
-        pdate_record = Dateanalyticks.query.join(date_analyticks).filter(
+        pdate_record = Dateanalyticks.query.filter(
             date_analyticks.c.useranalytickinfo_id == user_info.id,
             Dateanalyticks.date == previous_day
         ).first()
