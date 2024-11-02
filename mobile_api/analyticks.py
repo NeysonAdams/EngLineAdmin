@@ -103,7 +103,7 @@ def date():
         if pdate_record:
             user.days += 1
         else:
-            user.days = 0
+            user.days = 1
 
         db.session.commit()
 
