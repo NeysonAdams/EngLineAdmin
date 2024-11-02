@@ -64,7 +64,7 @@ def date():
     if request.method == 'POST':
         # Получаем данные из запроса
         date_str = request.form.get("date")
-        minutes = request.form.get("minutes", type=int)
+        minutes = int(request.form.get("minutes"))
 
         if date_str is None:
             return jsonify({"message": "Необходимо передать 'date'"}), 400
