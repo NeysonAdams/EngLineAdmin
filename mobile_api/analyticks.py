@@ -49,11 +49,11 @@ def date():
     user_info = Useranalytickinfo.query.filter_by(user_id=user_id).first()
     user = User.query.filter_by(id=user_id).first()
 
-    if request.method == 'GET':
-        if not user_info:
-            return jsonify({"message": "Пользователь не найден"}), 404
+    if not user_info:
+        return jsonify({"message": "Пользователь не найден"}), 404
 
-            # Получаем последние 31 запись из связи date_link
+    if request.method == 'GET':
+        # Получаем последние 31 запись из связи date_link
         records = user_info.date_link.order_by(Dateanalyticks.date.desc()).limit(31).all()
 
         # Сериализуем данные
@@ -64,21 +64,25 @@ def date():
     if request.method == 'POST':
         # Получаем данные из запроса
         date_str = request.form.get("date")
-        minutes = int(request.form.get("minutes"))
+        minutes_str = request.form.get("minutes")
 
-        if date_str is None:
-            return jsonify({"message": "Необходимо передать 'date'"}), 400
+        if date_str is None or minutes_str is None:
+            return jsonify({"message": "Необходимо передать 'date' и 'minutes'"}), 400
 
         try:
             date_obj = dt.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
         except ValueError:
             return jsonify({"message": "Некорректный формат даты. Используйте 'ГГГГ-ММ-ДД'"}), 400
 
+        try:
+            minutes = int(minutes_str)
+        except ValueError:
+            return jsonify({"message": "Значение 'minutes' должно быть целым числом"}), 400
 
         # Ищем запись Dateanalyticks с указанной датой, связанной с пользователем
-        date_record = Dateanalyticks.query.filter(
-            date_analyticks.c.useranalytickinfo_id == user_info.id,
-            Dateanalyticks.date == date_obj
+        date_record = Dateanalyticks.query.filter_by(
+            user_id=user_info.user_id,  # Изменено для правильного фильтра
+            date=date_obj
         ).first()
 
         if date_record:
@@ -93,11 +97,11 @@ def date():
         # Сохраняем изменения
         db.session.commit()
 
+        # Проверяем запись за предыдущий день
         previous_day = date_obj - timedelta(days=1)
-
-        pdate_record = Dateanalyticks.query.filter(
-            date_analyticks.c.useranalytickinfo_id == user_info.id,
-            Dateanalyticks.date == previous_day
+        pdate_record = Dateanalyticks.query.filter_by(
+            user_id=user_info.user_id,  # Изменено для правильного фильтра
+            date=previous_day
         ).first()
 
         if pdate_record:
