@@ -1016,9 +1016,16 @@ class Theory(db.Model):
     def serialize(self, language):
         description = next((d for d in self.description if d.language == language), None)
         return {
+            "name": description.name,
             "description": description.description,
-            "observing_date": self.observing_date,
             "frazes": [f.serialize for f in frazes]
+        }
+
+    def serialize_header(self, language):
+        description = next((d for d in self.description if d.language == language), None)
+        return {
+            "name": description.name,
+            "description": description.description,
         }
 
 class TDescription(db.Model):
