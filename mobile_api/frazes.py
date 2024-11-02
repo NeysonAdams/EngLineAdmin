@@ -13,6 +13,7 @@ fraze_blueprint = Blueprint('fraze_blueprint', __name__)
 @fraze_blueprint.route('/frazes/get', methods=['POST'])
 @jwt_required()
 def get():
+
     user_id = get_jwt_identity()
     date_str = request.form.get("date")
     language = request.form.get("language")
