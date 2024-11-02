@@ -27,6 +27,7 @@ from mobile_api.analyticks import analytiks_blueprint
 from mobile_api.levels import level_blueprint
 from mobile_api.quests import quests_blueprint
 from mobile_api.theory import theory_blueprint
+from mobile_api.frazes import fraze_blueprint
 
 import json
 
@@ -59,6 +60,7 @@ app.register_blueprint(analytiks_blueprint)
 app.register_blueprint(level_blueprint)
 app.register_blueprint(quests_blueprint)
 app.register_blueprint(theory_blueprint)
+app.register_blueprint(fraze_blueprint)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
