@@ -10,7 +10,7 @@ import json
 from server_init import db
 fraze_blueprint = Blueprint('fraze_blueprint', __name__)
 
-@level_blueprint.route('/frazes/get', methods=['POST'])
+@fraze_blueprint.route('/frazes/get', methods=['POST'])
 @jwt_required()
 def get():
     user_id = get_jwt_identity()
