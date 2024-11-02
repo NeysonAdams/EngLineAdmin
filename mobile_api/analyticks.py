@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Levels, LevelsStat, User, Exesesizes, Dateanalyticks, Useranalytickinfo
+from database.models import Exesize, Levels, LevelsStat, User, Exesesizes, Dateanalyticks, Useranalytickinfo, date_analyticks
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
@@ -53,7 +53,7 @@ def date():
         if not user_info:
             return jsonify({"message": "Пользователь не найден"}), 404
 
-        # Получаем последние 31 запись из связи date_link
+            # Получаем последние 31 запись из связи date_link
         records = user_info.date_link.order_by(Dateanalyticks.date.desc()).limit(31).all()
 
         # Сериализуем данные
@@ -64,21 +64,21 @@ def date():
     if request.method == 'POST':
         # Получаем данные из запроса
         date_str = request.form.get("date")
-        minutes = request.form.get("minutes")
+        minutes = int (request.form.get("minutes"))
 
-        if date_str is None or minutes is None:
-            return jsonify({"message": "Необходимо передать 'date' и 'minutes'"}), 400
+        if date_str is None:
+            return jsonify({"message": "Необходимо передать 'date'"}), 400
 
         try:
             date_obj = dt.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
-            minutes = int(minutes)
         except ValueError:
-            return jsonify({"message": "Некорректные данные. Используйте 'ГГГГ-ММ-ДД' и верное число для 'minutes'"}), 400
+            return jsonify({"message": "Некорректный формат даты. Используйте 'ГГГГ-ММ-ДД'"}), 400
+
 
         # Ищем запись Dateanalyticks с указанной датой, связанной с пользователем
-        date_record = Dateanalyticks.query.filter_by(
-            id=user_info.id,
-            date=date_obj
+        date_record = Dateanalyticks.query.filter(
+            date_analyticks.c.useranalytickinfo_id == user_info.id,
+            Dateanalyticks.date == date_obj
         ).first()
 
         if date_record:
@@ -95,9 +95,9 @@ def date():
 
         previous_day = date_obj - timedelta(days=1)
 
-        pdate_record = Dateanalyticks.query.filter_by(
-            id=user_info.id,
-            date=previous_day
+        pdate_record = Dateanalyticks.query.filter(
+            date_analyticks.c.useranalytickinfo_id == user_info.id,
+            Dateanalyticks.date == previous_day
         ).first()
 
         if pdate_record:
