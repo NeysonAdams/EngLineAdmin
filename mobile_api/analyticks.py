@@ -6,7 +6,7 @@ from database.models import Exesize, Levels, LevelsStat, User, Exesesizes, Datea
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 from server_init import db
 analytiks_blueprint = Blueprint('analytiks_blueprint', __name__)
 
