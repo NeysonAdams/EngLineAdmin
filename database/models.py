@@ -1018,7 +1018,7 @@ class Theory(db.Model):
         return {
             "name": description.name,
             "description": description.description,
-            "frazes": [f.serialize for f in frazes]
+            "frazes": [f.serialize for f in self.frazes]
         }
 
     def serialize_header(self, language):
