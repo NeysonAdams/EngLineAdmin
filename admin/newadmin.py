@@ -1,9 +1,11 @@
 from functools import wraps
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, verify_jwt_in_request
-from database.models import User, Cource
-from flask_security.utils import hash_password
+from database.models import User, Levels
+from flask_security.utils import hash_password, verify_password
 from server_init import db
+
+
 newadmin = Blueprint('newadmin', __name__)
 
 def role_required(required_role):
@@ -17,12 +19,40 @@ def role_required(required_role):
             if user is None:
                 return jsonify({"msg": "User not found"}), 404
 
-            if user.role != required_role:
+            is_superuse = False
+            for role in user.roles:
+                 if required_role == role.name:
+                    is_superuse = True
+
+            if not is_superuse:
                 return jsonify({"msg": "Insufficient role"}), 403
 
             return fn(*args, **kwargs)
         return wrapper
     return decorator
+
+@newadmin.route('/admin/api/login', methods=['POST'])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(email=email).first()
+
+    if not verify_password(password, user.password):
+        return jsonify(msg="Wrong password"), 404
+
+    is_superuse = False
+    for role in user.roles:
+        if 'superuser' == role.name:
+            is_superuse = True
+
+    if not is_superuse:
+        return jsonify(msg="This User has No Access"), 404
+
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
+
 
 @newadmin.route('/admin/api/users', methods=['GET', 'POST', 'PUT'])
 @role_required('superuser')
@@ -89,10 +119,11 @@ def deleteUser(id):
 
     return jsonify({"message": f"User {id} has been deleted"}), 200
 
-@newadmin.route('/admin/api/cources', methods=['GET', 'POST', 'PUT'])
-@role_required('superuser')
-def cources():
-    if request.method == 'GET':
-        cources = Cource.query.all()
-        return jsonify([cource.serialize for cource in cources]), 200
 
+@newadmin.route('/admin/api/levels', methods=['GET', 'POST', 'PUT'])
+@role_required('superuser')
+def level():
+    if request.method == 'GET':
+        levels = Levels.query.all()
+        return  jsonify(level.serialize for level in levels), 200
+    #if request.method == 'POST':

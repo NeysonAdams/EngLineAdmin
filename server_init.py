@@ -29,6 +29,8 @@ from mobile_api.quests import quests_blueprint
 from mobile_api.theory import theory_blueprint
 from mobile_api.frazes import fraze_blueprint
 
+from admin.newadmin import newadmin
+
 import json
 
 app = Flask(__name__)
@@ -61,6 +63,8 @@ app.register_blueprint(level_blueprint)
 app.register_blueprint(quests_blueprint)
 app.register_blueprint(theory_blueprint)
 app.register_blueprint(fraze_blueprint)
+
+app.register_blueprint(newadmin)
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
