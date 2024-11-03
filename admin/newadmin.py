@@ -19,12 +19,12 @@ def role_required(required_role):
             if user is None:
                 return jsonify({"msg": "User not found"}), 404
 
-            is_superuse = False
+            is_superuser = False
             for role in user.roles:
                  if required_role == role.name:
-                    is_superuse = True
+                    is_superuser = True
 
-            if not is_superuse:
+            if not is_superuser:
                 return jsonify({"msg": "Insufficient role"}), 403
 
             return fn(*args, **kwargs)
@@ -33,27 +33,46 @@ def role_required(required_role):
 
 @newadmin.route('/admin/api/login', methods=['POST'])
 def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    data = request.get_json()  # Получение данных из JSON-запроса
+    email = data.get('email')
+    password = data.get('password')
 
     user = User.query.filter_by(email=email).first()
 
     if not verify_password(password, user.password):
-        return jsonify(msg="Wrong password"), 404
+        return jsonify(Error="Wrong password"), 404
 
-    is_superuse = False
+    is_superuser = False
     for role in user.roles:
         if 'superuser' == role.name:
-            is_superuse = True
+            is_superuser = True
 
-    if not is_superuse:
-        return jsonify(msg="This User has No Access"), 404
+    if not is_superuser:
+        return jsonify(Error="This User has No Access"), 404
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
-    return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
+    return jsonify(user.admin_user_info(access_token, refresh_token)), 200
 
+@newadmin.route('/admin/api/auth', methods=['GET'])
+@role_required('superuser')
+def auth():
+    user_id = get_jwt_identity()
+    user = User.query.filter_by(id=user_id).first()
 
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return jsonify(user.admin_user_info(access_token, refresh_token)), 200
+
+@newadmin.route('/admin/api/refresh_token', methods=["GET"])
+@jwt_required(refresh=True)
+def refresh_token():
+    user_id = get_jwt_identity()
+    ret = {
+        'access_token': create_access_token(identity=user_id),
+        'refresh_token': create_refresh_token(identity=user_id)
+    }
+    return jsonify(ret), 200
 @newadmin.route('/admin/api/users', methods=['GET', 'POST', 'PUT'])
 @role_required('superuser')
 def get_users():

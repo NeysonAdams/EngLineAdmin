@@ -159,6 +159,14 @@ class User(db.Model, UserMixin):
             "timing": self.timing
         }
 
+    def admin_user_info(self, token, refresh_token):
+        return {
+            "name": self.name,
+            "email": self.email,
+            "access_token": token,
+            "refresh_token": refresh_token
+        }
+
 class UserStatistic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     days = db.Column(db.Integer)
