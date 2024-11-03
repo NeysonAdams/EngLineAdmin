@@ -101,7 +101,7 @@ def date():
         ).first()
 
         if pdate_record:
-            user.days += 1
+            user.days = user.days + 1
         else:
             user.days = 1
 
