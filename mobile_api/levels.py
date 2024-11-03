@@ -2,12 +2,12 @@ import os
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
-from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp, Useranalytickinfo, Subscription
+from database.models import Exesize, Levels, LevelsStat, User, LessonSchedler, Exesesizes, UserLevelExp, Useranalytickinfo, Subscription, Dateanalyticks, date_analyticks
 from sqlalchemy.sql.expression import func
 from mobile_api.aicomponent import check_translation, check_grammar, check_answer, check_text_question, speach_to_text
 import json
 
-from server_init import db
+from server_init import db, timedelta
 level_blueprint = Blueprint('level_blueprint', __name__)
 
 def get_number(current_number:int):
@@ -35,9 +35,20 @@ def get_number(current_number:int):
     return min, max, page
 
 
-@level_blueprint.route('/levels/main/<string:language>', methods=['GET'])
+@level_blueprint.route('/levels/main', methods=['POST'])
 @jwt_required()
-def main(language):
+def main():
+    date_str = request.form.get("date")
+    language = request.form.get("language")
+
+    if date_str is None:
+        return jsonify({"message": "Необходимо передать 'date'"}), 400
+
+    try:
+        date_obj = dt.strptime(date_str, '%Y-%m-%d')  # Формат даты: ГГГГ-ММ-ДД
+    except ValueError:
+        return jsonify({"message": "Некорректный формат даты. Используйте 'ГГГГ-ММ-ДД'"}), 400
+
     user_id = get_jwt_identity()
 
     user = User.query.filter_by(id=user_id).first()
@@ -73,7 +84,21 @@ def main(language):
         # Если user_info отсутствует, задаем data пустым массивом или другим значением по умолчанию
         data = []
 
+    previous_day = date_obj - timedelta(days=1)
 
+    date_record = Dateanalyticks.query.filter(
+        date_analyticks.c.useranalytickinfo_id == user_info.id,
+        Dateanalyticks.date == date_obj
+    ).first()
+
+    pdate_record = Dateanalyticks.query.filter(
+        date_analyticks.c.useranalytickinfo_id == user_info.id,
+        Dateanalyticks.date == previous_day
+    ).first()
+
+    if not date_record and not pdate_record:
+        user.days = 0
+        db.session.commit()
 
     return jsonify(
         user=user.serialize,
