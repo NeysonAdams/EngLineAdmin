@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 from database.models import User, Levels
 from flask_security.utils import hash_password, verify_password
 from server_init import db
+from flask_cors import cross_origin
 
 
 newadmin = Blueprint('newadmin', __name__)
@@ -32,6 +33,7 @@ def role_required(required_role):
     return decorator
 
 @newadmin.route('/admin/api/login', methods=['POST'])
+@cross_origin()
 def login():
     data = request.get_json()  # Получение данных из JSON-запроса
     email = data.get('email')
@@ -55,6 +57,7 @@ def login():
     return jsonify(user.admin_user_info(access_token, refresh_token)), 200
 
 @newadmin.route('/admin/api/auth', methods=['GET'])
+@cross_origin()
 @role_required('superuser')
 def auth():
     user_id = get_jwt_identity()
@@ -65,6 +68,7 @@ def auth():
     return jsonify(user.admin_user_info(access_token, refresh_token)), 200
 
 @newadmin.route('/admin/api/refresh_token', methods=["GET"])
+@cross_origin()
 @jwt_required(refresh=True)
 def refresh_token():
     user_id = get_jwt_identity()
@@ -74,6 +78,7 @@ def refresh_token():
     }
     return jsonify(ret), 200
 @newadmin.route('/admin/api/users', methods=['GET', 'POST', 'PUT'])
+@cross_origin()
 @role_required('superuser')
 def get_users():
     if request.method == 'GET':
@@ -126,6 +131,7 @@ def get_users():
         db.session.commit()
 
 @newadmin.route('/admin/api/users/<id>', methods=['DELETE'])
+@cross_origin()
 @role_required('superuser')
 def deleteUser(id):
     user = User.query.filter_by(id=id).first()
