@@ -207,4 +207,4 @@ def get():
 
     return jsonify(level=level.serialize,
                    stat=record.serialize,
-                   subscription=subscription.serialize), 200
+                   subscription={} if not subscription else subscription.serialize), 200
