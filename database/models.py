@@ -880,6 +880,14 @@ class Levels(db.Model):
             "exesizes": [w.serialize_header for w in self.exesizes_link]
         }
 
+    @property
+    def api_serialize_all(self):
+        return {
+            "id": self.id,
+            "number": self.number,
+            "language":self.language
+        }
+
 class LevelsStat(db.Model):
     __tablename__ = 'levelstat'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

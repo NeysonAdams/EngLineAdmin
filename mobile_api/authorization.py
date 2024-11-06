@@ -4,7 +4,7 @@ from database.models import User, Subscription, Devices
 from server_init import db
 from flask_security.utils import hash_password, verify_password
 from twilio.rest import Client
-from mobile_api.subscription import addSubscription
+from mobile_api.subscription import addSubscription, checkSubscription
 
 from config import TWILLIO_KEY, TWILlIO_SID, TWILLIO_SMS
 
@@ -143,6 +143,9 @@ def login():
 
     subscription = Subscription.query.filter_by(user_id=user.id).first()
 
+    if subscription:
+        subscription = checkSubscription(subscription)
+
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, True)), 200
@@ -181,6 +184,9 @@ def apple_auth():
             db.session.commit()
             user = new_user
             subscription, created = addSubscription(user, "SUB", "")
+
+    if subscription:
+        subscription = checkSubscription(subscription)
 
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
@@ -221,6 +227,9 @@ def google_auth():
             user = new_user
             subscription, created = addSubscription(user, "SUB", "")
 
+    if subscription:
+        subscription = checkSubscription(subscription)
+
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, isRegistrated)), 200
@@ -260,6 +269,10 @@ def facebook_auth():
             user = new_user
             subscription, created = addSubscription(user, "SUB", "")
 
+
+    if subscription:
+        subscription = checkSubscription(subscription)
+
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, isRegistrated)), 200
@@ -282,6 +295,10 @@ def authintification():
         return jsonify(msg="Wrong password"), 404
 
     subscription = Subscription.query.filter_by(user_id=user.id).first()
+
+    if subscription:
+        subscription = checkSubscription(subscription)
+
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription)), 200
@@ -318,6 +335,9 @@ def registrate():
     db.session.commit()
 
     subscription, created = addSubscription(new_user, "SUB", "")
+
+    if subscription:
+        subscription = checkSubscription(subscription)
 
     access_token = create_access_token(identity=new_user.id)
     refresh_token = create_refresh_token(identity=new_user.id)

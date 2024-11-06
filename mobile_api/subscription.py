@@ -186,6 +186,48 @@ def cancel():
 def compare_dates(date1: datetime, date2: datetime) -> bool:
     date1_plus_3_months = add_months(date1, 3)
     return date2 >= date1_plus_3_months
+
+def checkSubscription(subscription):
+    current_date = datetime.datetime.now()
+
+    if current_date > subscription.expiration_date:
+        if subscription.paymentdata == "":
+            subscription.is_active = False
+            db.session.delete(subscription)
+            db.session.commit()
+            return None
+        else:
+            user = User.query.filter_by(id=subscription.user_id).first()
+            payment = json.loads(decrypt(ENKRKEY, user.id))
+            with app.test_client() as client:
+                response = client.post('/payment/payment', data=payment,
+                                       content_type='application/x-www-form-urlencoded')
+
+                if response.status_code == 200:
+                    subscription.is_active = True
+                    if stype == "MONTH":
+                        current_date = add_months(current_date, 1, 0)
+                    elif stype == "3MONTH":
+                        current_date = add_months(current_date, 3, 0)
+                    elif stype == "YEAR":
+                        current_date = add_months(current_date, 12, 0)
+                    subscription.status = "ACTIVE"
+                    subscription.expiration_date = current_date
+                else:
+                    subscription.is_active = False
+                    subscription.status = "ONHOLD"
+
+                db.session.commit()
+
+    else:
+        if compare_dates(subscription.expiration_date, current_date):
+            db.session.delete(subscription)
+            db.session.commit()
+            return None
+
+    return subscription
+
+
 def subscriptionUpdate(app):
 
     subscriptions = Subscription.query.all()
@@ -205,12 +247,12 @@ def subscriptionUpdate(app):
 
                         if response.status_code == 200:
                             subscription.is_active = True
-                            if subscription.type == "MONTH" or subscription.type == "SUB":
-                                subscription.expiration_date = add_months(current_date, 1)
-                            elif subscription.type == "3MONTH":
-                                subscription.expiration_date = add_months(current_date, 3)
-                            elif subscription.type == "YEAR":
-                                subscription.expiration_date = add_months(current_date, 12)
+                            if stype == "MONTH":
+                                current_date = add_months(current_date, 1, 0)
+                            elif stype == "3MONTH":
+                                current_date = add_months(current_date, 3, 0)
+                            elif stype == "YEAR":
+                                current_date = add_months(current_date, 12, 0)
                             subscription.status = "ACTIVE"
                         else:
                             subscription.is_active = False
