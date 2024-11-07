@@ -151,7 +151,7 @@ def update():
     if not user:
         return jsonify(msg="No user"), 400
 
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
 
     if subscription.type == "MONTH":
         current_date = add_months(current_date, 1)
@@ -188,7 +188,7 @@ def compare_dates(date1: datetime, date2: datetime) -> bool:
     return date2 >= date1_plus_3_months
 
 def checkSubscription(subscription):
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
 
     if current_date > subscription.expiration_date:
         if subscription.paymentdata == "":
@@ -231,7 +231,7 @@ def checkSubscription(subscription):
 def subscriptionUpdate(app):
 
     subscriptions = Subscription.query.all()
-    current_date = datetime.datetime.now()
+    current_date = datetime.now()
 
     for subscription in subscriptions:
         if subscription.is_active:
