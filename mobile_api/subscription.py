@@ -41,7 +41,7 @@ def generate_unique_code(email: str) -> str:
     return unique_code
 
 
-def add_time(source_date, months=0, weeks=0) -> datetime:
+def add_months(source_date, months=0, weeks=0) -> datetime:
     # Добавляем недели с помощью timedelta
     result_date = source_date + timedelta(weeks=weeks)
 
@@ -184,8 +184,8 @@ def cancel():
 
 
 def compare_dates(date1: datetime, date2: datetime) -> bool:
-    date1_plus_3_months = add_months(date1, 3)
-    return date2 >= date1_plus_3_months
+    #date1_plus_3_months = add_months(date1, 3, 0)
+    return date2 >= date1
 
 def checkSubscription(subscription):
     current_date = datetime.now()

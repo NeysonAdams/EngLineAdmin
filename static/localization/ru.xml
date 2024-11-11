@@ -233,4 +233,11 @@
     <quest_title>Привет!</quest_title>
     <quest_subtitle>Выполный ежедневные квесты и получай награды. Квесты добавляются каждый день</quest_subtitle>
     <ask_title>Хотите исправить ошибки?</ask_title>
+
+    <error_title_ic>Ошибка подключения</error_title_ic>
+    <error_button>Повторить</error_button>
+    <error_internrt_connetion>Отсутствует подключение к интернету</error_internrt_connetion>
+    <error_title_r>Ошибка</error_title_r>
+    <error_request>Произошла ошибка! Повторите запрос!</error_request>
+    <error_fattal_error>Фатальная ошибка</error_fattal_error>
 </main>

@@ -229,4 +229,12 @@
     <quest_title>Salom!</quest_title>
     <quest_subtitle>Har kunlik vazifalarni bajarib mukofotlarga ega bo'ling. Vazifalar har kuni qo'shiladi</quest_subtitle>
     <ask_title>Xatolarni tuzatishni xohlaysizmi?</ask_title>
+
+    <error_title_ic>Ulanishdagi xato</error_title_ic>
+    <error_button>Qayta urinib ko'ring</error_button>
+    <error_internrt_connetion>Internetga ulanish mavjud emas</error_internrt_connetion>
+    <error_title_r>Xato</error_title_r>
+    <error_request>Xato yuz berdi! Iltimos, so'rovni qayta urinib ko'ring!</error_request>
+    <error_fattal_error>Jiddiy xato</error_fattal_error>
+
 </main>
