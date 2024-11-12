@@ -87,19 +87,20 @@ def main():
 
     previous_day = date_obj - timedelta(days=1)
 
-    date_record = Dateanalyticks.query.filter(
-        date_analyticks.c.useranalytickinfo_id == user_info.id,
-        Dateanalyticks.date == date_obj
-    ).first()
+    if user_info:
+        date_record = Dateanalyticks.query.filter(
+            date_analyticks.c.useranalytickinfo_id == user_info.id,
+            Dateanalyticks.date == date_obj
+        ).first()
 
-    pdate_record = Dateanalyticks.query.filter(
-        date_analyticks.c.useranalytickinfo_id == user_info.id,
-        Dateanalyticks.date == previous_day
-    ).first()
+        pdate_record = Dateanalyticks.query.filter(
+            date_analyticks.c.useranalytickinfo_id == user_info.id,
+            Dateanalyticks.date == previous_day
+        ).first()
 
-    if not date_record and not pdate_record:
-        user.days = 0
-        db.session.commit()
+        if not date_record and not pdate_record:
+            user.days = 0
+            db.session.commit()
 
     return jsonify(
         user=user.serialize,
