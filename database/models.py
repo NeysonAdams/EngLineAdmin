@@ -361,6 +361,17 @@ class Exesesizes(db.Model):
         }
 
     @property
+    def serialize_max(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            'img_link': self.img_url,
+            'type': self.type,
+            'level': self.level,
+            "exesize": [i.serialize for i in self.exesize]
+        }
+
+    @property
     def serialize_header(self):
         return {
             "id": self.id,
@@ -886,7 +897,7 @@ class Levels(db.Model):
             "id": self.id,
             "number": self.number,
             "language": self.language,
-            "exesizes": [w.serialize_header for w in self.exesizes_link]
+            "exesizes": [w.serialize_max for w in self.exesizes_link]
         }
 
     @property
