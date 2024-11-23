@@ -151,7 +151,7 @@ def deleteUser(id):
 def level():
     if request.method == 'GET':
         levels = Levels.query.all()
-        return  jsonify(level.api_serialize_all for level in levels), 200
+        return jsonify([level.api_serialize_all for level in levels]), 200
     if request.method == 'POST':
         data = request.get_json()
         level_id = data.get('level_id')
