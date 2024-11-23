@@ -257,4 +257,4 @@ def getlevel(id):
         if not level:
             return jsonify(msg="Level not exist"), 404
 
-        return jsonify(level.serialize), 200
+        return jsonify(level.serialize_max), 200

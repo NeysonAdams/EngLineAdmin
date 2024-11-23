@@ -881,6 +881,15 @@ class Levels(db.Model):
         }
 
     @property
+    def serialize_max(self):
+        return {
+            "id": self.id,
+            "number": self.number,
+            "language": self.language,
+            "exesizes": [w.serialize_header for w in self.exesizes_link]
+        }
+
+    @property
     def api_serialize_all(self):
         return {
             "id": self.id,
