@@ -182,3 +182,25 @@ def chat_answer(topic, scenario, user_name, data, message):
             'message': 'Generated message here',
         }}
         """
+
+def generate_test_question(difficulty, language):
+    primpt = f"""
+        Generate test question with 4 variant of answer
+        One variant is true, 3 is wrong
+        topics of the question: English grammar, choose missing word,   
+        the difficulty of question is {difficulty}
+        the language of question{language}
+        Return the result in the following JSON format:
+        {{
+            'question': question of the test. Language of thr quest is {language},
+            'var1': First variant of answer,
+            'var2': Second variant of answer,
+            'var3': Threed variant of answer,
+            'var4': Four variant of answer,
+            'right': the number of right variant of answer ( can be 1, 2, 3, 4)
+            
+        }}
+    """
+
+    response = ask_gpt(prompt)
+    return response

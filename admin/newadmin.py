@@ -5,6 +5,7 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
+from mobile_api.aicomponent import generate_test_question
 
 
 newadmin = Blueprint('newadmin', __name__)
@@ -258,3 +259,16 @@ def getlevel(id):
             return jsonify(msg="Level not exist"), 404
 
         return jsonify(level.serialize_max), 200
+
+@newadmin.route('/admin/api/generate', methods=['POST'])
+@cross_origin()
+@role_required('superuser')
+def generate():
+    type = request.form.get("type")
+    language = request.form.get("language")
+    difficulty = request.form.get('difficulty')
+
+    if type == "test_question":
+        ai_response = generate_test_question(difficulty=difficulty, language=language)
+        j_obj = json.load(ai_response.choices[0].message.content)
+        return jsonify(j_obj), 200
