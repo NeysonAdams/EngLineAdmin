@@ -157,7 +157,7 @@ def apple_auth():
     email = request.form.get('email')
 
     subscription = None
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(google_id=google_id).first()
     isRegistrated = False
     if user:
         isRegistrated = True
@@ -169,21 +169,18 @@ def apple_auth():
         db.session.commit()
         subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
-        user = User.query.filter_by(google_id=google_id).first()
-
-        if not user:
-            new_user = User()
-            new_user.google_id = google_id
-            new_user.login = ""
-            new_user.name = name
-            new_user.email = email
-            new_user.img_url = ""
-            new_user.experiance = 0
-            new_user.current_level = 1
-            db.session.add(new_user)
-            db.session.commit()
-            user = new_user
-            subscription, created = addSubscription(user, "SUB", "")
+        new_user = User()
+        new_user.google_id = google_id
+        new_user.login = ""
+        new_user.name = name
+        new_user.email = email
+        new_user.img_url = ""
+        new_user.experiance = 0
+        new_user.current_level = 1
+        db.session.add(new_user)
+        db.session.commit()
+        user = new_user
+        subscription, created = addSubscription(user, "SUB", "")
 
     if subscription:
         subscription = checkSubscription(subscription)
