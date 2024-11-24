@@ -5,7 +5,7 @@ from server_init import db
 from flask_security.utils import hash_password, verify_password
 from twilio.rest import Client
 from mobile_api.subscription import addSubscription, checkSubscription
-
+from flask_cors import cross_origin
 from config import TWILLIO_KEY, TWILlIO_SID, TWILLIO_SMS
 
 client = Client(TWILlIO_SID, TWILLIO_KEY)
@@ -151,6 +151,7 @@ def login():
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, True)), 200
 
 @auth.route('/users/apple_auth', methods=['POST'])
+@cross_origin()
 def apple_auth():
     google_id = request.form.get('id')
     name = request.form.get('name')
