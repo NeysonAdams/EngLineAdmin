@@ -5,7 +5,7 @@ from server_init import db
 from config import ENKRKEY
 
 import hashlib
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 
 subscription_blueprint = Blueprint('subscription_blueprint', __name__)
