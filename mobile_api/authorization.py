@@ -157,17 +157,17 @@ def apple_auth():
     name = request.form.get('name')
     email = request.form.get('email')
 
+    if not name:
+        name = ""
+
+    if not email:
+        email = ""
+
     subscription = None
     user = User.query.filter_by(google_id=google_id).first()
     isRegistrated = False
     if user:
         isRegistrated = True
-        user.google_id = google_id
-        user.login = ""
-        user.name = name
-        user.email = email
-        user.img_url = ""
-        db.session.commit()
         subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
         new_user = User()
