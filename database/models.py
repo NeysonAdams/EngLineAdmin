@@ -879,7 +879,7 @@ class Levels(db.Model):
     number = db.Column(db.Integer)
     language = db.Column(db.String(45))
 
-    exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, cascade="all, delete-orphan", backref=db.backref('exesesizes', lazy='dynamic'))
+    exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('exesesizes', lazy='dynamic'))
 
     def __repr__(self):
         return f"{self.id}"
