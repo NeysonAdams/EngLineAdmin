@@ -7,6 +7,8 @@ from server_init import db
 from flask_cors import cross_origin
 from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text
 
+import os
+
 audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'audio'))
 
 newadmin = Blueprint('newadmin', __name__)
@@ -59,8 +61,8 @@ def login():
     return jsonify(user.admin_user_info(access_token, refresh_token)), 200
 
 @newadmin.route('/admin/api/auth', methods=['GET'])
-@cross_origin()
 @role_required('superuser')
+@cross_origin()
 def auth():
     user_id = get_jwt_identity()
     user = User.query.filter_by(id=user_id).first()
