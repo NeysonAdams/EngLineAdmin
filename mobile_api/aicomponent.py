@@ -224,5 +224,30 @@ def generate_audio_question(difficulty, language):
 
 def generate_text_question(difficulty, language, type):
     prompt = f"""
+        Generate questions for a language learner on a professional topic. The questions should be of the following types:
         
+        the difficulty of question is {difficulty}
+        type of the question : {type}
+        
+        check_answer — This is a simple question where the learner provides a written answer. The answer is checked by GPT. 
+        Example: "What is the primary function of a database in software development?" 
+        language of question dependes from difficulty 
+        If difficulty is Beginner Elementary PreIntermidia Intermidia the is {language} otherwise English.
+        
+        add_missing — The question consists of a sentence with missing words, where each missing character is replaced with _. 
+        Example: "A ______ is used to store and manage data." Answer: "database".
+        
+        check_grammar — This is a grammar question where the answer should be short (2–4 words) and correct the mistake in the sentence. 
+        Example: "She go to work every day." Answer: "She goes".
+        
+        Please create three questions on the topic of [insert topic, e.g., "basics of programming"], one of each type. 
+        Format the questions and answers clearly.
+        Return the result in the following JSON format:
+        {{
+            'question': generated question,
+            'answer': answer on this question (according add_missing type write answer  separated by commas Example: "A ______ is used to _____ and manage data." Answer: "database, store")
+        }}
     """
+
+    response = ask_gpt(prompt)
+    return response

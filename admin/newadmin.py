@@ -6,7 +6,7 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
-from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text
+from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text, generate_text_question
 
 import os
 
@@ -287,6 +287,7 @@ def generate():
     type = request.form.get("type")
     language = request.form.get("language")
     difficulty = request.form.get('difficulty')
+    itype = request.form.get('itype')
 
     if type == "test_question":
         ai_response = generate_test_question(difficulty=difficulty, language=language)
@@ -305,4 +306,9 @@ def generate():
 
         j_obj["audio_url"] = url_for('static', filename=f"audio/{f_name}")
 
+        return jsonify(j_obj), 200
+
+    if type == "input_question":
+        ai_response = generate_text_question(difficulty=difficulty, language=language, type=itype)
+        j_obj = json.load(ai_response.choices[0].message.content)
         return jsonify(j_obj), 200
