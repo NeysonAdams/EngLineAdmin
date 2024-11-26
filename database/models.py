@@ -82,6 +82,8 @@ class User(db.Model, UserMixin):
     current_level = db.Column(db.Integer, default=1, nullable=False)
     days = db.Column(db.Integer, default=0)
     timing = db.Column(db.Integer, default=5)
+    apple_id = db.Column(db.String(255), default=0)
+    apple_token = db.Column(db.String(255), default=0)
 
     roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
@@ -137,6 +139,12 @@ class User(db.Model, UserMixin):
             "current_level": self.current_level,
             "days": self.days,
             "timing": self.timing
+        }
+
+    def apple_serialize(self):
+        return {
+            "apple_id": self.apple_id,
+            "apple_token": self.apple_token
         }
 
     def auth_serialization(self, token, refresh_token, subscription, isRegistrated=True):

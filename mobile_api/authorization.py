@@ -150,26 +150,35 @@ def login():
     refresh_token = create_refresh_token(identity=user.id)
     return jsonify(user.auth_serialization(access_token, refresh_token, subscription, True)), 200
 
+@auth.route('/users/apple_auth/check', methods=['POST'])
+@cross_origin()
+def apple_auth_check():
+    apple_id = request.form.get('apple_id')
+    apple_token = request.form.get('apple_token')
+
+    user = User.query.filter_by(apple_id=apple_id, apple_token=apple_token).first()
+
+    if not user:
+        return jsonify(msg="User is not exist"), 404
+
+    return jsonify(user.apple_serialize()), 200
+
 @auth.route('/users/apple_auth', methods=['POST'])
 @cross_origin()
 def apple_auth():
-    google_id = request.form.get('id')
-    name = request.form.get('name')
-    email = request.form.get('email')
-
-    if not name:
-        name = ""
-
-    if not email:
-        email = ""
+    apple_id = request.form.get('apple_id')
+    apple_token = request.form.get('apple_token')
 
     subscription = None
-    user = User.query.filter_by(google_id=google_id).first()
+    user = User.query.filter_by(apple_id=apple_id, apple_token=apple_token).first()
     isRegistrated = False
     if user:
         isRegistrated = True
         subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
+        name = request.form.get('name')
+        email = request.form.get('email')
+
         new_user = User()
         new_user.google_id = google_id
         new_user.login = ""

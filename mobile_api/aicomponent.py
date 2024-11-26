@@ -184,7 +184,7 @@ def chat_answer(topic, scenario, user_name, data, message):
         """
 
 def generate_test_question(difficulty, language):
-    primpt = f"""
+    prompt = f"""
         Generate test question with 4 variant of answer
         One variant is true, 3 is wrong
         topics of the question: English grammar, choose missing word,   
@@ -204,3 +204,25 @@ def generate_test_question(difficulty, language):
 
     response = ask_gpt(prompt)
     return response
+
+def generate_audio_question(difficulty, language):
+    prompt = f"""
+        Generate question with audio
+        Type of the question Listen the audio and answer the question
+        the difficulty of question is {difficulty}
+        the language of question{language}
+        Return the result in the following JSON format:
+        {{
+            'question': question. Language of thr quest is {language}, questions depends from audio
+            'audio_query': text of the listening question always in english language only this text will be in audio file
+            
+        }}
+    """
+
+    response = ask_gpt(prompt)
+    return response
+
+def generate_text_question(difficulty, language, type):
+    prompt = f"""
+        
+    """

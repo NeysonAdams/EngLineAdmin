@@ -5,8 +5,9 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
-from mobile_api.aicomponent import generate_test_question
+from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text
 
+audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'audio'))
 
 newadmin = Blueprint('newadmin', __name__)
 
@@ -155,7 +156,7 @@ def level():
         return jsonify([level.api_serialize_all for level in levels]), 200
     if request.method == 'POST':
         data = request.get_json()
-        level_id = data.get('level_id')
+        level_id = data.get('id')
 
         if level_id == -1:
             level = Levels()
@@ -166,7 +167,7 @@ def level():
         else:
             level = Levels.query.filter_by(id=level_id).first()
 
-        packages = data.get('packages')
+        packages = data.get('exesizes')
 
         for package in packages:
             if package["id"] == -1:
@@ -180,6 +181,12 @@ def level():
                 db.session.commit()
             else:
                 exesizes = Exesesizes.query.filter_by(id=package["id"]).first()
+                exesizes.name = package['name']
+                exesizes.type = package['type']
+                exesizes.level = package["level"]
+                exesizes.lenguage = data.get('language')
+
+                db.session.commit()
 
             for exec in package['exesize']:
                 if exec["id"] == -1:
@@ -271,4 +278,18 @@ def generate():
     if type == "test_question":
         ai_response = generate_test_question(difficulty=difficulty, language=language)
         j_obj = json.load(ai_response.choices[0].message.content)
+        return jsonify(j_obj), 200
+
+    if type == "audio_question":
+        ai_response = generate_audio_question(difficulty=difficulty, language=language)
+        j_obj = json.load(ai_response.choices[0].message.content)
+        f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp3"
+        audio_path = os.path.join(audio_folder, f_name)
+        audio = text_to_speach(j_obj["audio_query"])
+        if os.path.exists(os.path.join(audio_folder, f_name)):
+            os.remove(os.path.join(audio_folder, f_name))
+        audio.stream_to_file(audio_path)
+
+        j_obj["audio_url"] = url_for('static', filename=f"audio/{f_name}")
+
         return jsonify(j_obj), 200
