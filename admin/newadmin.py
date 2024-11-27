@@ -284,10 +284,11 @@ def getlevel(id):
 @cross_origin()
 @role_required('superuser')
 def generate():
-    type = request.form.get("type")
-    language = request.form.get("language")
-    difficulty = request.form.get('difficulty')
-    itype = request.form.get('itype')
+    data = request.get_json()
+    type = data.get("type")
+    language = data.get("language")
+    difficulty = data.get('difficulty')
+    itype = data.get('itype')
 
     if type == "test_question":
         ai_response = generate_test_question(difficulty=difficulty, language=language)
