@@ -312,3 +312,5 @@ def generate():
         ai_response = generate_text_question(difficulty=difficulty, language=language, type=itype)
         j_obj = json.load(ai_response.choices[0].message.content)
         return jsonify(j_obj), 200
+
+    return jsonify(msg="Unsupported Type"), 404

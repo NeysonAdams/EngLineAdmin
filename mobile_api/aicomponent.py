@@ -224,7 +224,7 @@ def generate_audio_question(difficulty, language):
 
 def generate_text_question(difficulty, language, type):
     prompt = f"""
-        Generate questions for a language learner on a professional topic. The questions should be of the following types:
+        Generate questions for a English language learner on a professional topic. The questions should be of the following types:
         
         the difficulty of question is {difficulty}
         type of the question : {type}
@@ -247,6 +247,30 @@ def generate_text_question(difficulty, language, type):
             'question': generated question,
             'answer': answer on this question (according add_missing type write answer  separated by commas Example: "A ______ is used to _____ and manage data." Answer: "database, store")
         }}
+    """
+
+    response = ask_gpt(prompt)
+    return response
+
+def generate_word_pair(difficulty, type):
+    prompt = f"""
+        Generate Array words pairs for a English language learner on a professional topic. The questions should be of the following types:
+        
+        the difficulty is {difficulty}
+        type of the question {type}
+        
+        if type is 'translate' Return the result in the following JSON format:
+        {{
+            'words': generate 5-8 length array
+            [
+                {{
+                    'eng': word on English,
+                    'rus': translation on Russian Language,
+                    'uzb': translation on Uzbek Language
+                }}
+            ]
+        }}
+        
     """
 
     response = ask_gpt(prompt)
