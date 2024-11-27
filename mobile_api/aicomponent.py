@@ -265,6 +265,7 @@ def generate_word_pair(difficulty, type):
             'words': generate 5-8 length array
             [
                 {{
+                    'id' :-1,
                     'eng': word on English,
                     'rus': translation on Russian Language,
                     'uzb': translation on Uzbek Language

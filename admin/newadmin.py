@@ -2,7 +2,7 @@ from functools import wraps
 from flask import Blueprint, request, jsonify
 from flask import make_response, url_for
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, verify_jwt_in_request
-from database.models import User, Levels, Exesesizes, Exesize, Question, Inputquestion, Audioquestion
+from database.models import User, Levels, Exesesizes, Exesize, Question, Inputquestion, Audioquestion, Wordexecesize, Wordslink
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
@@ -162,7 +162,7 @@ def deleteUser(id):
     return jsonify({"message": f"User {id} has been deleted"}), 200
 
 
-@newadmin.route('/admin/api/levels', methods=['GET', 'POST', 'PUT'])
+@newadmin.route('/admin/api/levels', methods=['GET', 'POST'])
 @cross_origin()
 @role_required('superuser')
 def level():
@@ -265,10 +265,108 @@ def level():
                 if exec['type'] == 'audio_question':
                     if exec['audio']['id'] == -1:
                         audio = Audioquestion()
+                    else:
+                        audio = Audioquestion.query.filter_by(id=exec['audio']['id']).first()
+                    audio.question = exec['audio']['question']
+                    audio.audio_query = exec['audio']['audio_query']
+                    audio.audio_url = exec['audio']['audio_url']
+                    audio.isrecord = exec['audio']['isrecord']
 
+                    if exec['audio']['id'] == -1:
+                        db.session.add(audio)
+                    db.session.commit()
 
+                if exec['type'] == 'word_pair_exesize':
+                    if exec['word_ex']['id'] == -1:
+                        wordex = Wordexecesize()
+                    else:
+                        wordex = Wordexecesize.query.filter_by(id=exec['word_ex']['id']).first()
+
+                    for word in exec['word_ex']['words']:
+                        if words["id"] == -1:
+                            w = Wordslink()
+                        else:
+                            w = Wordslink.query.filter_by(words["id"]).first()
+                        w.eng = word["eng"]
+                        w.rus = word["rus"]
+                        w.uzb = word["uzb"]
+
+                        if words["id"] == -1:
+                            db.session.add(w)
+                            wordex.words.append(w)
+
+                        db.session.commit()
 
             level.exesizes_link.append(exesizes)
+
+        db.session.commit()
+        return jsonify(level.serialize_max), 200
+
+
+def removeExesize(id):
+    esesize = Exesize.query.filter_by(id=id).first()
+
+    if esesize.type == 'test_question':
+        testQ = Question.query.filter_by(id=esesize.questions_id).first()
+        db.session.delete(testQ)
+
+    if esesize.type == 'input_question':
+        testQ = Inputquestion.query.filter_by(id=esesize.input_id).first()
+        db.session.delete(testQ)
+
+    if esesize.type == 'audio_question':
+        testQ = Audioquestion.query.filter_by(id=esesize.audio_id).first()
+        db.session.delete(testQ)
+
+    if esesize.type == 'word_pair_exesize':
+        testQ = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
+        testQ.wordslink = []
+        db.session.commit()
+        db.session.delete(testQ)
+
+    db.session.delete(esesize)
+    db.session.commit()
+
+
+def removePack(id):
+    package = Exesesizes.query.filter_by(id=id).first()
+    for ex in package.exesize:
+        removeExesize(ex.id)
+    package.exesize = []
+    db.session.commit()
+
+    db.session.delete(package)
+    db.session.commit()
+
+def removeLevel (id):
+    level = Levels.query.filter_by(id=id).first()
+    for pack in level.exesizes_link:
+        removePack(pack.id)
+    level.exesizes_link = []
+    db.session.commit()
+
+    db.session.delete(level)
+    db.session.commit()
+
+
+@newadmin.route('/admin/api/delete', methods=[ 'POST'])
+@cross_origin()
+@role_required('superuser')
+def delete():
+    data = request.get_json()
+
+    object = data["object"]
+    id = data["object_id"]
+
+    if object == "exesize":
+        removeExesize(id)
+
+    if object == "package":
+        removePack(id)
+
+    if object == "level":
+        removeLevel(id)
+
 
 #[, '', '', 'video_question', 'word_pair_exesize', 'record_question', 'translate_exesize']
 @newadmin.route('/admin/api/levels/<id>', methods=['GET'])
