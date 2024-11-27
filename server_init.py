@@ -38,7 +38,7 @@ app.config.from_pyfile('config.py')
 db.init_app(app)
 jwt = JWTManager(app)
 migrate = Migrate(app, db)
-CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+CORS(app, origins="http://localhost:5173", allow_headers=["Authorization", "Content-Type"], methods=["GET", "POST", "OPTIONS"])
 admin = flask_admin.Admin(
     app,
     'AdministrationPanel',
