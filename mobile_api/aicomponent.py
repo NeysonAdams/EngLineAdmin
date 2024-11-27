@@ -247,6 +247,7 @@ def generate_text_question(difficulty, language, type):
             'question': generated question,
             'answer': answer on this question (according add_missing type write answer  separated by commas Example: "A ______ is used to _____ and manage data." Answer: "database, store")
         }}
+        WARNING ITS ABSOLUTELY IMPOSSIBLE TO RETURN ARRAY! ONLY ONE QUESTION AND ONE ANSWER WHICH FOLLOWING THE TYPE {type}
     """
 
     response = ask_gpt(prompt)
