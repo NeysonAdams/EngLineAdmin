@@ -293,12 +293,12 @@ def generate():
 
     if type == "test_question":
         ai_response = generate_test_question(difficulty=difficulty, language=language)
-        j_obj = json.load(ai_response.choices[0].message.content)
+        j_obj = json.loads(ai_response.choices[0].message.content)
         return jsonify(j_obj), 200
 
     if type == "audio_question":
         ai_response = generate_audio_question(difficulty=difficulty, language=language)
-        j_obj = json.load(ai_response.choices[0].message.content)
+        j_obj = json.loads(ai_response.choices[0].message.content)
         f_name = f"audio_a_q_{str(datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f'))}.mp3"
         audio_path = os.path.join(audio_folder, f_name)
         audio = text_to_speach(j_obj["audio_query"])
@@ -312,7 +312,7 @@ def generate():
 
     if type == "input_question":
         ai_response = generate_text_question(difficulty=difficulty, language=language, type=itype)
-        j_obj = json.load(ai_response.choices[0].message.content)
+        j_obj = json.loads(ai_response.choices[0].message.content)
         return jsonify(j_obj), 200
 
     return jsonify(msg="Unsupported Type"), 400
