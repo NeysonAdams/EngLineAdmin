@@ -6,7 +6,7 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
-from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text, generate_text_question
+from mobile_api.aicomponent import generate_test_question, generate_audio_question, text_to_speach, generate_text_question
 
 import os
 import json
