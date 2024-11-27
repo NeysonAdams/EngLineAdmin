@@ -10,6 +10,7 @@ from mobile_api.aicomponent import generate_test_question, generate_audio_questi
 
 import os
 import json
+import datetime
 
 audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'audio'))
 
