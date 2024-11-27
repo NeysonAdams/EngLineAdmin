@@ -9,6 +9,7 @@ from flask_cors import cross_origin
 from mobile_api.aicomponent import generate_test_question, generate_audio_question, speach_to_text, generate_text_question
 
 import os
+import json
 
 audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'audio'))
 
