@@ -6,7 +6,7 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
-from mobile_api.aicomponent import generate_test_question, generate_audio_question, text_to_speach, generate_text_question
+from mobile_api.aicomponent import generate_test_question, generate_audio_question, text_to_speach, generate_text_question, generate_word_pair
 
 import os
 import json
@@ -313,6 +313,11 @@ def generate():
 
     if type == "input_question":
         ai_response = generate_text_question(difficulty=difficulty, language=language, type=itype)
+        j_obj = json.loads(ai_response.choices[0].message.content)
+        return jsonify(j_obj), 200
+
+    if type == "word_pair_exesize":
+        ai_response = generate_word_pair(difficulty=difficulty, type=itype)
         j_obj = json.loads(ai_response.choices[0].message.content)
         return jsonify(j_obj), 200
 
