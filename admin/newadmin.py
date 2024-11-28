@@ -305,7 +305,7 @@ def level():
 
                         db.session.commit()
 
-                exesizes.append(exesize)
+                exesizes.exesize.append(exesize)
 
             level.exesizes_link.append(exesizes)
 
