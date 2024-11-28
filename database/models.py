@@ -333,14 +333,14 @@ class Lesson(db.Model):
 
 words_in_exes = db.Table(
     'words_in_exes',
-    db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id')),
-    db.Column('englishword_id', db.Integer(), db.ForeignKey('englishword.id'))
+    db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id', ondelete='CASCADE')),
+    db.Column('englishword_id', db.Integer(), db.ForeignKey('englishword.id', ondelete='CASCADE'))
 )
 
 exesizes_table = db.Table(
     'exesizes_table',
-    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
-    db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id'), primary_key=True)
+    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('exesize_id', db.Integer(), db.ForeignKey('exesize.id', ondelete='CASCADE'), primary_key=True)
 )
 
 class Exesesizes(db.Model):
@@ -838,8 +838,8 @@ class Chat(db.Model):
         }
 
 words_execesizes_list = db.Table('words_execesizes_list',
-    db.Column('wordexecesize_id', db.Integer, db.ForeignKey('wordexecesize.id'), primary_key=True),
-    db.Column('wordslink_id', db.Integer, db.ForeignKey('wordslink.id'), primary_key=True)
+    db.Column('wordexecesize_id', db.Integer, db.ForeignKey('wordexecesize.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('wordslink_id', db.Integer, db.ForeignKey('wordslink.id', ondelete='CASCADE'), primary_key=True)
 )
 
 class Wordslink(db.Model):
@@ -877,8 +877,8 @@ class Wordexecesize(db.Model):
 
 
 levelvs_exesizes = db.Table('levelvs_exesizes',
-    db.Column('levels_id', db.Integer, db.ForeignKey('levels.id'), primary_key=True),
-    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id'), primary_key=True),
+    db.Column('levels_id', db.Integer, db.ForeignKey('levels.id', ondelete='CASCADE'), primary_key=True),
+    db.Column('exesesizes_id', db.Integer(), db.ForeignKey('exesesizes.id', ondelete='CASCADE'), primary_key=True),
 )
 
 class Levels(db.Model):
