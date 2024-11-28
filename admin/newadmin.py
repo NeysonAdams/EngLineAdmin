@@ -305,6 +305,7 @@ def level():
                             db.session.add(w)
                             wordex.words.append(w)
 
+                    db.session.commit()
                     exesize.wordexecesize = wordex
                     db.session.commit()
 
@@ -334,9 +335,10 @@ def removeExesize(id):
 
     if esesize.type == 'word_pair_exesize':
         testQ = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
-        testQ.wordslink = []
-        db.session.commit()
-        db.session.delete(testQ)
+        if testQ:
+            testQ.wordslink = []
+            db.session.commit()
+            db.session.delete(testQ)
 
     db.session.delete(esesize)
     db.session.commit()
