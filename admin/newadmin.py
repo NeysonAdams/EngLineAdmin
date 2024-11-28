@@ -320,35 +320,36 @@ def level():
 def removeExesize(id):
     esesize = Exesize.query.filter_by(id=id).first()
 
-    if not esesize:
+    if esesize is None:
         raise ValueError(f"Exesize with ID {id} not found.")
 
-    # Удаляем связанные сущности, если они существуют
-    if esesize.type == 'test_question' and esesize.questions_id:
+    if esesize.type == 'test_question':
         testQ = Question.query.filter_by(id=esesize.questions_id).first()
         if testQ:
             db.session.delete(testQ)
+            db.session.commit()
 
-    if esesize.type == 'input_question' and esesize.input_id:
+    elif esesize.type == 'input_question':
         testQ = Inputquestion.query.filter_by(id=esesize.input_id).first()
         if testQ:
             db.session.delete(testQ)
+            db.session.commit()
 
-    if esesize.type == 'audio_question' and esesize.audio_id:
+    elif esesize.type == 'audio_question':
         testQ = Audioquestion.query.filter_by(id=esesize.audio_id).first()
         if testQ:
             db.session.delete(testQ)
+            db.session.commit()
 
-    if esesize.type == 'word_pair_exesize' and esesize.word_ex_id:
+    elif esesize.type == 'word_pair_exesize':
         testQ = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
         if testQ:
-            testQ.wordslink = []  # Убираем связанные слова
+            testQ.wordslink = []
+            db.session.commit()
             db.session.delete(testQ)
+            db.session.commit()
 
-    # Удаляем сам esesize
     db.session.delete(esesize)
-
-    # Фиксируем транзакцию один раз
     db.session.commit()
 
 
