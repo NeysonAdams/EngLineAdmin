@@ -864,7 +864,7 @@ class Wordexecesize(db.Model):
     __tablename__ = 'wordexecesize'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255))
-    wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, backref=db.backref('wordslink', lazy='dynamic'))
+    wordslink = db.relationship('Wordslink', secondary=words_execesizes_list, cascade='all,delete', backref=db.backref('wordslink', lazy='dynamic'))
 
     def __repr__(self):
         return f"{self.name}"
@@ -887,7 +887,7 @@ class Levels(db.Model):
     number = db.Column(db.Integer)
     language = db.Column(db.String(45))
 
-    exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, backref=db.backref('exesesizes', lazy='dynamic'))
+    exesizes_link = db.relationship('Exesesizes', secondary=levelvs_exesizes, cascade='all,delete', backref=db.backref('exesesizes', lazy='dynamic'))
 
     def __repr__(self):
         return f"{self.id}"
