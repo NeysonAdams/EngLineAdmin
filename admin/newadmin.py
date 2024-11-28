@@ -355,6 +355,7 @@ def removeExesize(id):
             related_word_ex.words = []  # Разрываем связь с другими словами
             db.session.delete(related_word_ex)  # Удаляем запись
 
+    db.session.commit()
     # Удаляем саму сущность Exesize
     db.session.delete(esesize)
 
