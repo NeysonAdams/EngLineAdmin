@@ -283,10 +283,11 @@ def level():
                     db.session.commit()
 
                 if exec['type'] == 'word_pair_exesize':
-                    if exec['word_ex']['id'] == -1:
+                    wordex = Wordexecesize.query.filter_by(id=exec['word_ex']['id']).first()
+
+                    if not wordex:
                         wordex = Wordexecesize()
-                    else:
-                        wordex = Wordexecesize.query.filter_by(id=exec['word_ex']['id']).first()
+                        db.session.add(wordex)
 
                     for word in exec['word_ex']['words']:
                         if word["id"] == -1:
@@ -305,7 +306,7 @@ def level():
                             db.session.add(w)
                             wordex.words.append(w)
 
-                    db.session.commit()
+
                     exesize.wordexecesize = wordex
                     db.session.commit()
 
@@ -381,7 +382,6 @@ def removeLevel (id):
         for pack in level.exesizes_link:
             removePack(pack.id)
         level.exesizes_link = []
-        db.session.commit()
 
     db.session.delete(level)
     db.session.commit()
