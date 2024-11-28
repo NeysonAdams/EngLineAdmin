@@ -379,7 +379,8 @@ def delete():
     if object == "level":
         removeLevel(id)
 
-    return jsonify(msg="Deleted"), 200
+    levels = Levels.query.all()
+    return jsonify([level.api_serialize_all for level in levels]), 200
 
 
 #[, '', '', 'video_question', 'word_pair_exesize', 'record_question', 'translate_exesize']
