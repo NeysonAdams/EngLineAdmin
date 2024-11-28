@@ -350,7 +350,7 @@ class Exesesizes(db.Model):
     type = db.Column(db.String(255))
     lenguage = db.Column(db.String(255))
     level = db.Column(db.Integer)
-    exesize =db.relationship('Exesize', secondary=exesizes_table,
+    exesize =db.relationship('Exesize', secondary=exesizes_table, cascade='all,delete',
                                backref=db.backref('exesize_list', lazy='dynamic'))
 
     def __repr__(self):
