@@ -23,6 +23,12 @@ def indexlang(lang):
 def admin():
     return render_template('admin.html')
 
+@admin_blueprint.route('/newadmin')
+def admin():
+    return render_template('new_admin.html')
+
+
+
 class Administration:
     def __init__(self, admin:Admin, db, app):
         self.admin = admin
