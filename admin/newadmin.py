@@ -283,7 +283,7 @@ def level():
                         wordex = Wordexecesize.query.filter_by(id=exec['word_ex']['id']).first()
 
                     for word in exec['word_ex']['words']:
-                        if words["id"] == -1:
+                        if word["id"] == -1:
                             w = Wordslink()
                         else:
                             w = Wordslink.query.filter_by(words["id"]).first()
