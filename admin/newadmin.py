@@ -293,16 +293,20 @@ def level():
                         w = Wordslink.query.filter_by(id=word["id"]).first()
 
                         if not w:
-                            w = Wordslink()
-                            w.eng = word["eng"]
-                            w.rus = word["rus"]
-                            w.uzb = word["uzb"]
+                            w = Wordslink(
+                                eng=word["eng"],
+                                rus=word["rus"],
+                                uzb=word["uzb"]
+                            )
                             db.session.add(w)
+                            db.session.commit()
                             wordex.wordslink.append(w)
+
                         else:
                             w.eng = word["eng"]
                             w.rus = word["rus"]
                             w.uzb = word["uzb"]
+                            db.session.commit()
 
 
                     exesize.wordexecesize = wordex
