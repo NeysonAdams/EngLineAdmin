@@ -318,44 +318,49 @@ def level():
 
 
 def removeExesize(id):
+    # Находим сущность Exesize
     esesize = Exesize.query.filter_by(id=id).first()
 
     if esesize is None:
         return
 
-    # Удаляем все связанные записи
+    # Разрываем связи и удаляем связанные записи
+
     if esesize.questions_id:
         related_question = Question.query.filter_by(id=esesize.questions_id).first()
-        esesize.questions_id = None
-        esesize.question = None
+        esesize.questions_id = None  # Разрываем связь
+        esesize.question = None  # Обнуляем объект
         if related_question:
-            db.session.delete(related_question)
+            db.session.delete(related_question)  # Удаляем запись
 
     if esesize.input_id:
         related_input = Inputquestion.query.filter_by(id=esesize.input_id).first()
-        esesize.input = None
-        esesize.input_id = None
+        esesize.input_id = None  # Разрываем связь
+        esesize.input = None  # Обнуляем объект
         if related_input:
-            db.session.delete(related_input)
+            db.session.delete(related_input)  # Удаляем запись
 
     if esesize.audio_id:
         related_audio = Audioquestion.query.filter_by(id=esesize.audio_id).first()
-        esesize.audio_id = None
-        esesize.audio = None
+        esesize.audio_id = None  # Разрываем связь
+        esesize.audio = None  # Обнуляем объект
         if related_audio:
-            db.session.delete(related_audio)
+            db.session.delete(related_audio)  # Удаляем запись
 
     if esesize.word_ex_id:
         related_word_ex = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
-        esesize.word_ex_id = None
-        esesize.wordexecesize = None
+        esesize.word_ex_id = None  # Разрываем связь
+        esesize.wordexecesize = None  # Обнуляем объект
         if related_word_ex:
-            related_word_ex.words = []
-            db.session.delete(related_word_ex)
+            related_word_ex.words = []  # Разрываем связь с другими словами
+            db.session.delete(related_word_ex)  # Удаляем запись
 
-    db.session.commit()
+    # Удаляем саму сущность Exesize
     db.session.delete(esesize)
+
+    # Сохраняем изменения в базе данных
     db.session.commit()
+
 
 
 def removePack(id):
