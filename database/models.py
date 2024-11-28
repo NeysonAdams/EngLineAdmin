@@ -404,13 +404,13 @@ class Exesize(db.Model):
     video_id = db.Column(db.Integer, db.ForeignKey('videoquestion.id'), nullable=True)
 
     word_ex_id = db.Column(db.Integer, db.ForeignKey('wordexecesize.id'), nullable=True)
-    wordexecesize = db.relationship('Wordexecesize', backref='wexesizes')
+    wordexecesize = db.relationship('Wordexecesize', cascade='all,delete', backref='wexesizes')
 
     lesson = db.relationship('Lesson', backref=db.backref('exec', lazy='dynamic'))
-    question = db.relationship('Question', backref=db.backref('eq', lazy='dynamic'))
-    input = db.relationship('Inputquestion', backref=db.backref('ei', lazy='dynamic'))
-    audio = db.relationship('Audioquestion', backref=db.backref('ea', lazy='dynamic'))
-    video = db.relationship('Videoquestion', backref=db.backref('ev', lazy='dynamic'))
+    question = db.relationship('Question', cascade='all,delete', backref=db.backref('eq', lazy='dynamic'))
+    input = db.relationship('Inputquestion', cascade='all,delete', backref=db.backref('ei', lazy='dynamic'))
+    audio = db.relationship('Audioquestion', cascade='all,delete', backref=db.backref('ea', lazy='dynamic'))
+    video = db.relationship('Videoquestion', cascade='all,delete', backref=db.backref('ev', lazy='dynamic'))
     translation = db.Column(db.Integer, nullable=True)
 
     words = db.relationship('Englishword', secondary=words_in_exes,
