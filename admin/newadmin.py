@@ -287,6 +287,10 @@ def level():
                             w = Wordslink()
                         else:
                             w = Wordslink.query.filter_by(id=word["id"]).first()
+
+                        if not w:
+                            w = Wordslink()
+
                         w.eng = word["eng"]
                         w.rus = word["rus"]
                         w.uzb = word["uzb"]
