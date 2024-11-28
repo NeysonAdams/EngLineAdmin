@@ -352,10 +352,12 @@ def removePack(id):
 
 def removeLevel (id):
     level = Levels.query.filter_by(id=id).first()
-    for pack in level.exesizes_link:
-        removePack(pack.id)
-    level.exesizes_link = []
-    db.session.commit()
+
+    if level.exesizes_link:
+        for pack in level.exesizes_link:
+            removePack(pack.id)
+        level.exesizes_link = []
+        db.session.commit()
 
     db.session.delete(level)
     db.session.commit()
