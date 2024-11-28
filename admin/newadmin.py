@@ -239,10 +239,10 @@ def level():
                         db.session.commit()
                     else:
                         exesize.question.question = exec['question']['question']
-                        question.var1 = exec['question']['test_answers'][0]
-                        question.var2 = exec['question']['test_answers'][1]
-                        question.var3 = exec['question']['test_answers'][2]
-                        question.var4 = exec['question']['test_answers'][3]
+                        exesize.question.var1 = exec['question']['test_answers'][0]
+                        exesize.question.var2 = exec['question']['test_answers'][1]
+                        exesize.question.var3 = exec['question']['test_answers'][2]
+                        exesize.question.var4 = exec['question']['test_answers'][3]
                         exesize.question.right_var = exec['question']['right_var']
                         db.session.commit()
 
