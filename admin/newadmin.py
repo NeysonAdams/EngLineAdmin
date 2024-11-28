@@ -353,6 +353,7 @@ def removeExesize(id):
             related_word_ex.words = []
             db.session.delete(related_word_ex)
 
+    db.session.commit()
     db.session.delete(esesize)
     db.session.commit()
 
