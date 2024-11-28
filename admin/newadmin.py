@@ -300,7 +300,7 @@ def level():
                         w.eng = word["eng"]
                         w.rus = word["rus"]
                         w.uzb = word["uzb"]
-
+                        db.session.commit()
 
 
                     exesize.wordexecesize = wordex
