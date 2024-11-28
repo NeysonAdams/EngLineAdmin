@@ -294,12 +294,15 @@ def level():
 
                         if not w:
                             w = Wordslink()
+                            w.eng = word["eng"]
+                            w.rus = word["rus"]
+                            w.uzb = word["uzb"]
                             db.session.add(w)
                             wordex.words.append(w)
-
-                        w.eng = word["eng"]
-                        w.rus = word["rus"]
-                        w.uzb = word["uzb"]
+                        else:
+                            w.eng = word["eng"]
+                            w.rus = word["rus"]
+                            w.uzb = word["uzb"]
                         db.session.commit()
 
 
