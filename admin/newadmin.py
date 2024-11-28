@@ -231,7 +231,6 @@ def level():
                         question.var3 = exec['question']['test_answers'][2]
                         question.var4 = exec['question']['test_answers'][3]
                         question.right_var = exec['question']['right_var']
-                        question.var_dif = exec['question']['var_dif']
 
                         db.session.add(question)
                         db.session.commit()
@@ -245,7 +244,6 @@ def level():
                         question.var3 = exec['question']['test_answers'][2]
                         question.var4 = exec['question']['test_answers'][3]
                         exesize.question.right_var = exec['question']['right_var']
-                        exesize.question.var_dif = exec['question']['var_dif']
                         db.session.commit()
 
                 if exec['type'] == 'input_question':
@@ -253,7 +251,6 @@ def level():
                         inputquestion = Inputquestion()
                         inputquestion.question = exec['inputquestion']['question']
                         inputquestion.answer = exec['inputquestion']['answer']
-                        inputquestion.level = exec['inputquestion']['level']
                         inputquestion.type = exec['inputquestion']['type']
                         inputquestion.isrecord = exec['inputquestion']['isrecord']
 
@@ -265,7 +262,6 @@ def level():
                     else:
                         exesize.input.question = exec['inputquestion']['question']
                         exesize.input.answer = exec['inputquestion']['answer']
-                        exesize.input.level = exec['inputquestion']['level']
                         exesize.input.type = exec['inputquestion']['type']
                         exesize.input.isrecord = exec['inputquestion']['isrecord']
                         db.session.commit()
