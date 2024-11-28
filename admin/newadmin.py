@@ -323,15 +323,18 @@ def removeExesize(id):
     if esesize.type == 'test_question':
         testQ = Question.query.filter_by(id=esesize.questions_id).first()
         db.session.delete(testQ)
+        db.session.commit()
 
     if esesize.type == 'input_question':
         testQ = Inputquestion.query.filter_by(id=esesize.input_id).first()
         db.session.delete(testQ)
+        db.session.commit()
 
     if esesize.type == 'audio_question':
         testQ = Audioquestion.query.filter_by(id=esesize.audio_id).first()
         if testQ:
             db.session.delete(testQ)
+            db.session.commit()
 
     if esesize.type == 'word_pair_exesize':
         testQ = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
