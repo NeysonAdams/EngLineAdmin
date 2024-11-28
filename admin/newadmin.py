@@ -326,22 +326,31 @@ def removeExesize(id):
     # Удаляем все связанные записи
     if esesize.questions_id:
         related_question = Question.query.filter_by(id=esesize.questions_id).first()
+        esesize.questions_id = None
+        esesize.question = None
         if related_question:
             db.session.delete(related_question)
 
     if esesize.input_id:
         related_input = Inputquestion.query.filter_by(id=esesize.input_id).first()
+        esesize.input = None
+        esesize.input_id = None
         if related_input:
             db.session.delete(related_input)
 
     if esesize.audio_id:
         related_audio = Audioquestion.query.filter_by(id=esesize.audio_id).first()
+        esesize.audio_id = None
+        esesize.audio = None
         if related_audio:
             db.session.delete(related_audio)
 
     if esesize.word_ex_id:
         related_word_ex = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
+        esesize.word_ex_id = None
+        esesize.wordexecesize = None
         if related_word_ex:
+            related_word_ex.words = []
             db.session.delete(related_word_ex)
 
     db.session.delete(esesize)
