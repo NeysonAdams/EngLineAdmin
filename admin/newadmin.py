@@ -214,14 +214,22 @@ def level():
                 else:
                     exesize = Exesize.query.filter_by(id=exec["id"]).first()
 
+                if not exesize:
+                    exesize = Exesize()
+                    exesize.type = exec['type']
+                    exesize.level = package["level"]
+
+                    db.session.add(exesize)
+                    db.session.commit()
+
                 if exec['type'] == 'test_question':
                     if exec['question']['id'] == -1:
                         question = Question()
                         question.question = exec['question']['question']
-                        question.var1 = exec['question']['var1']
-                        question.var2 = exec['question']['var2']
-                        question.var3 = exec['question']['var3']
-                        question.var4 = exec['question']['var4']
+                        question.var1 = exec['question']['test_answers'][0]
+                        question.var2 = exec['question']['test_answers'][1]
+                        question.var3 = exec['question']['test_answers'][2]
+                        question.var4 = exec['question']['test_answers'][3]
                         question.right_var = exec['question']['right_var']
                         question.var_dif = exec['question']['var_dif']
 
@@ -232,10 +240,10 @@ def level():
                         db.session.commit()
                     else:
                         exesize.question.question = exec['question']['question']
-                        exesize.question.var1 = exec['question']['var1']
-                        exesize.question.var2 = exec['question']['var2']
-                        exesize.question.var3 = exec['question']['var3']
-                        exesize.question.var4 = exec['question']['var4']
+                        question.var1 = exec['question']['test_answers'][0]
+                        question.var2 = exec['question']['test_answers'][1]
+                        question.var3 = exec['question']['test_answers'][2]
+                        question.var4 = exec['question']['test_answers'][3]
                         exesize.question.right_var = exec['question']['right_var']
                         exesize.question.var_dif = exec['question']['var_dif']
                         db.session.commit()
