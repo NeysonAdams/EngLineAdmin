@@ -278,6 +278,8 @@ def level():
 
                     if exec['audio']['id'] == -1:
                         db.session.add(audio)
+
+                    exesize.audio = audio
                     db.session.commit()
 
                 if exec['type'] == 'word_pair_exesize':
@@ -303,7 +305,8 @@ def level():
                             db.session.add(w)
                             wordex.words.append(w)
 
-                        db.session.commit()
+                    exesize.wordexecesize = wordex
+                    db.session.commit()
 
                 exesizes.exesize.append(exesize)
 
