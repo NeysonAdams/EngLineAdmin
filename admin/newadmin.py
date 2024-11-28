@@ -295,7 +295,7 @@ def level():
                         w.rus = word["rus"]
                         w.uzb = word["uzb"]
 
-                        if words["id"] == -1:
+                        if word["id"] == -1:
                             db.session.add(w)
                             wordex.words.append(w)
 
