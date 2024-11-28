@@ -379,6 +379,8 @@ def delete():
     if object == "level":
         removeLevel(id)
 
+    return jsonify(msg="Deleted"), 200
+
 
 #[, '', '', 'video_question', 'word_pair_exesize', 'record_question', 'translate_exesize']
 @newadmin.route('/admin/api/levels/<id>', methods=['GET'])
