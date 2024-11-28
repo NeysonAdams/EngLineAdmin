@@ -24,7 +24,7 @@ def admin():
     return render_template('admin.html')
 
 @admin_blueprint.route('/newadmin')
-def admin():
+def newadmin():
     return render_template('new_admin.html')
 
 
