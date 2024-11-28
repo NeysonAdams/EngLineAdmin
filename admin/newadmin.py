@@ -324,37 +324,6 @@ def removeExesize(id):
     if esesize is None:
         return
 
-    # Разрываем связи и удаляем связанные записи
-
-    if esesize.questions_id:
-        related_question = Question.query.filter_by(id=esesize.questions_id).first()
-        esesize.questions_id = None  # Разрываем связь
-        esesize.question = None  # Обнуляем объект
-        if related_question:
-            db.session.delete(related_question)  # Удаляем запись
-
-    if esesize.input_id:
-        related_input = Inputquestion.query.filter_by(id=esesize.input_id).first()
-        esesize.input_id = None  # Разрываем связь
-        esesize.input = None  # Обнуляем объект
-        if related_input:
-            db.session.delete(related_input)  # Удаляем запись
-
-    if esesize.audio_id:
-        related_audio = Audioquestion.query.filter_by(id=esesize.audio_id).first()
-        esesize.audio_id = None  # Разрываем связь
-        esesize.audio = None  # Обнуляем объект
-        if related_audio:
-            db.session.delete(related_audio)  # Удаляем запись
-
-    if esesize.word_ex_id:
-        related_word_ex = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
-        esesize.word_ex_id = None  # Разрываем связь
-        esesize.wordexecesize = None  # Обнуляем объект
-        if related_word_ex:
-            related_word_ex.words = []  # Разрываем связь с другими словами
-            db.session.delete(related_word_ex)  # Удаляем запись
-
     db.session.commit()
     # Удаляем саму сущность Exesize
     db.session.delete(esesize)
@@ -366,22 +335,12 @@ def removeExesize(id):
 
 def removePack(id):
     package = Exesesizes.query.filter_by(id=id).first()
-    for ex in package.exesize:
-        removeExesize(ex.id)
-    package.exesize = []
-    db.session.commit()
 
     db.session.delete(package)
     db.session.commit()
 
 def removeLevel (id):
     level = Levels.query.filter_by(id=id).first()
-
-    if level.exesizes_link:
-        for pack in level.exesizes_link:
-            removePack(pack.id)
-        level.exesizes_link = []
-        db.session.commit()
 
     db.session.delete(level)
     db.session.commit()
