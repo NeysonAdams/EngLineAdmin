@@ -290,21 +290,19 @@ def level():
                         db.session.add(wordex)
 
                     for word in exec['word_ex']['words']:
-                        if word["id"] == -1:
-                            w = Wordslink()
-                        else:
-                            w = Wordslink.query.filter_by(id=word["id"]).first()
+                        w = Wordslink.query.filter_by(id=word["id"]).first()
 
                         if not w:
                             w = Wordslink()
-
-                        w.eng = word["eng"]
-                        w.rus = word["rus"]
-                        w.uzb = word["uzb"]
-
-                        if word["id"] == -1:
+                            w.eng = word["eng"]
+                            w.rus = word["rus"]
+                            w.uzb = word["uzb"]
                             db.session.add(w)
-                            wordex.words.append(w)
+                            wordex.wordslink.append(w)
+                        else:
+                            w.eng = word["eng"]
+                            w.rus = word["rus"]
+                            w.uzb = word["uzb"]
 
 
                     exesize.wordexecesize = wordex
