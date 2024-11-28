@@ -321,33 +321,28 @@ def removeExesize(id):
     esesize = Exesize.query.filter_by(id=id).first()
 
     if esesize is None:
-        raise ValueError(f"Exesize with ID {id} not found.")
+        return
 
-    if esesize.type == 'test_question':
-        testQ = Question.query.filter_by(id=esesize.questions_id).first()
-        if testQ:
-            db.session.delete(testQ)
-            db.session.commit()
+    # Удаляем все связанные записи
+    if esesize.questions_id:
+        related_question = Question.query.filter_by(id=esesize.questions_id).first()
+        if related_question:
+            db.session.delete(related_question)
 
-    elif esesize.type == 'input_question':
-        testQ = Inputquestion.query.filter_by(id=esesize.input_id).first()
-        if testQ:
-            db.session.delete(testQ)
-            db.session.commit()
+    if esesize.input_id:
+        related_input = Inputquestion.query.filter_by(id=esesize.input_id).first()
+        if related_input:
+            db.session.delete(related_input)
 
-    elif esesize.type == 'audio_question':
-        testQ = Audioquestion.query.filter_by(id=esesize.audio_id).first()
-        if testQ:
-            db.session.delete(testQ)
-            db.session.commit()
+    if esesize.audio_id:
+        related_audio = Audioquestion.query.filter_by(id=esesize.audio_id).first()
+        if related_audio:
+            db.session.delete(related_audio)
 
-    elif esesize.type == 'word_pair_exesize':
-        testQ = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
-        if testQ:
-            testQ.wordslink = []
-            db.session.commit()
-            db.session.delete(testQ)
-            db.session.commit()
+    if esesize.word_ex_id:
+        related_word_ex = Wordexecesize.query.filter_by(id=esesize.word_ex_id).first()
+        if related_word_ex:
+            db.session.delete(related_word_ex)
 
     db.session.delete(esesize)
     db.session.commit()
