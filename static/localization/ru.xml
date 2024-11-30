@@ -240,4 +240,8 @@
     <error_title_r>Ошибка</error_title_r>
     <error_request>Произошла ошибка! Повторите запрос!</error_request>
     <error_fattal_error>Фатальная ошибка</error_fattal_error>
+
+    <fe_title>Слова Пары</fe_title>
+    <fe_content>перетащите карточку в правльное место или на правильный вариант</fe_content>
+    <fe_button>Понятно</fe_button>
 </main>

@@ -167,10 +167,9 @@ def apple_auth_check():
 @cross_origin()
 def apple_auth():
     apple_id = request.form.get('apple_id')
-    apple_token = request.form.get('apple_token')
 
     subscription = None
-    user = User.query.filter_by(apple_id=apple_id, apple_token=apple_token).first()
+    user = User.query.filter_by(apple_id=apple_id).first()
     isRegistrated = False
     if user:
         isRegistrated = True
