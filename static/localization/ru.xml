@@ -241,6 +241,8 @@
     <error_request>Произошла ошибка! Повторите запрос!</error_request>
     <error_fattal_error>Фатальная ошибка</error_fattal_error>
 
+    <warning_level_exit> Вы можете потерять прогресс! Вы уверенны?</warning_level_exit>
+
     <fe_title>Слова Пары</fe_title>
     <fe_content>перетащите карточку в правльное место или на правильный вариант</fe_content>
     <fe_button>Понятно</fe_button>

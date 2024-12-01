@@ -237,6 +237,8 @@
     <error_request>Xato yuz berdi! Iltimos, so'rovni qayta urinib ko'ring!</error_request>
     <error_fattal_error>Jiddiy xato</error_fattal_error>
 
+    <warning_level_exit> Siz o'z progressingizni yo'qotishingiz mumkin! Ishonchingiz komilmi?</warning_level_exit>
+
     <fe_title>So'z Juftlari</fe_title>
     <fe_content>Kartochkani to'g'ri joyga yoki to'g'ri variantga tortib qo'ying</fe_content>
     <fe_button>Tushunarli</fe_button>
