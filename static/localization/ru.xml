@@ -90,6 +90,7 @@
     <label_fraze_sub>Узнайте основные фразы</label_fraze_sub>
     <label_fraze_key>КЛЮЧЕВЫЕ ФРАЗЫ</label_fraze_key>
     <label_frazes_theory>ТЕОРИЯ</label_frazes_theory>
+    <label_audio_error>Слишком неразбочиво! Перезапишите ваш ответ</label_audio_error>
 
     <login_account_enter_label>Войти в аккаунт</login_account_enter_label>
     <login_forget_pass>Забыли пароль?</login_forget_pass>

@@ -89,6 +89,8 @@
     <label_fraze_sub>Asosiy iboralarni o‘rganing</label_fraze_sub>
     <label_fraze_key>ASOSIY IBORALAR</label_fraze_key>
     <label_frazes_theory>NAZARIYA</label_frazes_theory>
+    <label_audio_error>Juda tushunarsiz! Iltimos, javobingizni qaytadan yozing</label_audio_error>
+
 
     <login_account_enter_label>Akkauntga kirish</login_account_enter_label>
     <login_forget_pass>Parolni unutdingizmi?</login_forget_pass>
