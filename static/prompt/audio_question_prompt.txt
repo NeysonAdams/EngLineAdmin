@@ -1,0 +1,10 @@
+Generate question with audio
+Type of the question Listen the audio and answer the question
+the difficulty of question is Beginner
+the language of question English
+
+Return the result in the following JSON format:
+{{
+    'question': question. questions depends from audio
+    'audio_query': text of the listening question always in english language only this text will be in audio file
+}}

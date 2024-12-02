@@ -1,0 +1,16 @@
+Generate Array words pairs for a English language learner on a professional topic. The questions should be of the following types:
+
+the difficulty is Beginner
+
+if type is 'translate' Return the result in the following JSON format:
+{{
+    'words': generate 5-8 length array
+    [
+        {{
+            'id' :-1,
+            'eng': word on English,
+            'rus': translation on Russian Language,
+            'uzb': translation on Uzbek Language
+        }}
+    ]
+}}

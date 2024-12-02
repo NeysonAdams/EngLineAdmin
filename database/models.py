@@ -926,6 +926,7 @@ class LevelsStat(db.Model):
     passed_count = db.Column(db.Integer)
     max_count = db.Column(db.Integer)
     number = db.Column(db.Integer)
+    stars = db.Column(db.Integer)
 
     @property
     def serialize(self):

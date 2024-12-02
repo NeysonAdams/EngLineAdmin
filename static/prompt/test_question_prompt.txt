@@ -1,0 +1,16 @@
+Generate test question with 4 variant of answer
+One variant is true, 3 is wrong
+topics of the question: English grammar, choose missing word,
+the difficulty of question is Beginner
+the language of question English
+
+Return the result in the following JSON format:
+{{
+    'question': question of the test,
+    'var1': First variant of answer,
+    'var2': Second variant of answer,
+    'var3': Threed variant of answer,
+    'var4': Four variant of answer,
+    'right': the number of right variant of answer ( can be 1, 2, 3, 4)
+
+}}

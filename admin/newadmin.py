@@ -6,7 +6,7 @@ from database.models import User, Levels, Exesesizes, Exesize, Question, Inputqu
 from flask_security.utils import hash_password, verify_password
 from server_init import db
 from flask_cors import cross_origin
-from mobile_api.aicomponent import generate_test_question, generate_audio_question, text_to_speach, generate_text_question, generate_word_pair
+from mobile_api.aicomponent import generate_test_question, generate_audio_question, text_to_speach, generate_text_question, generate_word_pair, read_prompt, save_prompt
 
 import os
 import json
@@ -463,3 +463,31 @@ def generate():
         return jsonify(j_obj), 200
 
     return jsonify(msg="Unsupported Type"), 400
+
+@newadmin.route('/admin/api/prompt', methods=['GET', 'POST'])
+@cross_origin()
+@role_required('superuser')
+def prompt():
+    if request.method == 'GET':
+        test_prompt = read_prompt('test_question_prompt.txt')
+        audio_prompt = read_prompt('audio_question_prompt.txt')
+        text_prompt = read_prompt('input_question_prompt.txt')
+        wp_prompt = read_prompt('word_pair_prompt.txt')
+
+        return jsonify(test_prompt= test_prompt, audio_prompt=audio_prompt, text_prompt=text_prompt, wp_prompt=wp_prompt), 200
+
+    if request.method == 'POST':
+        data = request.get_json()
+
+        test_prompt = data.get("test_prompt")
+        audio_prompt = data.get("audio_prompt")
+        text_prompt = data.get("text_prompt")
+        wp_prompt = data.get("wp_prompt")
+
+        save_prompt('test_question_prompt.txt', test_prompt)
+        save_prompt('audio_question_prompt.txt', audio_prompt)
+        save_prompt('input_question_prompt.txt', text_prompt)
+        save_prompt('word_pair_prompt.txt', wp_prompt)
+
+        return jsonify(test_prompt=test_prompt, audio_prompt=audio_prompt, text_prompt=text_prompt,
+                       wp_prompt=wp_prompt), 200

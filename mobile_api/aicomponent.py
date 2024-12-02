@@ -184,96 +184,46 @@ def chat_answer(topic, scenario, user_name, data, message):
         """
 
 def generate_test_question(difficulty, language):
-    prompt = f"""
-        Generate test question with 4 variant of answer
-        One variant is true, 3 is wrong
-        topics of the question: English grammar, choose missing word,   
-        the difficulty of question is {difficulty}
-        the language of question{language}
-        Return the result in the following JSON format:
-        {{
-            'question': question of the test. Language of thr quest is {language},
-            'var1': First variant of answer,
-            'var2': Second variant of answer,
-            'var3': Threed variant of answer,
-            'var4': Four variant of answer,
-            'right': the number of right variant of answer ( can be 1, 2, 3, 4)
-            
-        }}
-    """
+    prompt = read_prompt('test_question_prompt.txt')
 
     response = ask_gpt(prompt)
     return response
 
 def generate_audio_question(difficulty, language):
-    prompt = f"""
-        Generate question with audio
-        Type of the question Listen the audio and answer the question
-        the difficulty of question is {difficulty}
-        the language of question{language}
-        Return the result in the following JSON format:
-        {{
-            'question': question. Language of thr quest is {language}, questions depends from audio
-            'audio_query': text of the listening question always in english language only this text will be in audio file
-            
-        }}
-    """
+    prompt = read_prompt('audio_question_prompt.txt')
+
 
     response = ask_gpt(prompt)
     return response
 
 def generate_text_question(difficulty, language, type):
-    prompt = f"""
-        Generate questions for a English language learner on a professional topic. The questions should be of the following types:
-        
-        the difficulty of question is {difficulty}
-        type of the question : {type}
-        
-        check_answer — This is a simple question where the learner provides a written answer. The answer is checked by GPT. 
-        Example: "What is the primary function of a database in software development?" 
-        language of question dependes from difficulty 
-        If difficulty is Beginner Elementary PreIntermidia Intermidia the is {language} otherwise English.
-        
-        add_missing — The question consists of a sentence with missing words, where each missing character is replaced with _. 
-        Example: "A ______ is used to store and manage data." Answer: "database".
-        
-        check_grammar — This is a grammar question where the answer should be short (2–4 words) and correct the mistake in the sentence. 
-        Example: "She go to work every day." Answer: "She goes".
-        
-        Please create three questions on the topic of [insert topic, e.g., "basics of programming"], one of each type. 
-        Format the questions and answers clearly.
-        Return the result in the following JSON format:
-        {{
-            'question': generated question,
-            'answer': answer on this question (according add_missing type write answer  separated by commas Example: "A ______ is used to _____ and manage data." Answer: "database, store")
-        }}
-        WARNING ITS ABSOLUTELY IMPOSSIBLE TO RETURN ARRAY! ONLY ONE QUESTION AND ONE ANSWER WHICH FOLLOWING THE TYPE {type}
-    """
+    prompt = read_prompt('input_question_prompt.txt')
 
     response = ask_gpt(prompt)
     return response
 
 def generate_word_pair(difficulty, type):
-    prompt = f"""
-        Generate Array words pairs for a English language learner on a professional topic. The questions should be of the following types:
-        
-        the difficulty is {difficulty}
-        type of the question {type}
-        
-        if type is 'translate' Return the result in the following JSON format:
-        {{
-            'words': generate 5-8 length array
-            [
-                {{
-                    'id' :-1,
-                    'eng': word on English,
-                    'rus': translation on Russian Language,
-                    'uzb': translation on Uzbek Language
-                }}
-            ]
-        }}
-        
-    """
+    prompt = read_prompt('word_pair_prompt.txt')
 
     response = ask_gpt(prompt)
     return response
+
+
+def read_prompt(file):
+    # Указываем путь к файлу
+    file_path = 'static/prompt/'+file
+
+    # Читаем содержимое файла
+    with open(file_path, 'r', encoding='utf-8') as f:
+        file_content = f.read()
+
+    # Сохраняем текст в переменную
+    prompt_text = file_content
+
+    # Просто для демонстрации возвращаем содержимое файла
+    return prompt_text
+
+def save_prompt(file, prompt):
+    file_path = 'static/prompt/' + file
+    with open(file_path, 'a', encoding='utf-8') as f:
+        f.write(prompt)
