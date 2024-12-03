@@ -465,7 +465,7 @@ def generate():
     return jsonify(msg="Unsupported Type"), 400
 
 @newadmin.route('/admin/api/prompt', methods=['GET', 'POST'])
-@cross_origin()
+@cross_origin(origins="http://localhost:5173", methods=["GET", "POST", "OPTIONS"], allow_headers=["Authorization", "Content-Type"])
 @role_required('superuser')
 def prompt():
     if request.method == 'GET':
