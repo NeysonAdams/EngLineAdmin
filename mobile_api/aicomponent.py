@@ -213,7 +213,7 @@ promt_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'st
 
 def read_prompt(file):
     # Указываем путь к файлу
-    file_path = promt_folder+file
+    file_path = promt_folder+"/"+file
 
     # Читаем содержимое файла
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -226,6 +226,6 @@ def read_prompt(file):
     return prompt_text
 
 def save_prompt(file, prompt):
-    file_path = promt_folder + file
+    file_path = promt_folder + "/"+file
     with open(file_path, 'a', encoding='utf-8') as f:
         f.write(prompt)
