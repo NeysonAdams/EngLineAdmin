@@ -16,7 +16,7 @@ audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'st
 
 newadmin = Blueprint('newadmin', __name__)
 
-@app.before_request
+@newadmin.before_request
 def handle_options_request():
     if request.method == 'OPTIONS':
         # Обработка preflight (OPTIONS) запроса
