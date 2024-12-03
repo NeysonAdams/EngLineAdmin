@@ -16,6 +16,16 @@ audio_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'st
 
 newadmin = Blueprint('newadmin', __name__)
 
+@app.before_request
+def handle_options_request():
+    if request.method == 'OPTIONS':
+        # Обработка preflight (OPTIONS) запроса
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        return response, 200
 @newadmin.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
