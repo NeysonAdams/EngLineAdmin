@@ -34,6 +34,7 @@
     <button_check>Tekshirish</button_check>
     <button_again>Yangidan</button_again>
     <button_share>Do'stni taklif qilish</button_share>
+    <button_delere_user>Hisobni O'chirish</button_delere_user>
     <button_share_2>Ulashish</button_share_2>   <copy_link_button>Havolani ko‘chirish</copy_link_button>
 
     <label_text>Matn</label_text>
@@ -240,6 +241,7 @@
     <error_fattal_error>Jiddiy xato</error_fattal_error>
 
     <warning_level_exit> Siz o'z progressingizni yo'qotishingiz mumkin! Ishonchingiz komilmi?</warning_level_exit>
+    <warning_delete_user>Hisobingizni oʻchirib tashlashni aniq istaysizmi?</warning_delete_user>
 
     <fe_title>So'z Juftlari</fe_title>
     <fe_content>Kartochkani to'g'ri joyga yoki to'g'ri variantga tortib qo'ying</fe_content>

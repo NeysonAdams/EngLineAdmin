@@ -35,6 +35,7 @@
     <button_again>Заново</button_again>
     <button_share>Пригласить друга</button_share>
     <button_share_2>Поделиться</button_share_2>
+    <button_delere_user>Удалить Аккаунт</button_delere_user>
     <copy_link_button>Копировать</copy_link_button>
 
     <label_text>Текст</label_text>
@@ -243,6 +244,7 @@
     <error_fattal_error>Фатальная ошибка</error_fattal_error>
 
     <warning_level_exit> Вы можете потерять прогресс! Вы уверенны?</warning_level_exit>
+    <warning_delete_user>Вы точно хотите удалить аккаунт? </warning_delete_user>
 
     <fe_title>Слова Пары</fe_title>
     <fe_content>перетащите карточку в правльное место или на правильный вариант</fe_content>

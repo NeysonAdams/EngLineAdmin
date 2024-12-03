@@ -417,6 +417,20 @@ def change_password():
 
     return jsonify(msg="succes"), 200
 
+@auth.route('/users/delete', methods=["GET"])
+@jwt_required()
+def delete_user():
+    uid = get_jwt_identity()
+    user = User.query.filter_by(id=uid).first()
+
+    if not user:
+        return jsonify(msg="User not exist"), 404
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify(msg=f"User {id} has been deleted"), 200
+
 #@auth.route('/users/auth_login', methods=['GET'])
 #@jwt_required()
 #def login():
