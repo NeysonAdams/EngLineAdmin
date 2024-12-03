@@ -1,5 +1,6 @@
 from config import GPT_KEY
 from openai import OpenAI
+import os
 
 api_key = GPT_KEY
 
