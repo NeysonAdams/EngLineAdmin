@@ -179,7 +179,7 @@ def apple_auth():
         email = request.form.get('email')
 
         new_user = User()
-        new_user.google_id = google_id
+        new_user.google_id = apple_id
         new_user.login = ""
         new_user.name = name
         new_user.email = email
