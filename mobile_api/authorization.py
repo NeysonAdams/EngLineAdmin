@@ -175,8 +175,8 @@ def apple_auth():
         isRegistrated = True
         subscription = Subscription.query.filter_by(user_id=user.id).first()
     else:
-        name = request.form.get('name')
-        email = request.form.get('email')
+        name = request.form.get('name') or ""
+        email = request.form.get('email') or ""
 
         new_user = User()
         new_user.google_id = apple_id
