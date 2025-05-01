@@ -55,6 +55,7 @@ def main():
     user = User.query.filter_by(id=user_id).first()
 
     record = LevelsStat.query.filter_by(user_id=user_id).order_by(LevelsStat.number.desc()).first()
+    subscription = Subscription.query.filter_by(user_id=user_id).first()
 
     page = 1
     min = 0
@@ -107,6 +108,7 @@ def main():
         stats = [s.serialize for s in stats],
         analyticks = data,
         page=page,
+        subscription=subscription
     ), 200
 
 @level_blueprint.route('/levels/page/<int:page>', methods=['GET'])
