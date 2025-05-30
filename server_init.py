@@ -28,6 +28,7 @@ from mobile_api.levels import level_blueprint
 from mobile_api.quests import quests_blueprint
 from mobile_api.theory import theory_blueprint
 from mobile_api.frazes import fraze_blueprint
+from free_api_blueprint import free_blueprint
 
 from admin.newadmin import newadmin
 
@@ -46,6 +47,7 @@ admin = flask_admin.Admin(
     template_mode='bootstrap4',
 )
 
+app.register_blueprint(free_blueprint)
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(cources_bluepprint)
