@@ -1,7 +1,7 @@
 import os
 
 from flask import Blueprint, request, jsonify
-from database.models import Exesize, Levels, Exesesizes
+from database.models import Exesize, Levels, Exesesizes, Question, Inputquestion, Audioquestion, Wordexecesize, Wordslink
 from server_init import db
 from sqlalchemy import func
 
