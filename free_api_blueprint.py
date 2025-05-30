@@ -3,6 +3,7 @@ import os
 from flask import Blueprint, request, jsonify
 from database.models import Exesize, Levels, Exesesizes
 from server_init import db
+from sqlalchemy import func
 
 free_blueprint = Blueprint('free_blueprint', __name__)
 
