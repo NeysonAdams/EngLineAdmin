@@ -172,6 +172,7 @@ def deleteUser(id):
 
 @newadmin.route('/admin/api/levels', methods=['GET', 'POST'])
 @cross_origin()
+@role_required('superuser')
 def level():
     if request.method == 'GET':
         levels = Levels.query.all()
