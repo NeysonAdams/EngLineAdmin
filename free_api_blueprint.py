@@ -1,11 +1,37 @@
 import os
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify,send_from_directory
 from database.models import Exesize, Levels, Exesesizes, Question, Inputquestion, Audioquestion, Wordexecesize, Wordslink
 from server_init import db
 from sqlalchemy import func
+from werkzeug.utils import secure_filename
 
 free_blueprint = Blueprint('free_blueprint', __name__)
+
+AUDIO_FOLDER = os.path.join(os.getcwd(), 'static', 'audio')
+os.makedirs(AUDIO_FOLDER, exist_ok=True)
+
+@free_blueprint.route('/free/audio/list', methods=['GET'])
+def list_audio_files():
+    files = [f for f in os.listdir(AUDIO_FOLDER) if os.path.isfile(os.path.join(AUDIO_FOLDER, f))]
+    return jsonify({"files": files})
+
+@free_blueprint.route('/free/audio/download/<filename>', methods=['GET'])
+def download_audio_file(filename):
+    return send_from_directory(AUDIO_FOLDER, filename, as_attachment=True)
+
+@free_blueprint.route('/free/audio/upload', methods=['POST'])
+def upload_audio_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(AUDIO_FOLDER, filename))
+    return jsonify({"message": f"File '{filename}' uploaded successfully"})
 
 @free_blueprint.route('/free/levels', methods=['GET'])
 def get_max_level_by_language():
@@ -104,4 +130,7 @@ def level():
 
     db.session.commit()
     return jsonify(level.serialize_max), 200
+
+
+
 

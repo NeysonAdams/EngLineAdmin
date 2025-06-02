@@ -108,7 +108,7 @@ def main():
         stats = [s.serialize for s in stats],
         analyticks = data,
         page=page,
-        subscription=subscription
+        subscription=subscription.serialize if subscription else None
     ), 200
 
 @level_blueprint.route('/levels/page/<int:page>', methods=['GET'])
